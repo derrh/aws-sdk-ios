@@ -27,7 +27,7 @@
 #import "AWSEC2Serializer.h"
 
 static NSString *const AWSInfoEC2 = @"EC2";
-NSString *const AWSEC2SDKVersion = @"2.9.10";
+NSString *const AWSEC2SDKVersion = @"2.10.3";
 
 
 @interface AWSEC2ResponseSerializer : AWSXMLResponseSerializer
@@ -479,22 +479,23 @@ static AWSSynchronizedMutableDictionary *_serviceClients = nil;
     }];
 }
 
-- (AWSTask *)assignPrivateIpAddresses:(AWSEC2AssignPrivateIpAddressesRequest *)request {
+- (AWSTask<AWSEC2AssignPrivateIpAddressesResult *> *)assignPrivateIpAddresses:(AWSEC2AssignPrivateIpAddressesRequest *)request {
     return [self invokeRequest:request
                     HTTPMethod:AWSHTTPMethodPOST
                      URLString:@""
                   targetPrefix:@""
                  operationName:@"AssignPrivateIpAddresses"
-                   outputClass:nil];
+                   outputClass:[AWSEC2AssignPrivateIpAddressesResult class]];
 }
 
 - (void)assignPrivateIpAddresses:(AWSEC2AssignPrivateIpAddressesRequest *)request
-     completionHandler:(void (^)(NSError *error))completionHandler {
-    [[self assignPrivateIpAddresses:request] continueWithBlock:^id _Nullable(AWSTask * _Nonnull task) {
+     completionHandler:(void (^)(AWSEC2AssignPrivateIpAddressesResult *response, NSError *error))completionHandler {
+    [[self assignPrivateIpAddresses:request] continueWithBlock:^id _Nullable(AWSTask<AWSEC2AssignPrivateIpAddressesResult *> * _Nonnull task) {
+        AWSEC2AssignPrivateIpAddressesResult *result = task.result;
         NSError *error = task.error;
 
         if (completionHandler) {
-            completionHandler(error);
+            completionHandler(result, error);
         }
 
         return nil;
@@ -6120,6 +6121,29 @@ static AWSSynchronizedMutableDictionary *_serviceClients = nil;
     }];
 }
 
+- (AWSTask<AWSEC2GetCapacityReservationUsageResult *> *)getCapacityReservationUsage:(AWSEC2GetCapacityReservationUsageRequest *)request {
+    return [self invokeRequest:request
+                    HTTPMethod:AWSHTTPMethodPOST
+                     URLString:@""
+                  targetPrefix:@""
+                 operationName:@"GetCapacityReservationUsage"
+                   outputClass:[AWSEC2GetCapacityReservationUsageResult class]];
+}
+
+- (void)getCapacityReservationUsage:(AWSEC2GetCapacityReservationUsageRequest *)request
+     completionHandler:(void (^)(AWSEC2GetCapacityReservationUsageResult *response, NSError *error))completionHandler {
+    [[self getCapacityReservationUsage:request] continueWithBlock:^id _Nullable(AWSTask<AWSEC2GetCapacityReservationUsageResult *> * _Nonnull task) {
+        AWSEC2GetCapacityReservationUsageResult *result = task.result;
+        NSError *error = task.error;
+
+        if (completionHandler) {
+            completionHandler(result, error);
+        }
+
+        return nil;
+    }];
+}
+
 - (AWSTask<AWSEC2GetConsoleOutputResult *> *)getConsoleOutput:(AWSEC2GetConsoleOutputRequest *)request {
     return [self invokeRequest:request
                     HTTPMethod:AWSHTTPMethodPOST
@@ -7284,6 +7308,29 @@ static AWSSynchronizedMutableDictionary *_serviceClients = nil;
     }];
 }
 
+- (AWSTask<AWSEC2ModifyVpnTunnelCertificateResult *> *)modifyVpnTunnelCertificate:(AWSEC2ModifyVpnTunnelCertificateRequest *)request {
+    return [self invokeRequest:request
+                    HTTPMethod:AWSHTTPMethodPOST
+                     URLString:@""
+                  targetPrefix:@""
+                 operationName:@"ModifyVpnTunnelCertificate"
+                   outputClass:[AWSEC2ModifyVpnTunnelCertificateResult class]];
+}
+
+- (void)modifyVpnTunnelCertificate:(AWSEC2ModifyVpnTunnelCertificateRequest *)request
+     completionHandler:(void (^)(AWSEC2ModifyVpnTunnelCertificateResult *response, NSError *error))completionHandler {
+    [[self modifyVpnTunnelCertificate:request] continueWithBlock:^id _Nullable(AWSTask<AWSEC2ModifyVpnTunnelCertificateResult *> * _Nonnull task) {
+        AWSEC2ModifyVpnTunnelCertificateResult *result = task.result;
+        NSError *error = task.error;
+
+        if (completionHandler) {
+            completionHandler(result, error);
+        }
+
+        return nil;
+    }];
+}
+
 - (AWSTask<AWSEC2MonitorInstancesResult *> *)monitorInstances:(AWSEC2MonitorInstancesRequest *)request {
     return [self invokeRequest:request
                     HTTPMethod:AWSHTTPMethodPOST
@@ -8072,6 +8119,28 @@ static AWSSynchronizedMutableDictionary *_serviceClients = nil;
 
         if (completionHandler) {
             completionHandler(result, error);
+        }
+
+        return nil;
+    }];
+}
+
+- (AWSTask *)sendDiagnosticInterrupt:(AWSEC2SendDiagnosticInterruptRequest *)request {
+    return [self invokeRequest:request
+                    HTTPMethod:AWSHTTPMethodPOST
+                     URLString:@""
+                  targetPrefix:@""
+                 operationName:@"SendDiagnosticInterrupt"
+                   outputClass:nil];
+}
+
+- (void)sendDiagnosticInterrupt:(AWSEC2SendDiagnosticInterruptRequest *)request
+     completionHandler:(void (^)(NSError *error))completionHandler {
+    [[self sendDiagnosticInterrupt:request] continueWithBlock:^id _Nullable(AWSTask * _Nonnull task) {
+        NSError *error = task.error;
+
+        if (completionHandler) {
+            completionHandler(error);
         }
 
         return nil;

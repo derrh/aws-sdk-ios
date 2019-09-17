@@ -1,5 +1,97 @@
 # AWS Mobile SDK for iOS CHANGELOG
 
+## 2.10.3
+
+### Bug Fixes
+
+- **AWS Core**
+  - `-[AWSURLSessionManager invalidate]` now invokes `-[NSURLSession finishTasksAndInvalidate]` before releasing the underlying URLSession.
+    If you attempt to start a new task on the invalidated session, AWSNetworking will now throw an `AWSNetworkingErrorSessionInvalid` error.
+    (See [PR #1203](https://github.com/aws-amplify/aws-sdk-ios/pull/1203) and [PR #1556](https://github.com/aws-amplify/aws-sdk-ios/pull/1556)).
+    Thanks @jkennington and @jaetzold!
+
+- **AWSCognitoAuth**
+  - `delegate` property is now retained weakly
+
+- **AWSMobileClient**
+  - Fixes the crash during signout while setting error on completed task (See [Issue 1505](https://github.com/aws-amplify/aws-sdk-ios/issues/1505) and [Issue 1682](https://github.com/aws-amplify/aws-sdk-ios/issues/1682).)
+  - Fixed an issue where signOut callback is not called (See [Issue 1717](https://github.com/aws-amplify/aws-sdk-ios/issues/1717).)
+  - Code clean up on source and test files
+
+### Misc. Updates
+- Model updates for the following services
+  - Amazon EC2
+  - Amazon Lex
+  - Amazon Polly
+  - Amazon Rekognition
+  * Amazon Simple Queue Service (SQS)
+  - AWS IoT
+
+## 2.10.2
+
+### New Features
+
+- **Amazon Textract**
+  - Amazon Textract is a service that automatically extracts text and data from scanned documents. Amazon Textract goes beyond simple optical character
+    recognition (OCR) to also identify the contents of fields in forms and information stored in tables. See
+    [Amazon Textract Documentation](https://aws.amazon.com/textract/) for more details.
+
+## 2.10.1
+
+### New Features
+
+- **AWS Core**
+  - Added support for `me-south-1` - Middle East South (Bahrain) region.
+
+### Bug Fixes
+
+- **Amazon Kinesis**
+  - Fixed default value of `batchRecordsByteLimit`--the documented size is 512**KB**, but the code incorrectly set it to 512**MB**.
+    See [PR #1688](https://github.com/aws-amplify/aws-sdk-ios/pull/1688). Thanks @runlucky!
+- **Amazon Polly**
+  - Fixed error trying to use 'Zeina' voice with presigned URLs
+
+### Misc. Updates
+- Model updates for the following services
+  - Amazon CloudWatch Logs
+  - Amazon Comprehend
+  - Amazon EC2
+  - Amazon Pinpoint
+  - Amazon Security Token Service (STS)
+- Fix incorrect license specification in AWSCognitoIdentityProvider.podspec (See
+  [Issue #1684](https://github.com/aws-amplify/aws-sdk-ios/issues/1684), [PR #1699](https://github.com/aws-amplify/aws-sdk-ios/pull/1699).)
+
+## 2.10.0
+
+### New Features
+
+* **Amazon Connect**
+  * Amazon Connect is a self-service, cloud-based contact center service that makes it easy for any business to deliver better customer service at lower cost. Amazon Connect is based on the same contact center technology used by Amazon customer service associates around the world to power millions of customer conversations. The self-service graphical interface in Amazon Connect makes it easy for non-technical users to design contact flows, manage agents, and track performance metrics – no specialized skills required. There are no up-front payments or long-term commitments and no infrastructure to manage with Amazon Connect; customers pay by the minute for Amazon Connect usage plus any associated telephony services. See [Amazon Connect Documentation](https://aws.amazon.com/connect/) for more details.
+
+### Bug Fixes
+
+- **Amazon S3**
+  - Fixed a bug where errors in the presigned URL builder phase were not returned.
+    See [PR #1555](https://github.com/aws-amplify/aws-sdk-ios/pull/1555) for details.
+    Thanks @wfan9!
+
+### Misc. Updates
+- Fix include files to properly use the framework prefix for cross-framework includes. This fixes breakage when each framework is in a separate project
+  file, as when using the new `generate_multiple_pod_projects` feature in cocoapods 1.7.
+  See [PR #1540](https://github.com/aws-amplify/aws-sdk-ios/pull/1540) and [#1611](https://github.com/aws-amplify/aws-sdk-ios/pull/1611).
+  Thanks @hughescr and @colinhumber!
+- **AWSMobileClient**
+  - Added a `message` convenience property to AWSMobileClientError. See [#1268](https://github.com/aws-amplify/aws-sdk-ios/issues/1268) and
+    [PR #1270](https://github.com/aws-amplify/aws-sdk-ios/pull/1270). Thanks @medvedNick!
+
+- Model updates for the following services
+  - Amazon EC2
+    - **Breaking API Change**
+      - The AWSEC2 method `-[assignPrivateIpAddresses:]` now returns an `AWSTask<AWSEC2AssignPrivateIpAddressesResult *>` instead of an `AWSTask<nil>`.
+      - The first argument to the completion handler for the AWSEC2 method `-[assignPrivateIpAddresses:completionHandler]` is now a nullable
+      `AWSEC2AssignPrivateIpAddressesResult`, rather than a `nil`.
+  - Amazon Kinesis Video Streams
+
 ## 2.9.10
 
 ### New Features

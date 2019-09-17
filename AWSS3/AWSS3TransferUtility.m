@@ -16,12 +16,12 @@
 #import "AWSS3TransferUtility.h"
 #import "AWSS3PreSignedURL.h"
 #import "AWSS3Service.h"
-#import "AWSXMLDictionary.h"
 #import "AWSS3TransferUtilityDatabaseHelper.h"
 #import "AWSS3TransferUtilityTasks.h"
 
 #import <AWSCore/AWSFMDB.h>
 #import <AWSCore/AWSSynchronizedMutableDictionary.h>
+#import <AWSCore/AWSXMLDictionary.h>
 
 #include <stdio.h>
 
@@ -260,8 +260,11 @@ static AWSS3TransferUtility *_defaultS3TransferUtility = nil;
         AWSServiceInfo *serviceInfo = [[AWSInfo defaultAWSInfo] defaultServiceInfo:AWSInfoS3TransferUtility];
        
         if (serviceInfo) {
+            NSNumber *localTestingEnabled = [serviceInfo.infoDictionary valueForKey:@"DangerouslyConnectToHTTPEndpointForTesting"];
             serviceConfiguration = [[AWSServiceConfiguration alloc] initWithRegion:serviceInfo.region
-                                                               credentialsProvider:serviceInfo.cognitoCredentialsProvider];
+                                                                       serviceType:AWSServiceS3
+                                                               credentialsProvider:serviceInfo.cognitoCredentialsProvider
+                                                               localTestingEnabled:[localTestingEnabled boolValue]];
             NSNumber *accelerateModeEnabled = [serviceInfo.infoDictionary valueForKey:@"AccelerateModeEnabled"];
             NSString *bucketName = [serviceInfo.infoDictionary valueForKey:@"Bucket"];
             transferUtilityConfiguration.bucket = bucketName;
@@ -1485,8 +1488,13 @@ internalDictionaryToAddSubTaskTo: (NSMutableDictionary *) internalDictionaryToAd
                       URLRequest:nil];
     
     [transferUtilityMultiPartUploadTask.expression assignRequestParameters:request];
-   
-    [[[self.preSignedURLBuilder getPreSignedURL:request] continueWithSuccessBlock:^id(AWSTask *task) {
+
+    [[[self.preSignedURLBuilder getPreSignedURL:request] continueWithBlock:^id(AWSTask *task) {
+        error = task.error;
+        if ( error ) {
+            return nil;
+        }
+
         NSURL *presignedURL = task.result;
         NSMutableURLRequest * urlRequest = [NSMutableURLRequest requestWithURL:presignedURL];
          urlRequest.cachePolicy = NSURLRequestReloadIgnoringLocalCacheData;

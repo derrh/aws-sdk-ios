@@ -9,7 +9,7 @@ function cleanup
 }
 
 
-VERSION="2.9.10"
+VERSION="2.10.3"
 if [ -n $1 ] && [ "$1" == "clean" ];
 then
 	cleanup
@@ -32,6 +32,7 @@ else
     cp -r AWSCognito ./docs_tmp/AWSCognito
     cp -r AWSCognitoIdentityProvider ./docs_tmp/AWSCognitoIdentityProvider
     cp -r AWSCloudWatch ./docs_tmp/AWSCloudWatch
+    cp -r AWSConnect ./docs_tmp/AWSConnect
     cp -r AWSDynamoDB ./docs_tmp/AWSDynamoDB
     cp -r AWSElasticLoadBalancing ./docs_tmp/AWSElasticLoadBalancing
     cp -r AWSIoT ./docs_tmp/AWSIoT
@@ -53,6 +54,7 @@ else
     cp -r AWSSimpleDB ./docs_tmp/AWSSimpleDB
     cp -r AWSSNS ./docs_tmp/AWSSNS
     cp -r AWSSQS ./docs_tmp/AWSSQS
+    cp -r AWSTextract ./docs_tmp/AWSTextract
     cp -r AWSTranscribe ./docs_tmp/AWSTranscribe
     cp -r AWSTranslate ./docs_tmp/AWSTranslate
     cp -r AWSComprehend ./docs_tmp/AWSComprehend

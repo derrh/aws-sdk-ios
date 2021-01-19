@@ -1,5 +1,5 @@
 //
-// Copyright 2010-2019 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+// Copyright 2010-2020 Amazon.com, Inc. or its affiliates. All Rights Reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License").
 // You may not use this file except in compliance with the License.
@@ -239,7 +239,7 @@
         {\"shape\":\"ThrottlingException\"},\
         {\"shape\":\"InternalFailureException\"}\
       ],\
-      \"documentation\":\"<p>Cancels an audit that is in progress. The audit can be either scheduled or on-demand. If the audit is not in progress, an \\\"InvalidRequestException\\\" occurs.</p>\"\
+      \"documentation\":\"<p>Cancels an audit that is in progress. The audit can be either scheduled or on demand. If the audit isn't in progress, an \\\"InvalidRequestException\\\" occurs.</p>\"\
     },\
     \"CancelCertificateTransfer\":{\
       \"name\":\"CancelCertificateTransfer\",\
@@ -258,6 +258,22 @@
         {\"shape\":\"InternalFailureException\"}\
       ],\
       \"documentation\":\"<p>Cancels a pending transfer for the specified certificate.</p> <p> <b>Note</b> Only the transfer source account can use this operation to cancel a transfer. (Transfer destinations can use <a>RejectCertificateTransfer</a> instead.) After transfer, AWS IoT returns the certificate to the source account in the INACTIVE state. After the destination account has accepted the transfer, the transfer cannot be cancelled.</p> <p>After a certificate transfer is cancelled, the status of the certificate changes from PENDING_TRANSFER to INACTIVE.</p>\"\
+    },\
+    \"CancelDetectMitigationActionsTask\":{\
+      \"name\":\"CancelDetectMitigationActionsTask\",\
+      \"http\":{\
+        \"method\":\"PUT\",\
+        \"requestUri\":\"/detect/mitigationactions/tasks/{taskId}/cancel\"\
+      },\
+      \"input\":{\"shape\":\"CancelDetectMitigationActionsTaskRequest\"},\
+      \"output\":{\"shape\":\"CancelDetectMitigationActionsTaskResponse\"},\
+      \"errors\":[\
+        {\"shape\":\"ResourceNotFoundException\"},\
+        {\"shape\":\"InvalidRequestException\"},\
+        {\"shape\":\"ThrottlingException\"},\
+        {\"shape\":\"InternalFailureException\"}\
+      ],\
+      \"documentation\":\"<p> Cancels a Device Defender ML Detect mitigation action. </p>\"\
     },\
     \"CancelJob\":{\
       \"name\":\"CancelJob\",\
@@ -309,6 +325,40 @@
         {\"shape\":\"InternalFailureException\"}\
       ],\
       \"documentation\":\"<p>Clears the default authorizer.</p>\"\
+    },\
+    \"ConfirmTopicRuleDestination\":{\
+      \"name\":\"ConfirmTopicRuleDestination\",\
+      \"http\":{\
+        \"method\":\"GET\",\
+        \"requestUri\":\"/confirmdestination/{confirmationToken+}\"\
+      },\
+      \"input\":{\"shape\":\"ConfirmTopicRuleDestinationRequest\"},\
+      \"output\":{\"shape\":\"ConfirmTopicRuleDestinationResponse\"},\
+      \"errors\":[\
+        {\"shape\":\"InternalException\"},\
+        {\"shape\":\"InvalidRequestException\"},\
+        {\"shape\":\"ServiceUnavailableException\"},\
+        {\"shape\":\"UnauthorizedException\"},\
+        {\"shape\":\"ConflictingResourceUpdateException\"}\
+      ],\
+      \"documentation\":\"<p>Confirms a topic rule destination. When you create a rule requiring a destination, AWS IoT sends a confirmation message to the endpoint or base address you specify. The message includes a token which you pass back when calling <code>ConfirmTopicRuleDestination</code> to confirm that you own or have access to the endpoint.</p>\"\
+    },\
+    \"CreateAuditSuppression\":{\
+      \"name\":\"CreateAuditSuppression\",\
+      \"http\":{\
+        \"method\":\"POST\",\
+        \"requestUri\":\"/audit/suppressions/create\"\
+      },\
+      \"input\":{\"shape\":\"CreateAuditSuppressionRequest\"},\
+      \"output\":{\"shape\":\"CreateAuditSuppressionResponse\"},\
+      \"errors\":[\
+        {\"shape\":\"InvalidRequestException\"},\
+        {\"shape\":\"ResourceAlreadyExistsException\"},\
+        {\"shape\":\"ThrottlingException\"},\
+        {\"shape\":\"InternalFailureException\"},\
+        {\"shape\":\"LimitExceededException\"}\
+      ],\
+      \"documentation\":\"<p> Creates a Device Defender audit suppression. </p>\"\
     },\
     \"CreateAuthorizer\":{\
       \"name\":\"CreateAuthorizer\",\
@@ -362,6 +412,60 @@
       ],\
       \"documentation\":\"<p>Creates an X.509 certificate using the specified certificate signing request.</p> <p> <b>Note:</b> The CSR must include a public key that is either an RSA key with a length of at least 2048 bits or an ECC key from NIST P-256 or NIST P-384 curves. </p> <p> <b>Note:</b> Reusing the same certificate signing request (CSR) results in a distinct certificate.</p> <p>You can create multiple certificates in a batch by creating a directory, copying multiple .csr files into that directory, and then specifying that directory on the command line. The following commands show how to create a batch of certificates given a batch of CSRs.</p> <p>Assuming a set of CSRs are located inside of the directory my-csr-directory:</p> <p>On Linux and OS X, the command is:</p> <p>$ ls my-csr-directory/ | xargs -I {} aws iot create-certificate-from-csr --certificate-signing-request file://my-csr-directory/{}</p> <p>This command lists all of the CSRs in my-csr-directory and pipes each CSR file name to the aws iot create-certificate-from-csr AWS CLI command to create a certificate for the corresponding CSR.</p> <p>The aws iot create-certificate-from-csr part of the command can also be run in parallel to speed up the certificate creation process:</p> <p>$ ls my-csr-directory/ | xargs -P 10 -I {} aws iot create-certificate-from-csr --certificate-signing-request file://my-csr-directory/{}</p> <p>On Windows PowerShell, the command to create certificates for all CSRs in my-csr-directory is:</p> <p>&gt; ls -Name my-csr-directory | %{aws iot create-certificate-from-csr --certificate-signing-request file://my-csr-directory/$_}</p> <p>On a Windows command prompt, the command to create certificates for all CSRs in my-csr-directory is:</p> <p>&gt; forfiles /p my-csr-directory /c \\\"cmd /c aws iot create-certificate-from-csr --certificate-signing-request file://@path\\\"</p>\"\
     },\
+    \"CreateCustomMetric\":{\
+      \"name\":\"CreateCustomMetric\",\
+      \"http\":{\
+        \"method\":\"POST\",\
+        \"requestUri\":\"/custom-metric/{metricName}\"\
+      },\
+      \"input\":{\"shape\":\"CreateCustomMetricRequest\"},\
+      \"output\":{\"shape\":\"CreateCustomMetricResponse\"},\
+      \"errors\":[\
+        {\"shape\":\"InvalidRequestException\"},\
+        {\"shape\":\"LimitExceededException\"},\
+        {\"shape\":\"ResourceAlreadyExistsException\"},\
+        {\"shape\":\"ThrottlingException\"},\
+        {\"shape\":\"InternalFailureException\"}\
+      ],\
+      \"documentation\":\"<p> Use this API to define a Custom Metric published by your devices to Device Defender. </p>\"\
+    },\
+    \"CreateDimension\":{\
+      \"name\":\"CreateDimension\",\
+      \"http\":{\
+        \"method\":\"POST\",\
+        \"requestUri\":\"/dimensions/{name}\"\
+      },\
+      \"input\":{\"shape\":\"CreateDimensionRequest\"},\
+      \"output\":{\"shape\":\"CreateDimensionResponse\"},\
+      \"errors\":[\
+        {\"shape\":\"InternalFailureException\"},\
+        {\"shape\":\"InvalidRequestException\"},\
+        {\"shape\":\"LimitExceededException\"},\
+        {\"shape\":\"ResourceAlreadyExistsException\"},\
+        {\"shape\":\"ThrottlingException\"}\
+      ],\
+      \"documentation\":\"<p>Create a dimension that you can use to limit the scope of a metric used in a security profile for AWS IoT Device Defender. For example, using a <code>TOPIC_FILTER</code> dimension, you can narrow down the scope of the metric only to MQTT topics whose name match the pattern specified in the dimension.</p>\"\
+    },\
+    \"CreateDomainConfiguration\":{\
+      \"name\":\"CreateDomainConfiguration\",\
+      \"http\":{\
+        \"method\":\"POST\",\
+        \"requestUri\":\"/domainConfigurations/{domainConfigurationName}\"\
+      },\
+      \"input\":{\"shape\":\"CreateDomainConfigurationRequest\"},\
+      \"output\":{\"shape\":\"CreateDomainConfigurationResponse\"},\
+      \"errors\":[\
+        {\"shape\":\"LimitExceededException\"},\
+        {\"shape\":\"CertificateValidationException\"},\
+        {\"shape\":\"ResourceAlreadyExistsException\"},\
+        {\"shape\":\"ServiceUnavailableException\"},\
+        {\"shape\":\"InternalFailureException\"},\
+        {\"shape\":\"InvalidRequestException\"},\
+        {\"shape\":\"UnauthorizedException\"},\
+        {\"shape\":\"ThrottlingException\"}\
+      ],\
+      \"documentation\":\"<p>Creates a domain configuration.</p> <note> <p>The domain configuration feature is in public preview and is subject to change.</p> </note>\"\
+    },\
     \"CreateDynamicThingGroup\":{\
       \"name\":\"CreateDynamicThingGroup\",\
       \"http\":{\
@@ -414,7 +518,7 @@
         {\"shape\":\"ServiceUnavailableException\"},\
         {\"shape\":\"InternalFailureException\"}\
       ],\
-      \"documentation\":\"<p>Creates a 2048-bit RSA key pair and issues an X.509 certificate using the issued public key.</p> <p> <b>Note</b> This is the only time AWS IoT issues the private key for this certificate, so it is important to keep it in a secure location.</p>\"\
+      \"documentation\":\"<p>Creates a 2048-bit RSA key pair and issues an X.509 certificate using the issued public key. You can also call <code>CreateKeysAndCertificate</code> over MQTT from a device, for more information, see <a href=\\\"https://docs.aws.amazon.com/iot/latest/developerguide/provision-wo-cert.html#provision-mqtt-api\\\">Provisioning MQTT API</a>.</p> <p> <b>Note</b> This is the only time AWS IoT issues the private key for this certificate, so it is important to keep it in a secure location.</p>\"\
     },\
     \"CreateMitigationAction\":{\
       \"name\":\"CreateMitigationAction\",\
@@ -431,7 +535,7 @@
         {\"shape\":\"ThrottlingException\"},\
         {\"shape\":\"InternalFailureException\"}\
       ],\
-      \"documentation\":\"<p>Defines an action that can be applied to audit findings by using StartAuditMitigationActionsTask. Each mitigation action can apply only one type of change.</p>\"\
+      \"documentation\":\"<p>Defines an action that can be applied to audit findings by using StartAuditMitigationActionsTask. Only certain types of mitigation actions can be applied to specific check names. For more information, see <a href=\\\"https://docs.aws.amazon.com/iot/latest/developerguide/device-defender-mitigation-actions.html\\\">Mitigation actions</a>. Each mitigation action can apply only one type of change.</p>\"\
     },\
     \"CreateOTAUpdate\":{\
       \"name\":\"CreateOTAUpdate\",\
@@ -491,6 +595,61 @@
         {\"shape\":\"InternalFailureException\"}\
       ],\
       \"documentation\":\"<p>Creates a new version of the specified AWS IoT policy. To update a policy, create a new policy version. A managed policy can have up to five versions. If the policy has five versions, you must use <a>DeletePolicyVersion</a> to delete an existing version before you create a new one.</p> <p>Optionally, you can set the new version as the policy's default version. The default version is the operative version (that is, the version that is in effect for the certificates to which the policy is attached).</p>\"\
+    },\
+    \"CreateProvisioningClaim\":{\
+      \"name\":\"CreateProvisioningClaim\",\
+      \"http\":{\
+        \"method\":\"POST\",\
+        \"requestUri\":\"/provisioning-templates/{templateName}/provisioning-claim\"\
+      },\
+      \"input\":{\"shape\":\"CreateProvisioningClaimRequest\"},\
+      \"output\":{\"shape\":\"CreateProvisioningClaimResponse\"},\
+      \"errors\":[\
+        {\"shape\":\"InvalidRequestException\"},\
+        {\"shape\":\"ResourceNotFoundException\"},\
+        {\"shape\":\"ThrottlingException\"},\
+        {\"shape\":\"UnauthorizedException\"},\
+        {\"shape\":\"ServiceUnavailableException\"},\
+        {\"shape\":\"InternalFailureException\"}\
+      ],\
+      \"documentation\":\"<p>Creates a provisioning claim.</p>\"\
+    },\
+    \"CreateProvisioningTemplate\":{\
+      \"name\":\"CreateProvisioningTemplate\",\
+      \"http\":{\
+        \"method\":\"POST\",\
+        \"requestUri\":\"/provisioning-templates\"\
+      },\
+      \"input\":{\"shape\":\"CreateProvisioningTemplateRequest\"},\
+      \"output\":{\"shape\":\"CreateProvisioningTemplateResponse\"},\
+      \"errors\":[\
+        {\"shape\":\"InternalFailureException\"},\
+        {\"shape\":\"InvalidRequestException\"},\
+        {\"shape\":\"LimitExceededException\"},\
+        {\"shape\":\"ThrottlingException\"},\
+        {\"shape\":\"UnauthorizedException\"},\
+        {\"shape\":\"ResourceAlreadyExistsException\"}\
+      ],\
+      \"documentation\":\"<p>Creates a fleet provisioning template.</p>\"\
+    },\
+    \"CreateProvisioningTemplateVersion\":{\
+      \"name\":\"CreateProvisioningTemplateVersion\",\
+      \"http\":{\
+        \"method\":\"POST\",\
+        \"requestUri\":\"/provisioning-templates/{templateName}/versions\"\
+      },\
+      \"input\":{\"shape\":\"CreateProvisioningTemplateVersionRequest\"},\
+      \"output\":{\"shape\":\"CreateProvisioningTemplateVersionResponse\"},\
+      \"errors\":[\
+        {\"shape\":\"VersionsLimitExceededException\"},\
+        {\"shape\":\"InternalFailureException\"},\
+        {\"shape\":\"InvalidRequestException\"},\
+        {\"shape\":\"ThrottlingException\"},\
+        {\"shape\":\"ResourceNotFoundException\"},\
+        {\"shape\":\"UnauthorizedException\"},\
+        {\"shape\":\"ConflictingResourceUpdateException\"}\
+      ],\
+      \"documentation\":\"<p>Creates a new version of a fleet provisioning template.</p>\"\
     },\
     \"CreateRoleAlias\":{\
       \"name\":\"CreateRoleAlias\",\
@@ -562,7 +721,7 @@
         {\"shape\":\"ServiceUnavailableException\"},\
         {\"shape\":\"InternalFailureException\"}\
       ],\
-      \"documentation\":\"<p>Creates a stream for delivering one or more large files in chunks over MQTT. A stream transports data bytes in chunks or blocks packaged as MQTT messages from a source like S3. You can have one or more files associated with a stream. The total size of a file associated with the stream cannot exceed more than 2 MB. The stream will be created with version 0. If a stream is created with the same streamID as a stream that existed and was deleted within last 90 days, we will resurrect that old stream by incrementing the version by 1.</p>\"\
+      \"documentation\":\"<p>Creates a stream for delivering one or more large files in chunks over MQTT. A stream transports data bytes in chunks or blocks packaged as MQTT messages from a source like S3. You can have one or more files associated with a stream.</p>\"\
     },\
     \"CreateThing\":{\
       \"name\":\"CreateThing\",\
@@ -581,7 +740,7 @@
         {\"shape\":\"ResourceAlreadyExistsException\"},\
         {\"shape\":\"ResourceNotFoundException\"}\
       ],\
-      \"documentation\":\"<p>Creates a thing record in the registry. If this call is made multiple times using the same thing name and configuration, the call will succeed. If this call is made with the same thing name but different configuration a <code>ResourceAlreadyExistsException</code> is thrown.</p> <note> <p>This is a control plane operation. See <a href=\\\"https://docs.aws.amazon.com/iot/latest/developerguide/authorization.html\\\">Authorization</a> for information about authorizing control plane actions.</p> </note>\"\
+      \"documentation\":\"<p>Creates a thing record in the registry. If this call is made multiple times using the same thing name and configuration, the call will succeed. If this call is made with the same thing name but different configuration a <code>ResourceAlreadyExistsException</code> is thrown.</p> <note> <p>This is a control plane operation. See <a href=\\\"https://docs.aws.amazon.com/iot/latest/developerguide/iot-authorization.html\\\">Authorization</a> for information about authorizing control plane actions.</p> </note>\"\
     },\
     \"CreateThingGroup\":{\
       \"name\":\"CreateThingGroup\",\
@@ -597,7 +756,7 @@
         {\"shape\":\"ThrottlingException\"},\
         {\"shape\":\"InternalFailureException\"}\
       ],\
-      \"documentation\":\"<p>Create a thing group.</p> <note> <p>This is a control plane operation. See <a href=\\\"https://docs.aws.amazon.com/iot/latest/developerguide/authorization.html\\\">Authorization</a> for information about authorizing control plane actions.</p> </note>\"\
+      \"documentation\":\"<p>Create a thing group.</p> <note> <p>This is a control plane operation. See <a href=\\\"https://docs.aws.amazon.com/iot/latest/developerguide/iot-authorization.html\\\">Authorization</a> for information about authorizing control plane actions.</p> </note>\"\
     },\
     \"CreateThingType\":{\
       \"name\":\"CreateThingType\",\
@@ -634,6 +793,23 @@
       ],\
       \"documentation\":\"<p>Creates a rule. Creating rules is an administrator-level action. Any user who has permission to create rules will be able to access data processed by the rule.</p>\"\
     },\
+    \"CreateTopicRuleDestination\":{\
+      \"name\":\"CreateTopicRuleDestination\",\
+      \"http\":{\
+        \"method\":\"POST\",\
+        \"requestUri\":\"/destinations\"\
+      },\
+      \"input\":{\"shape\":\"CreateTopicRuleDestinationRequest\"},\
+      \"output\":{\"shape\":\"CreateTopicRuleDestinationResponse\"},\
+      \"errors\":[\
+        {\"shape\":\"InternalException\"},\
+        {\"shape\":\"InvalidRequestException\"},\
+        {\"shape\":\"ResourceAlreadyExistsException\"},\
+        {\"shape\":\"ServiceUnavailableException\"},\
+        {\"shape\":\"ConflictingResourceUpdateException\"}\
+      ],\
+      \"documentation\":\"<p>Creates a topic rule destination. The destination must be confirmed prior to use.</p>\"\
+    },\
     \"DeleteAccountAuditConfiguration\":{\
       \"name\":\"DeleteAccountAuditConfiguration\",\
       \"http\":{\
@@ -649,6 +825,21 @@
         {\"shape\":\"InternalFailureException\"}\
       ],\
       \"documentation\":\"<p>Restores the default settings for Device Defender audits for this account. Any configuration data you entered is deleted and all audit checks are reset to disabled. </p>\"\
+    },\
+    \"DeleteAuditSuppression\":{\
+      \"name\":\"DeleteAuditSuppression\",\
+      \"http\":{\
+        \"method\":\"POST\",\
+        \"requestUri\":\"/audit/suppressions/delete\"\
+      },\
+      \"input\":{\"shape\":\"DeleteAuditSuppressionRequest\"},\
+      \"output\":{\"shape\":\"DeleteAuditSuppressionResponse\"},\
+      \"errors\":[\
+        {\"shape\":\"InvalidRequestException\"},\
+        {\"shape\":\"ThrottlingException\"},\
+        {\"shape\":\"InternalFailureException\"}\
+      ],\
+      \"documentation\":\"<p> Deletes a Device Defender audit suppression. </p>\"\
     },\
     \"DeleteAuthorizer\":{\
       \"name\":\"DeleteAuthorizer\",\
@@ -722,6 +913,54 @@
         {\"shape\":\"ResourceNotFoundException\"}\
       ],\
       \"documentation\":\"<p>Deletes the specified certificate.</p> <p>A certificate cannot be deleted if it has a policy or IoT thing attached to it or if its status is set to ACTIVE. To delete a certificate, first use the <a>DetachPrincipalPolicy</a> API to detach all policies. Next, use the <a>UpdateCertificate</a> API to set the certificate to the INACTIVE status.</p>\"\
+    },\
+    \"DeleteCustomMetric\":{\
+      \"name\":\"DeleteCustomMetric\",\
+      \"http\":{\
+        \"method\":\"DELETE\",\
+        \"requestUri\":\"/custom-metric/{metricName}\"\
+      },\
+      \"input\":{\"shape\":\"DeleteCustomMetricRequest\"},\
+      \"output\":{\"shape\":\"DeleteCustomMetricResponse\"},\
+      \"errors\":[\
+        {\"shape\":\"InvalidRequestException\"},\
+        {\"shape\":\"ThrottlingException\"},\
+        {\"shape\":\"InternalFailureException\"}\
+      ],\
+      \"documentation\":\"<note> <p>Before you can delete a custom metric, you must first remove the custom metric from all security profiles it's a part of. The security profile associated with the custom metric can be found using the <a href=\\\"https://docs.aws.amazon.com/iot/latest/apireference/API_ListSecurityProfiles.html\\\">ListSecurityProfiles</a> API with <code>metricName</code> set to your custom metric name.</p> </note> <p> Deletes a Device Defender detect custom metric. </p>\"\
+    },\
+    \"DeleteDimension\":{\
+      \"name\":\"DeleteDimension\",\
+      \"http\":{\
+        \"method\":\"DELETE\",\
+        \"requestUri\":\"/dimensions/{name}\"\
+      },\
+      \"input\":{\"shape\":\"DeleteDimensionRequest\"},\
+      \"output\":{\"shape\":\"DeleteDimensionResponse\"},\
+      \"errors\":[\
+        {\"shape\":\"InternalFailureException\"},\
+        {\"shape\":\"InvalidRequestException\"},\
+        {\"shape\":\"ThrottlingException\"}\
+      ],\
+      \"documentation\":\"<p>Removes the specified dimension from your AWS account.</p>\"\
+    },\
+    \"DeleteDomainConfiguration\":{\
+      \"name\":\"DeleteDomainConfiguration\",\
+      \"http\":{\
+        \"method\":\"DELETE\",\
+        \"requestUri\":\"/domainConfigurations/{domainConfigurationName}\"\
+      },\
+      \"input\":{\"shape\":\"DeleteDomainConfigurationRequest\"},\
+      \"output\":{\"shape\":\"DeleteDomainConfigurationResponse\"},\
+      \"errors\":[\
+        {\"shape\":\"ResourceNotFoundException\"},\
+        {\"shape\":\"ThrottlingException\"},\
+        {\"shape\":\"UnauthorizedException\"},\
+        {\"shape\":\"ServiceUnavailableException\"},\
+        {\"shape\":\"InternalFailureException\"},\
+        {\"shape\":\"InvalidRequestException\"}\
+      ],\
+      \"documentation\":\"<p>Deletes the specified domain configuration.</p> <note> <p>The domain configuration feature is in public preview and is subject to change.</p> </note>\"\
     },\
     \"DeleteDynamicThingGroup\":{\
       \"name\":\"DeleteDynamicThingGroup\",\
@@ -841,6 +1080,44 @@
         {\"shape\":\"InternalFailureException\"}\
       ],\
       \"documentation\":\"<p>Deletes the specified version of the specified policy. You cannot delete the default version of a policy using this API. To delete the default version of a policy, use <a>DeletePolicy</a>. To find out which version of a policy is marked as the default version, use ListPolicyVersions.</p>\"\
+    },\
+    \"DeleteProvisioningTemplate\":{\
+      \"name\":\"DeleteProvisioningTemplate\",\
+      \"http\":{\
+        \"method\":\"DELETE\",\
+        \"requestUri\":\"/provisioning-templates/{templateName}\"\
+      },\
+      \"input\":{\"shape\":\"DeleteProvisioningTemplateRequest\"},\
+      \"output\":{\"shape\":\"DeleteProvisioningTemplateResponse\"},\
+      \"errors\":[\
+        {\"shape\":\"InternalFailureException\"},\
+        {\"shape\":\"InvalidRequestException\"},\
+        {\"shape\":\"ResourceNotFoundException\"},\
+        {\"shape\":\"DeleteConflictException\"},\
+        {\"shape\":\"ThrottlingException\"},\
+        {\"shape\":\"ConflictingResourceUpdateException\"},\
+        {\"shape\":\"UnauthorizedException\"}\
+      ],\
+      \"documentation\":\"<p>Deletes a fleet provisioning template.</p>\"\
+    },\
+    \"DeleteProvisioningTemplateVersion\":{\
+      \"name\":\"DeleteProvisioningTemplateVersion\",\
+      \"http\":{\
+        \"method\":\"DELETE\",\
+        \"requestUri\":\"/provisioning-templates/{templateName}/versions/{versionId}\"\
+      },\
+      \"input\":{\"shape\":\"DeleteProvisioningTemplateVersionRequest\"},\
+      \"output\":{\"shape\":\"DeleteProvisioningTemplateVersionResponse\"},\
+      \"errors\":[\
+        {\"shape\":\"InternalFailureException\"},\
+        {\"shape\":\"InvalidRequestException\"},\
+        {\"shape\":\"ThrottlingException\"},\
+        {\"shape\":\"ResourceNotFoundException\"},\
+        {\"shape\":\"UnauthorizedException\"},\
+        {\"shape\":\"ConflictingResourceUpdateException\"},\
+        {\"shape\":\"DeleteConflictException\"}\
+      ],\
+      \"documentation\":\"<p>Deletes a fleet provisioning template version.</p>\"\
     },\
     \"DeleteRegistrationCode\":{\
       \"name\":\"DeleteRegistrationCode\",\
@@ -998,6 +1275,23 @@
       ],\
       \"documentation\":\"<p>Deletes the rule.</p>\"\
     },\
+    \"DeleteTopicRuleDestination\":{\
+      \"name\":\"DeleteTopicRuleDestination\",\
+      \"http\":{\
+        \"method\":\"DELETE\",\
+        \"requestUri\":\"/destinations/{arn+}\"\
+      },\
+      \"input\":{\"shape\":\"DeleteTopicRuleDestinationRequest\"},\
+      \"output\":{\"shape\":\"DeleteTopicRuleDestinationResponse\"},\
+      \"errors\":[\
+        {\"shape\":\"InternalException\"},\
+        {\"shape\":\"InvalidRequestException\"},\
+        {\"shape\":\"ServiceUnavailableException\"},\
+        {\"shape\":\"UnauthorizedException\"},\
+        {\"shape\":\"ConflictingResourceUpdateException\"}\
+      ],\
+      \"documentation\":\"<p>Deletes a topic rule destination.</p>\"\
+    },\
     \"DeleteV2LoggingLevel\":{\
       \"name\":\"DeleteV2LoggingLevel\",\
       \"http\":{\
@@ -1058,7 +1352,7 @@
         {\"shape\":\"ThrottlingException\"},\
         {\"shape\":\"InternalFailureException\"}\
       ],\
-      \"documentation\":\"<p>Gets information about a single audit finding. Properties include the reason for noncompliance, the severity of the issue, and when the audit that returned the finding was started.</p>\"\
+      \"documentation\":\"<p>Gets information about a single audit finding. Properties include the reason for noncompliance, the severity of the issue, and the start time when the audit that returned the finding.</p>\"\
     },\
     \"DescribeAuditMitigationActionsTask\":{\
       \"name\":\"DescribeAuditMitigationActionsTask\",\
@@ -1075,6 +1369,22 @@
         {\"shape\":\"InternalFailureException\"}\
       ],\
       \"documentation\":\"<p>Gets information about an audit mitigation task that is used to apply mitigation actions to a set of audit findings. Properties include the actions being applied, the audit checks to which they're being applied, the task status, and aggregated task statistics.</p>\"\
+    },\
+    \"DescribeAuditSuppression\":{\
+      \"name\":\"DescribeAuditSuppression\",\
+      \"http\":{\
+        \"method\":\"POST\",\
+        \"requestUri\":\"/audit/suppressions/describe\"\
+      },\
+      \"input\":{\"shape\":\"DescribeAuditSuppressionRequest\"},\
+      \"output\":{\"shape\":\"DescribeAuditSuppressionResponse\"},\
+      \"errors\":[\
+        {\"shape\":\"InvalidRequestException\"},\
+        {\"shape\":\"ResourceNotFoundException\"},\
+        {\"shape\":\"ThrottlingException\"},\
+        {\"shape\":\"InternalFailureException\"}\
+      ],\
+      \"documentation\":\"<p> Gets information about a Device Defender audit suppression. </p>\"\
     },\
     \"DescribeAuditTask\":{\
       \"name\":\"DescribeAuditTask\",\
@@ -1162,6 +1472,22 @@
       ],\
       \"documentation\":\"<p>Gets information about the specified certificate.</p>\"\
     },\
+    \"DescribeCustomMetric\":{\
+      \"name\":\"DescribeCustomMetric\",\
+      \"http\":{\
+        \"method\":\"GET\",\
+        \"requestUri\":\"/custom-metric/{metricName}\"\
+      },\
+      \"input\":{\"shape\":\"DescribeCustomMetricRequest\"},\
+      \"output\":{\"shape\":\"DescribeCustomMetricResponse\"},\
+      \"errors\":[\
+        {\"shape\":\"InvalidRequestException\"},\
+        {\"shape\":\"ResourceNotFoundException\"},\
+        {\"shape\":\"ThrottlingException\"},\
+        {\"shape\":\"InternalFailureException\"}\
+      ],\
+      \"documentation\":\"<p> Gets information about a Device Defender detect custom metric. </p>\"\
+    },\
     \"DescribeDefaultAuthorizer\":{\
       \"name\":\"DescribeDefaultAuthorizer\",\
       \"http\":{\
@@ -1179,6 +1505,56 @@
         {\"shape\":\"InternalFailureException\"}\
       ],\
       \"documentation\":\"<p>Describes the default authorizer.</p>\"\
+    },\
+    \"DescribeDetectMitigationActionsTask\":{\
+      \"name\":\"DescribeDetectMitigationActionsTask\",\
+      \"http\":{\
+        \"method\":\"GET\",\
+        \"requestUri\":\"/detect/mitigationactions/tasks/{taskId}\"\
+      },\
+      \"input\":{\"shape\":\"DescribeDetectMitigationActionsTaskRequest\"},\
+      \"output\":{\"shape\":\"DescribeDetectMitigationActionsTaskResponse\"},\
+      \"errors\":[\
+        {\"shape\":\"ResourceNotFoundException\"},\
+        {\"shape\":\"InvalidRequestException\"},\
+        {\"shape\":\"ThrottlingException\"},\
+        {\"shape\":\"InternalFailureException\"}\
+      ],\
+      \"documentation\":\"<p> Gets information about a Device Defender ML Detect mitigation action. </p>\"\
+    },\
+    \"DescribeDimension\":{\
+      \"name\":\"DescribeDimension\",\
+      \"http\":{\
+        \"method\":\"GET\",\
+        \"requestUri\":\"/dimensions/{name}\"\
+      },\
+      \"input\":{\"shape\":\"DescribeDimensionRequest\"},\
+      \"output\":{\"shape\":\"DescribeDimensionResponse\"},\
+      \"errors\":[\
+        {\"shape\":\"InternalFailureException\"},\
+        {\"shape\":\"InvalidRequestException\"},\
+        {\"shape\":\"ResourceNotFoundException\"},\
+        {\"shape\":\"ThrottlingException\"}\
+      ],\
+      \"documentation\":\"<p>Provides details about a dimension that is defined in your AWS account.</p>\"\
+    },\
+    \"DescribeDomainConfiguration\":{\
+      \"name\":\"DescribeDomainConfiguration\",\
+      \"http\":{\
+        \"method\":\"GET\",\
+        \"requestUri\":\"/domainConfigurations/{domainConfigurationName}\"\
+      },\
+      \"input\":{\"shape\":\"DescribeDomainConfigurationRequest\"},\
+      \"output\":{\"shape\":\"DescribeDomainConfigurationResponse\"},\
+      \"errors\":[\
+        {\"shape\":\"ResourceNotFoundException\"},\
+        {\"shape\":\"ThrottlingException\"},\
+        {\"shape\":\"InvalidRequestException\"},\
+        {\"shape\":\"UnauthorizedException\"},\
+        {\"shape\":\"ServiceUnavailableException\"},\
+        {\"shape\":\"InternalFailureException\"}\
+      ],\
+      \"documentation\":\"<p>Gets summary information about a domain configuration.</p> <note> <p>The domain configuration feature is in public preview and is subject to change.</p> </note>\"\
     },\
     \"DescribeEndpoint\":{\
       \"name\":\"DescribeEndpoint\",\
@@ -1275,6 +1651,40 @@
         {\"shape\":\"InternalFailureException\"}\
       ],\
       \"documentation\":\"<p>Gets information about a mitigation action.</p>\"\
+    },\
+    \"DescribeProvisioningTemplate\":{\
+      \"name\":\"DescribeProvisioningTemplate\",\
+      \"http\":{\
+        \"method\":\"GET\",\
+        \"requestUri\":\"/provisioning-templates/{templateName}\"\
+      },\
+      \"input\":{\"shape\":\"DescribeProvisioningTemplateRequest\"},\
+      \"output\":{\"shape\":\"DescribeProvisioningTemplateResponse\"},\
+      \"errors\":[\
+        {\"shape\":\"InternalFailureException\"},\
+        {\"shape\":\"InvalidRequestException\"},\
+        {\"shape\":\"ResourceNotFoundException\"},\
+        {\"shape\":\"ThrottlingException\"},\
+        {\"shape\":\"UnauthorizedException\"}\
+      ],\
+      \"documentation\":\"<p>Returns information about a fleet provisioning template.</p>\"\
+    },\
+    \"DescribeProvisioningTemplateVersion\":{\
+      \"name\":\"DescribeProvisioningTemplateVersion\",\
+      \"http\":{\
+        \"method\":\"GET\",\
+        \"requestUri\":\"/provisioning-templates/{templateName}/versions/{versionId}\"\
+      },\
+      \"input\":{\"shape\":\"DescribeProvisioningTemplateVersionRequest\"},\
+      \"output\":{\"shape\":\"DescribeProvisioningTemplateVersionResponse\"},\
+      \"errors\":[\
+        {\"shape\":\"InternalFailureException\"},\
+        {\"shape\":\"InvalidRequestException\"},\
+        {\"shape\":\"ThrottlingException\"},\
+        {\"shape\":\"ResourceNotFoundException\"},\
+        {\"shape\":\"UnauthorizedException\"}\
+      ],\
+      \"documentation\":\"<p>Returns information about a fleet provisioning template version.</p>\"\
     },\
     \"DescribeRoleAlias\":{\
       \"name\":\"DescribeRoleAlias\",\
@@ -1514,6 +1924,43 @@
       ],\
       \"documentation\":\"<p>Enables the rule.</p>\"\
     },\
+    \"GetBehaviorModelTrainingSummaries\":{\
+      \"name\":\"GetBehaviorModelTrainingSummaries\",\
+      \"http\":{\
+        \"method\":\"GET\",\
+        \"requestUri\":\"/behavior-model-training/summaries\"\
+      },\
+      \"input\":{\"shape\":\"GetBehaviorModelTrainingSummariesRequest\"},\
+      \"output\":{\"shape\":\"GetBehaviorModelTrainingSummariesResponse\"},\
+      \"errors\":[\
+        {\"shape\":\"InvalidRequestException\"},\
+        {\"shape\":\"ThrottlingException\"},\
+        {\"shape\":\"InternalFailureException\"},\
+        {\"shape\":\"ResourceNotFoundException\"}\
+      ],\
+      \"documentation\":\"<p> Returns a Device Defender's ML Detect Security Profile training model's status. </p>\"\
+    },\
+    \"GetCardinality\":{\
+      \"name\":\"GetCardinality\",\
+      \"http\":{\
+        \"method\":\"POST\",\
+        \"requestUri\":\"/indices/cardinality\"\
+      },\
+      \"input\":{\"shape\":\"GetCardinalityRequest\"},\
+      \"output\":{\"shape\":\"GetCardinalityResponse\"},\
+      \"errors\":[\
+        {\"shape\":\"InvalidRequestException\"},\
+        {\"shape\":\"ThrottlingException\"},\
+        {\"shape\":\"UnauthorizedException\"},\
+        {\"shape\":\"ServiceUnavailableException\"},\
+        {\"shape\":\"InternalFailureException\"},\
+        {\"shape\":\"ResourceNotFoundException\"},\
+        {\"shape\":\"InvalidQueryException\"},\
+        {\"shape\":\"InvalidAggregationException\"},\
+        {\"shape\":\"IndexNotReadyException\"}\
+      ],\
+      \"documentation\":\"<p>Returns the approximate count of unique values that match the query.</p>\"\
+    },\
     \"GetEffectivePolicies\":{\
       \"name\":\"GetEffectivePolicies\",\
       \"http\":{\
@@ -1548,7 +1995,7 @@
         {\"shape\":\"ServiceUnavailableException\"},\
         {\"shape\":\"InternalFailureException\"}\
       ],\
-      \"documentation\":\"<p>Gets the search configuration.</p>\"\
+      \"documentation\":\"<p>Gets the indexing configuration.</p>\"\
     },\
     \"GetJobDocument\":{\
       \"name\":\"GetJobDocument\",\
@@ -1598,6 +2045,27 @@
         {\"shape\":\"ResourceNotFoundException\"}\
       ],\
       \"documentation\":\"<p>Gets an OTA update.</p>\"\
+    },\
+    \"GetPercentiles\":{\
+      \"name\":\"GetPercentiles\",\
+      \"http\":{\
+        \"method\":\"POST\",\
+        \"requestUri\":\"/indices/percentiles\"\
+      },\
+      \"input\":{\"shape\":\"GetPercentilesRequest\"},\
+      \"output\":{\"shape\":\"GetPercentilesResponse\"},\
+      \"errors\":[\
+        {\"shape\":\"InvalidRequestException\"},\
+        {\"shape\":\"ThrottlingException\"},\
+        {\"shape\":\"UnauthorizedException\"},\
+        {\"shape\":\"ServiceUnavailableException\"},\
+        {\"shape\":\"InternalFailureException\"},\
+        {\"shape\":\"ResourceNotFoundException\"},\
+        {\"shape\":\"InvalidQueryException\"},\
+        {\"shape\":\"InvalidAggregationException\"},\
+        {\"shape\":\"IndexNotReadyException\"}\
+      ],\
+      \"documentation\":\"<p>Groups the aggregated values that match the query into percentile groupings. The default percentile groupings are: 1,5,25,50,75,95,99, although you can specify your own when you call <code>GetPercentiles</code>. This function returns a value for each percentile group specified (or the default percentile groupings). The percentile group \\\"1\\\" contains the aggregated field value that occurs in approximately one percent of the values that match the query. The percentile group \\\"5\\\" contains the aggregated field value that occurs in approximately five percent of the values that match the query, and so on. The result is an approximation, the more values that match the query, the more accurate the percentile values.</p>\"\
     },\
     \"GetPolicy\":{\
       \"name\":\"GetPolicy\",\
@@ -1671,7 +2139,7 @@
         {\"shape\":\"InvalidAggregationException\"},\
         {\"shape\":\"IndexNotReadyException\"}\
       ],\
-      \"documentation\":\"<p>Gets statistics about things that match the specified query.</p>\"\
+      \"documentation\":\"<p>Returns the count, average, sum, minimum, maximum, sum of squares, variance, and standard deviation for the specified aggregated field. If the aggregation field is of type <code>String</code>, only the count statistic is returned.</p>\"\
     },\
     \"GetTopicRule\":{\
       \"name\":\"GetTopicRule\",\
@@ -1688,6 +2156,22 @@
         {\"shape\":\"UnauthorizedException\"}\
       ],\
       \"documentation\":\"<p>Gets information about the rule.</p>\"\
+    },\
+    \"GetTopicRuleDestination\":{\
+      \"name\":\"GetTopicRuleDestination\",\
+      \"http\":{\
+        \"method\":\"GET\",\
+        \"requestUri\":\"/destinations/{arn+}\"\
+      },\
+      \"input\":{\"shape\":\"GetTopicRuleDestinationRequest\"},\
+      \"output\":{\"shape\":\"GetTopicRuleDestinationResponse\"},\
+      \"errors\":[\
+        {\"shape\":\"InternalException\"},\
+        {\"shape\":\"InvalidRequestException\"},\
+        {\"shape\":\"ServiceUnavailableException\"},\
+        {\"shape\":\"UnauthorizedException\"}\
+      ],\
+      \"documentation\":\"<p>Gets information about a topic rule destination.</p>\"\
     },\
     \"GetV2LoggingOptions\":{\
       \"name\":\"GetV2LoggingOptions\",\
@@ -1752,7 +2236,7 @@
         {\"shape\":\"ThrottlingException\"},\
         {\"shape\":\"InternalFailureException\"}\
       ],\
-      \"documentation\":\"<p>Lists the findings (results) of a Device Defender audit or of the audits performed during a specified time period. (Findings are retained for 180 days.)</p>\"\
+      \"documentation\":\"<p>Lists the findings (results) of a Device Defender audit or of the audits performed during a specified time period. (Findings are retained for 90 days.)</p>\"\
     },\
     \"ListAuditMitigationActionsExecutions\":{\
       \"name\":\"ListAuditMitigationActionsExecutions\",\
@@ -1783,6 +2267,21 @@
         {\"shape\":\"InternalFailureException\"}\
       ],\
       \"documentation\":\"<p>Gets a list of audit mitigation action tasks that match the specified filters.</p>\"\
+    },\
+    \"ListAuditSuppressions\":{\
+      \"name\":\"ListAuditSuppressions\",\
+      \"http\":{\
+        \"method\":\"POST\",\
+        \"requestUri\":\"/audit/suppressions/list\"\
+      },\
+      \"input\":{\"shape\":\"ListAuditSuppressionsRequest\"},\
+      \"output\":{\"shape\":\"ListAuditSuppressionsResponse\"},\
+      \"errors\":[\
+        {\"shape\":\"InvalidRequestException\"},\
+        {\"shape\":\"ThrottlingException\"},\
+        {\"shape\":\"InternalFailureException\"}\
+      ],\
+      \"documentation\":\"<p> Lists your Device Defender audit listings. </p>\"\
     },\
     \"ListAuditTasks\":{\
       \"name\":\"ListAuditTasks\",\
@@ -1882,6 +2381,83 @@
         {\"shape\":\"InternalFailureException\"}\
       ],\
       \"documentation\":\"<p>List the device certificates signed by the specified CA certificate.</p>\"\
+    },\
+    \"ListCustomMetrics\":{\
+      \"name\":\"ListCustomMetrics\",\
+      \"http\":{\
+        \"method\":\"GET\",\
+        \"requestUri\":\"/custom-metrics\"\
+      },\
+      \"input\":{\"shape\":\"ListCustomMetricsRequest\"},\
+      \"output\":{\"shape\":\"ListCustomMetricsResponse\"},\
+      \"errors\":[\
+        {\"shape\":\"InvalidRequestException\"},\
+        {\"shape\":\"ThrottlingException\"},\
+        {\"shape\":\"InternalFailureException\"}\
+      ],\
+      \"documentation\":\"<p> Lists your Device Defender detect custom metrics. </p>\"\
+    },\
+    \"ListDetectMitigationActionsExecutions\":{\
+      \"name\":\"ListDetectMitigationActionsExecutions\",\
+      \"http\":{\
+        \"method\":\"GET\",\
+        \"requestUri\":\"/detect/mitigationactions/executions\"\
+      },\
+      \"input\":{\"shape\":\"ListDetectMitigationActionsExecutionsRequest\"},\
+      \"output\":{\"shape\":\"ListDetectMitigationActionsExecutionsResponse\"},\
+      \"errors\":[\
+        {\"shape\":\"InvalidRequestException\"},\
+        {\"shape\":\"ThrottlingException\"},\
+        {\"shape\":\"InternalFailureException\"}\
+      ],\
+      \"documentation\":\"<p> Lists mitigation actions executions for a Device Defender ML Detect Security Profile. </p>\"\
+    },\
+    \"ListDetectMitigationActionsTasks\":{\
+      \"name\":\"ListDetectMitigationActionsTasks\",\
+      \"http\":{\
+        \"method\":\"GET\",\
+        \"requestUri\":\"/detect/mitigationactions/tasks\"\
+      },\
+      \"input\":{\"shape\":\"ListDetectMitigationActionsTasksRequest\"},\
+      \"output\":{\"shape\":\"ListDetectMitigationActionsTasksResponse\"},\
+      \"errors\":[\
+        {\"shape\":\"InvalidRequestException\"},\
+        {\"shape\":\"ThrottlingException\"},\
+        {\"shape\":\"InternalFailureException\"}\
+      ],\
+      \"documentation\":\"<p> List of Device Defender ML Detect mitigation actions tasks. </p>\"\
+    },\
+    \"ListDimensions\":{\
+      \"name\":\"ListDimensions\",\
+      \"http\":{\
+        \"method\":\"GET\",\
+        \"requestUri\":\"/dimensions\"\
+      },\
+      \"input\":{\"shape\":\"ListDimensionsRequest\"},\
+      \"output\":{\"shape\":\"ListDimensionsResponse\"},\
+      \"errors\":[\
+        {\"shape\":\"InternalFailureException\"},\
+        {\"shape\":\"InvalidRequestException\"},\
+        {\"shape\":\"ThrottlingException\"}\
+      ],\
+      \"documentation\":\"<p>List the set of dimensions that are defined for your AWS account.</p>\"\
+    },\
+    \"ListDomainConfigurations\":{\
+      \"name\":\"ListDomainConfigurations\",\
+      \"http\":{\
+        \"method\":\"GET\",\
+        \"requestUri\":\"/domainConfigurations\"\
+      },\
+      \"input\":{\"shape\":\"ListDomainConfigurationsRequest\"},\
+      \"output\":{\"shape\":\"ListDomainConfigurationsResponse\"},\
+      \"errors\":[\
+        {\"shape\":\"InvalidRequestException\"},\
+        {\"shape\":\"ThrottlingException\"},\
+        {\"shape\":\"UnauthorizedException\"},\
+        {\"shape\":\"ServiceUnavailableException\"},\
+        {\"shape\":\"InternalFailureException\"}\
+      ],\
+      \"documentation\":\"<p>Gets a list of domain configurations for the user. This list is sorted alphabetically by domain configuration name.</p> <note> <p>The domain configuration feature is in public preview and is subject to change.</p> </note>\"\
     },\
     \"ListIndices\":{\
       \"name\":\"ListIndices\",\
@@ -2088,6 +2664,39 @@
       ],\
       \"documentation\":\"<p>Lists the things associated with the specified principal. A principal can be X.509 certificates, IAM users, groups, and roles, Amazon Cognito identities or federated identities. </p>\"\
     },\
+    \"ListProvisioningTemplateVersions\":{\
+      \"name\":\"ListProvisioningTemplateVersions\",\
+      \"http\":{\
+        \"method\":\"GET\",\
+        \"requestUri\":\"/provisioning-templates/{templateName}/versions\"\
+      },\
+      \"input\":{\"shape\":\"ListProvisioningTemplateVersionsRequest\"},\
+      \"output\":{\"shape\":\"ListProvisioningTemplateVersionsResponse\"},\
+      \"errors\":[\
+        {\"shape\":\"InternalFailureException\"},\
+        {\"shape\":\"InvalidRequestException\"},\
+        {\"shape\":\"ThrottlingException\"},\
+        {\"shape\":\"ResourceNotFoundException\"},\
+        {\"shape\":\"UnauthorizedException\"}\
+      ],\
+      \"documentation\":\"<p>A list of fleet provisioning template versions.</p>\"\
+    },\
+    \"ListProvisioningTemplates\":{\
+      \"name\":\"ListProvisioningTemplates\",\
+      \"http\":{\
+        \"method\":\"GET\",\
+        \"requestUri\":\"/provisioning-templates\"\
+      },\
+      \"input\":{\"shape\":\"ListProvisioningTemplatesRequest\"},\
+      \"output\":{\"shape\":\"ListProvisioningTemplatesResponse\"},\
+      \"errors\":[\
+        {\"shape\":\"InternalFailureException\"},\
+        {\"shape\":\"InvalidRequestException\"},\
+        {\"shape\":\"ThrottlingException\"},\
+        {\"shape\":\"UnauthorizedException\"}\
+      ],\
+      \"documentation\":\"<p>Lists the fleet provisioning templates in your AWS account.</p>\"\
+    },\
     \"ListRoleAliases\":{\
       \"name\":\"ListRoleAliases\",\
       \"http\":{\
@@ -2131,9 +2740,10 @@
       \"errors\":[\
         {\"shape\":\"InvalidRequestException\"},\
         {\"shape\":\"ThrottlingException\"},\
-        {\"shape\":\"InternalFailureException\"}\
+        {\"shape\":\"InternalFailureException\"},\
+        {\"shape\":\"ResourceNotFoundException\"}\
       ],\
-      \"documentation\":\"<p>Lists the Device Defender security profiles you have created. You can use filters to list only those security profiles associated with a thing group or only those associated with your account.</p>\"\
+      \"documentation\":\"<p>Lists the Device Defender security profiles you've created. You can filter security profiles by dimension or custom metric.</p> <note> <p> <code>dimensionName</code> and <code>metricName</code> cannot be used in the same request.</p> </note>\"\
     },\
     \"ListSecurityProfilesForTarget\":{\
       \"name\":\"ListSecurityProfilesForTarget\",\
@@ -2230,7 +2840,8 @@
       \"errors\":[\
         {\"shape\":\"InvalidRequestException\"},\
         {\"shape\":\"InternalFailureException\"},\
-        {\"shape\":\"ResourceNotFoundException\"}\
+        {\"shape\":\"ResourceNotFoundException\"},\
+        {\"shape\":\"ThrottlingException\"}\
       ],\
       \"documentation\":\"<p>List the thing groups in your account.</p>\"\
     },\
@@ -2245,7 +2856,8 @@
       \"errors\":[\
         {\"shape\":\"InvalidRequestException\"},\
         {\"shape\":\"InternalFailureException\"},\
-        {\"shape\":\"ResourceNotFoundException\"}\
+        {\"shape\":\"ResourceNotFoundException\"},\
+        {\"shape\":\"ThrottlingException\"}\
       ],\
       \"documentation\":\"<p>List the thing groups to which the specified thing belongs.</p>\"\
     },\
@@ -2331,7 +2943,7 @@
         {\"shape\":\"ServiceUnavailableException\"},\
         {\"shape\":\"InternalFailureException\"}\
       ],\
-      \"documentation\":\"<p>Lists your things. Use the <b>attributeName</b> and <b>attributeValue</b> parameters to filter your things. For example, calling <code>ListThings</code> with attributeName=Color and attributeValue=Red retrieves all things in the registry that contain an attribute <b>Color</b> with the value <b>Red</b>. </p>\"\
+      \"documentation\":\"<p>Lists your things. Use the <b>attributeName</b> and <b>attributeValue</b> parameters to filter your things. For example, calling <code>ListThings</code> with attributeName=Color and attributeValue=Red retrieves all things in the registry that contain an attribute <b>Color</b> with the value <b>Red</b>. </p> <note> <p>You will not be charged for calling this API if an <code>Access denied</code> error is returned. You will also not be charged if no attributes or pagination token was provided in request and no pagination token and no results were returned.</p> </note>\"\
     },\
     \"ListThingsInBillingGroup\":{\
       \"name\":\"ListThingsInBillingGroup\",\
@@ -2360,9 +2972,26 @@
       \"errors\":[\
         {\"shape\":\"InvalidRequestException\"},\
         {\"shape\":\"InternalFailureException\"},\
-        {\"shape\":\"ResourceNotFoundException\"}\
+        {\"shape\":\"ResourceNotFoundException\"},\
+        {\"shape\":\"ThrottlingException\"}\
       ],\
       \"documentation\":\"<p>Lists the things in the specified group.</p>\"\
+    },\
+    \"ListTopicRuleDestinations\":{\
+      \"name\":\"ListTopicRuleDestinations\",\
+      \"http\":{\
+        \"method\":\"GET\",\
+        \"requestUri\":\"/destinations\"\
+      },\
+      \"input\":{\"shape\":\"ListTopicRuleDestinationsRequest\"},\
+      \"output\":{\"shape\":\"ListTopicRuleDestinationsResponse\"},\
+      \"errors\":[\
+        {\"shape\":\"InternalException\"},\
+        {\"shape\":\"InvalidRequestException\"},\
+        {\"shape\":\"ServiceUnavailableException\"},\
+        {\"shape\":\"UnauthorizedException\"}\
+      ],\
+      \"documentation\":\"<p>Lists all the topic rule destinations in your AWS account.</p>\"\
     },\
     \"ListTopicRules\":{\
       \"name\":\"ListTopicRules\",\
@@ -2452,6 +3081,26 @@
       ],\
       \"documentation\":\"<p>Registers a device certificate with AWS IoT. If you have more than one CA certificate that has the same subject field, you must specify the CA certificate that was used to sign the device certificate being registered.</p>\"\
     },\
+    \"RegisterCertificateWithoutCA\":{\
+      \"name\":\"RegisterCertificateWithoutCA\",\
+      \"http\":{\
+        \"method\":\"POST\",\
+        \"requestUri\":\"/certificate/register-no-ca\"\
+      },\
+      \"input\":{\"shape\":\"RegisterCertificateWithoutCARequest\"},\
+      \"output\":{\"shape\":\"RegisterCertificateWithoutCAResponse\"},\
+      \"errors\":[\
+        {\"shape\":\"ResourceAlreadyExistsException\"},\
+        {\"shape\":\"InvalidRequestException\"},\
+        {\"shape\":\"CertificateStateException\"},\
+        {\"shape\":\"CertificateValidationException\"},\
+        {\"shape\":\"ThrottlingException\"},\
+        {\"shape\":\"UnauthorizedException\"},\
+        {\"shape\":\"ServiceUnavailableException\"},\
+        {\"shape\":\"InternalFailureException\"}\
+      ],\
+      \"documentation\":\"<p>Register a certificate that does not have a certificate authority (CA).</p>\"\
+    },\
     \"RegisterThing\":{\
       \"name\":\"RegisterThing\",\
       \"http\":{\
@@ -2469,7 +3118,7 @@
         {\"shape\":\"ConflictingResourceUpdateException\"},\
         {\"shape\":\"ResourceRegistrationFailureException\"}\
       ],\
-      \"documentation\":\"<p>Provisions a thing.</p>\"\
+      \"documentation\":\"<p>Provisions a thing in the device registry. RegisterThing calls other AWS IoT control plane APIs. These calls might exceed your account level <a href=\\\"https://docs.aws.amazon.com/general/latest/gr/aws_service_limits.html#limits_iot\\\"> AWS IoT Throttling Limits</a> and cause throttle errors. Please contact <a href=\\\"https://console.aws.amazon.com/support/home\\\">AWS Customer Support</a> to raise your throttling limits if necessary.</p>\"\
     },\
     \"RejectCertificateTransfer\":{\
       \"name\":\"RejectCertificateTransfer\",\
@@ -2519,7 +3168,7 @@
         {\"shape\":\"InternalFailureException\"},\
         {\"shape\":\"ResourceNotFoundException\"}\
       ],\
-      \"documentation\":\"<p>Remove the specified thing from the specified group.</p>\"\
+      \"documentation\":\"<p>Remove the specified thing from the specified group.</p> <p>You must specify either a <code>thingGroupArn</code> or a <code>thingGroupName</code> to identify the thing group and either a <code>thingArn</code> or a <code>thingName</code> to identify the thing to remove from the thing group. </p>\"\
     },\
     \"ReplaceTopicRule\":{\
       \"name\":\"ReplaceTopicRule\",\
@@ -2619,7 +3268,8 @@
         {\"shape\":\"InternalException\"},\
         {\"shape\":\"NotConfiguredException\"},\
         {\"shape\":\"InvalidRequestException\"},\
-        {\"shape\":\"ServiceUnavailableException\"}\
+        {\"shape\":\"ServiceUnavailableException\"},\
+        {\"shape\":\"LimitExceededException\"}\
       ],\
       \"documentation\":\"<p>Sets the logging level.</p>\"\
     },\
@@ -2653,6 +3303,23 @@
         {\"shape\":\"InternalFailureException\"}\
       ],\
       \"documentation\":\"<p>Starts a task that applies a set of mitigation actions to the specified target.</p>\"\
+    },\
+    \"StartDetectMitigationActionsTask\":{\
+      \"name\":\"StartDetectMitigationActionsTask\",\
+      \"http\":{\
+        \"method\":\"PUT\",\
+        \"requestUri\":\"/detect/mitigationactions/tasks/{taskId}\"\
+      },\
+      \"input\":{\"shape\":\"StartDetectMitigationActionsTaskRequest\"},\
+      \"output\":{\"shape\":\"StartDetectMitigationActionsTaskResponse\"},\
+      \"errors\":[\
+        {\"shape\":\"InvalidRequestException\"},\
+        {\"shape\":\"TaskAlreadyExistsException\"},\
+        {\"shape\":\"LimitExceededException\"},\
+        {\"shape\":\"ThrottlingException\"},\
+        {\"shape\":\"InternalFailureException\"}\
+      ],\
+      \"documentation\":\"<p> Starts a Device Defender ML Detect mitigation actions task. </p>\"\
     },\
     \"StartOnDemandAuditTask\":{\
       \"name\":\"StartOnDemandAuditTask\",\
@@ -2809,6 +3476,22 @@
       ],\
       \"documentation\":\"<p>Configures or reconfigures the Device Defender audit settings for this account. Settings include how audit notifications are sent and which audit checks are enabled or disabled.</p>\"\
     },\
+    \"UpdateAuditSuppression\":{\
+      \"name\":\"UpdateAuditSuppression\",\
+      \"http\":{\
+        \"method\":\"PATCH\",\
+        \"requestUri\":\"/audit/suppressions/update\"\
+      },\
+      \"input\":{\"shape\":\"UpdateAuditSuppressionRequest\"},\
+      \"output\":{\"shape\":\"UpdateAuditSuppressionResponse\"},\
+      \"errors\":[\
+        {\"shape\":\"InvalidRequestException\"},\
+        {\"shape\":\"ResourceNotFoundException\"},\
+        {\"shape\":\"ThrottlingException\"},\
+        {\"shape\":\"InternalFailureException\"}\
+      ],\
+      \"documentation\":\"<p> Updates a Device Defender audit suppression. </p>\"\
+    },\
     \"UpdateAuthorizer\":{\
       \"name\":\"UpdateAuthorizer\",\
       \"http\":{\
@@ -2878,7 +3561,58 @@
         {\"shape\":\"ServiceUnavailableException\"},\
         {\"shape\":\"InternalFailureException\"}\
       ],\
-      \"documentation\":\"<p>Updates the status of the specified certificate. This operation is idempotent.</p> <p>Moving a certificate from the ACTIVE state (including REVOKED) will not disconnect currently connected devices, but these devices will be unable to reconnect.</p> <p>The ACTIVE state is required to authenticate devices connecting to AWS IoT using a certificate.</p>\"\
+      \"documentation\":\"<p>Updates the status of the specified certificate. This operation is idempotent.</p> <p>Certificates must be in the ACTIVE state to authenticate devices that use a certificate to connect to AWS IoT.</p> <p>Within a few minutes of updating a certificate from the ACTIVE state to any other state, AWS IoT disconnects all devices that used that certificate to connect. Devices cannot use a certificate that is not in the ACTIVE state to reconnect.</p>\"\
+    },\
+    \"UpdateCustomMetric\":{\
+      \"name\":\"UpdateCustomMetric\",\
+      \"http\":{\
+        \"method\":\"PATCH\",\
+        \"requestUri\":\"/custom-metric/{metricName}\"\
+      },\
+      \"input\":{\"shape\":\"UpdateCustomMetricRequest\"},\
+      \"output\":{\"shape\":\"UpdateCustomMetricResponse\"},\
+      \"errors\":[\
+        {\"shape\":\"InvalidRequestException\"},\
+        {\"shape\":\"ResourceNotFoundException\"},\
+        {\"shape\":\"ThrottlingException\"},\
+        {\"shape\":\"InternalFailureException\"}\
+      ],\
+      \"documentation\":\"<p>Updates a Device Defender detect custom metric. </p>\"\
+    },\
+    \"UpdateDimension\":{\
+      \"name\":\"UpdateDimension\",\
+      \"http\":{\
+        \"method\":\"PATCH\",\
+        \"requestUri\":\"/dimensions/{name}\"\
+      },\
+      \"input\":{\"shape\":\"UpdateDimensionRequest\"},\
+      \"output\":{\"shape\":\"UpdateDimensionResponse\"},\
+      \"errors\":[\
+        {\"shape\":\"InternalFailureException\"},\
+        {\"shape\":\"InvalidRequestException\"},\
+        {\"shape\":\"ResourceNotFoundException\"},\
+        {\"shape\":\"ThrottlingException\"}\
+      ],\
+      \"documentation\":\"<p>Updates the definition for a dimension. You cannot change the type of a dimension after it is created (you can delete it and recreate it).</p>\"\
+    },\
+    \"UpdateDomainConfiguration\":{\
+      \"name\":\"UpdateDomainConfiguration\",\
+      \"http\":{\
+        \"method\":\"PUT\",\
+        \"requestUri\":\"/domainConfigurations/{domainConfigurationName}\"\
+      },\
+      \"input\":{\"shape\":\"UpdateDomainConfigurationRequest\"},\
+      \"output\":{\"shape\":\"UpdateDomainConfigurationResponse\"},\
+      \"errors\":[\
+        {\"shape\":\"ResourceNotFoundException\"},\
+        {\"shape\":\"CertificateValidationException\"},\
+        {\"shape\":\"InvalidRequestException\"},\
+        {\"shape\":\"ThrottlingException\"},\
+        {\"shape\":\"UnauthorizedException\"},\
+        {\"shape\":\"ServiceUnavailableException\"},\
+        {\"shape\":\"InternalFailureException\"}\
+      ],\
+      \"documentation\":\"<p>Updates values stored in the domain configuration. Domain configurations for default endpoints can't be updated.</p> <note> <p>The domain configuration feature is in public preview and is subject to change.</p> </note>\"\
     },\
     \"UpdateDynamicThingGroup\":{\
       \"name\":\"UpdateDynamicThingGroup\",\
@@ -2960,6 +3694,23 @@
         {\"shape\":\"InternalFailureException\"}\
       ],\
       \"documentation\":\"<p>Updates the definition for the specified mitigation action.</p>\"\
+    },\
+    \"UpdateProvisioningTemplate\":{\
+      \"name\":\"UpdateProvisioningTemplate\",\
+      \"http\":{\
+        \"method\":\"PATCH\",\
+        \"requestUri\":\"/provisioning-templates/{templateName}\"\
+      },\
+      \"input\":{\"shape\":\"UpdateProvisioningTemplateRequest\"},\
+      \"output\":{\"shape\":\"UpdateProvisioningTemplateResponse\"},\
+      \"errors\":[\
+        {\"shape\":\"InternalFailureException\"},\
+        {\"shape\":\"InvalidRequestException\"},\
+        {\"shape\":\"ResourceNotFoundException\"},\
+        {\"shape\":\"UnauthorizedException\"},\
+        {\"shape\":\"ConflictingResourceUpdateException\"}\
+      ],\
+      \"documentation\":\"<p>Updates a fleet provisioning template.</p>\"\
     },\
     \"UpdateRoleAlias\":{\
       \"name\":\"UpdateRoleAlias\",\
@@ -3082,6 +3833,23 @@
       ],\
       \"documentation\":\"<p>Updates the groups to which the thing belongs.</p>\"\
     },\
+    \"UpdateTopicRuleDestination\":{\
+      \"name\":\"UpdateTopicRuleDestination\",\
+      \"http\":{\
+        \"method\":\"PATCH\",\
+        \"requestUri\":\"/destinations\"\
+      },\
+      \"input\":{\"shape\":\"UpdateTopicRuleDestinationRequest\"},\
+      \"output\":{\"shape\":\"UpdateTopicRuleDestinationResponse\"},\
+      \"errors\":[\
+        {\"shape\":\"InternalException\"},\
+        {\"shape\":\"InvalidRequestException\"},\
+        {\"shape\":\"ServiceUnavailableException\"},\
+        {\"shape\":\"UnauthorizedException\"},\
+        {\"shape\":\"ConflictingResourceUpdateException\"}\
+      ],\
+      \"documentation\":\"<p>Updates a topic rule destination. You use this to change the status, endpoint URL, or confirmation URL of the destination.</p>\"\
+    },\
     \"ValidateSecurityProfileBehaviors\":{\
       \"name\":\"ValidateSecurityProfileBehaviors\",\
       \"http\":{\
@@ -3109,10 +3877,10 @@
       \"members\":{\
         \"criteriaList\":{\
           \"shape\":\"AbortCriteriaList\",\
-          \"documentation\":\"<p>The list of abort criteria to define rules to abort the job.</p>\"\
+          \"documentation\":\"<p>The list of criteria that determine when and how to abort the job.</p>\"\
         }\
       },\
-      \"documentation\":\"<p>Details of abort criteria to abort the job.</p>\"\
+      \"documentation\":\"<p>The criteria that determine when and how a job abort takes place.</p>\"\
     },\
     \"AbortCriteria\":{\
       \"type\":\"structure\",\
@@ -3125,22 +3893,22 @@
       \"members\":{\
         \"failureType\":{\
           \"shape\":\"JobExecutionFailureType\",\
-          \"documentation\":\"<p>The type of job execution failure to define a rule to initiate a job abort.</p>\"\
+          \"documentation\":\"<p>The type of job execution failures that can initiate a job abort.</p>\"\
         },\
         \"action\":{\
           \"shape\":\"AbortAction\",\
-          \"documentation\":\"<p>The type of abort action to initiate a job abort.</p>\"\
+          \"documentation\":\"<p>The type of job action to take to initiate the job abort.</p>\"\
         },\
         \"thresholdPercentage\":{\
           \"shape\":\"AbortThresholdPercentage\",\
-          \"documentation\":\"<p>The threshold as a percentage of the total number of executed things that will initiate a job abort.</p> <p>AWS IoT supports up to two digits after the decimal (for example, 10.9 and 10.99, but not 10.999).</p>\"\
+          \"documentation\":\"<p>The minimum percentage of job execution failures that must occur to initiate the job abort.</p> <p>AWS IoT supports up to two digits after the decimal (for example, 10.9 and 10.99, but not 10.999).</p>\"\
         },\
         \"minNumberOfExecutedThings\":{\
           \"shape\":\"MinimumNumberOfExecutedThings\",\
-          \"documentation\":\"<p>Minimum number of executed things before evaluating an abort rule.</p>\"\
+          \"documentation\":\"<p>The minimum number of things which must receive job execution notifications before the job can be aborted.</p>\"\
         }\
       },\
-      \"documentation\":\"<p>Details of abort criteria to define rules to abort the job.</p>\"\
+      \"documentation\":\"<p>The criteria that determine when and how a job abort takes place.</p>\"\
     },\
     \"AbortCriteriaList\":{\
       \"type\":\"list\",\
@@ -3169,6 +3937,12 @@
         }\
       },\
       \"documentation\":\"<p>The input for the AcceptCertificateTransfer operation.</p>\"\
+    },\
+    \"AcmCertificateArn\":{\
+      \"type\":\"string\",\
+      \"max\":2048,\
+      \"min\":1,\
+      \"pattern\":\"arn:aws(-cn|-us-gov|-iso-b|-iso)?:acm:[a-z]{2}-(gov-|iso-|isob-)?[a-z]{4,9}-\\\\d{1}:\\\\d{12}:certificate/[a-zA-Z0-9/-]+\"\
     },\
     \"Action\":{\
       \"type\":\"structure\",\
@@ -3217,6 +3991,10 @@
           \"shape\":\"CloudwatchAlarmAction\",\
           \"documentation\":\"<p>Change the state of a CloudWatch alarm.</p>\"\
         },\
+        \"cloudwatchLogs\":{\
+          \"shape\":\"CloudwatchLogsAction\",\
+          \"documentation\":\"<p>Send data to CloudWatch Logs.</p>\"\
+        },\
         \"elasticsearch\":{\
           \"shape\":\"ElasticsearchAction\",\
           \"documentation\":\"<p>Write data to an Amazon Elasticsearch Service domain.</p>\"\
@@ -3233,9 +4011,25 @@
           \"shape\":\"IotEventsAction\",\
           \"documentation\":\"<p>Sends an input to an AWS IoT Events detector.</p>\"\
         },\
+        \"iotSiteWise\":{\
+          \"shape\":\"IotSiteWiseAction\",\
+          \"documentation\":\"<p>Sends data from the MQTT message that triggered the rule to AWS IoT SiteWise asset properties.</p>\"\
+        },\
         \"stepFunctions\":{\
           \"shape\":\"StepFunctionsAction\",\
           \"documentation\":\"<p>Starts execution of a Step Functions state machine.</p>\"\
+        },\
+        \"timestream\":{\
+          \"shape\":\"TimestreamAction\",\
+          \"documentation\":\"<p>The Timestream rule action writes attributes (measures) from an MQTT message into an Amazon Timestream table. For more information, see the <a href=\\\"https://docs.aws.amazon.com/iot/latest/developerguide/timestream-rule-action.html\\\">Timestream</a> topic rule action documentation.</p>\"\
+        },\
+        \"http\":{\
+          \"shape\":\"HttpAction\",\
+          \"documentation\":\"<p>Send data to an HTTPS endpoint.</p>\"\
+        },\
+        \"kafka\":{\
+          \"shape\":\"KafkaAction\",\
+          \"documentation\":\"<p>Send messages to an Amazon Managed Streaming for Apache Kafka (Amazon MSK) or self-managed Apache Kafka cluster.</p>\"\
         }\
       },\
       \"documentation\":\"<p>Describes the actions associated with a rule.</p>\"\
@@ -3268,15 +4062,19 @@
         },\
         \"securityProfileName\":{\
           \"shape\":\"SecurityProfileName\",\
-          \"documentation\":\"<p>The security profile whose behavior is in violation.</p>\"\
+          \"documentation\":\"<p>The security profile with the behavior is in violation.</p>\"\
         },\
         \"behavior\":{\
           \"shape\":\"Behavior\",\
-          \"documentation\":\"<p>The behavior which is being violated.</p>\"\
+          \"documentation\":\"<p>The behavior that is being violated.</p>\"\
         },\
         \"lastViolationValue\":{\
           \"shape\":\"MetricValue\",\
-          \"documentation\":\"<p>The value of the metric (the measurement) which caused the most recent violation.</p>\"\
+          \"documentation\":\"<p>The value of the metric (the measurement) that caused the most recent violation.</p>\"\
+        },\
+        \"violationEventAdditionalInfo\":{\
+          \"shape\":\"ViolationEventAdditionalInfo\",\
+          \"documentation\":\"<p> The details of a violation event. </p>\"\
         },\
         \"lastViolationTime\":{\
           \"shape\":\"Timestamp\",\
@@ -3355,11 +4153,11 @@
       \"members\":{\
         \"thingGroupNames\":{\
           \"shape\":\"ThingGroupNames\",\
-          \"documentation\":\"<p>The list of groups to which you want to add the things that triggered the mitigation action. You can add a thing to a maximum of 10 groups, but you cannot add a thing to more than one group in the same hierarchy.</p>\"\
+          \"documentation\":\"<p>The list of groups to which you want to add the things that triggered the mitigation action. You can add a thing to a maximum of 10 groups, but you can't add a thing to more than one group in the same hierarchy.</p>\"\
         },\
         \"overrideDynamicGroups\":{\
           \"shape\":\"OverrideDynamicGroups\",\
-          \"documentation\":\"<p>Specifies if this mitigation action can move the things that triggered the mitigation action even if they are part of one or more dynamic things groups.</p>\"\
+          \"documentation\":\"<p>Specifies if this mitigation action can move the things that triggered the mitigation action even if they are part of one or more dynamic thing groups.</p>\"\
         }\
       },\
       \"documentation\":\"<p>Parameters used when defining a mitigation action that move a set of things to a thing group.</p>\"\
@@ -3367,6 +4165,10 @@
     \"AdditionalMetricsToRetainList\":{\
       \"type\":\"list\",\
       \"member\":{\"shape\":\"BehaviorMetric\"}\
+    },\
+    \"AdditionalMetricsToRetainV2List\":{\
+      \"type\":\"list\",\
+      \"member\":{\"shape\":\"MetricToRetain\"}\
     },\
     \"AdditionalParameterMap\":{\
       \"type\":\"map\",\
@@ -3387,7 +4189,7 @@
       \"members\":{\
         \"alertTargetArn\":{\
           \"shape\":\"AlertTargetArn\",\
-          \"documentation\":\"<p>The ARN of the notification target to which alerts are sent.</p>\"\
+          \"documentation\":\"<p>The Amazon Resource Name (ARN) of the notification target to which alerts are sent.</p>\"\
         },\
         \"roleArn\":{\
           \"shape\":\"RoleArn\",\
@@ -3407,6 +4209,7 @@
       \"key\":{\"shape\":\"AlertTargetType\"},\
       \"value\":{\"shape\":\"AlertTarget\"}\
     },\
+    \"AllowAuthorizerOverride\":{\"type\":\"boolean\"},\
     \"AllowAutoRegistration\":{\"type\":\"boolean\"},\
     \"Allowed\":{\
       \"type\":\"structure\",\
@@ -3420,6 +4223,88 @@
     },\
     \"ApproximateSecondsBeforeTimedOut\":{\"type\":\"long\"},\
     \"AscendingOrder\":{\"type\":\"boolean\"},\
+    \"AssetId\":{\"type\":\"string\"},\
+    \"AssetPropertyAlias\":{\
+      \"type\":\"string\",\
+      \"min\":1\
+    },\
+    \"AssetPropertyBooleanValue\":{\"type\":\"string\"},\
+    \"AssetPropertyDoubleValue\":{\"type\":\"string\"},\
+    \"AssetPropertyEntryId\":{\"type\":\"string\"},\
+    \"AssetPropertyId\":{\"type\":\"string\"},\
+    \"AssetPropertyIntegerValue\":{\"type\":\"string\"},\
+    \"AssetPropertyOffsetInNanos\":{\"type\":\"string\"},\
+    \"AssetPropertyQuality\":{\"type\":\"string\"},\
+    \"AssetPropertyStringValue\":{\
+      \"type\":\"string\",\
+      \"max\":1024,\
+      \"min\":1\
+    },\
+    \"AssetPropertyTimeInSeconds\":{\"type\":\"string\"},\
+    \"AssetPropertyTimestamp\":{\
+      \"type\":\"structure\",\
+      \"required\":[\"timeInSeconds\"],\
+      \"members\":{\
+        \"timeInSeconds\":{\
+          \"shape\":\"AssetPropertyTimeInSeconds\",\
+          \"documentation\":\"<p>A string that contains the time in seconds since epoch. Accepts substitution templates.</p>\"\
+        },\
+        \"offsetInNanos\":{\
+          \"shape\":\"AssetPropertyOffsetInNanos\",\
+          \"documentation\":\"<p>Optional. A string that contains the nanosecond time offset. Accepts substitution templates.</p>\"\
+        }\
+      },\
+      \"documentation\":\"<p>An asset property timestamp entry containing the following information.</p>\"\
+    },\
+    \"AssetPropertyValue\":{\
+      \"type\":\"structure\",\
+      \"required\":[\
+        \"value\",\
+        \"timestamp\"\
+      ],\
+      \"members\":{\
+        \"value\":{\
+          \"shape\":\"AssetPropertyVariant\",\
+          \"documentation\":\"<p>The value of the asset property.</p>\"\
+        },\
+        \"timestamp\":{\
+          \"shape\":\"AssetPropertyTimestamp\",\
+          \"documentation\":\"<p>The asset property value timestamp.</p>\"\
+        },\
+        \"quality\":{\
+          \"shape\":\"AssetPropertyQuality\",\
+          \"documentation\":\"<p>Optional. A string that describes the quality of the value. Accepts substitution templates. Must be <code>GOOD</code>, <code>BAD</code>, or <code>UNCERTAIN</code>.</p>\"\
+        }\
+      },\
+      \"documentation\":\"<p>An asset property value entry containing the following information.</p>\"\
+    },\
+    \"AssetPropertyValueList\":{\
+      \"type\":\"list\",\
+      \"member\":{\"shape\":\"AssetPropertyValue\"},\
+      \"min\":1\
+    },\
+    \"AssetPropertyVariant\":{\
+      \"type\":\"structure\",\
+      \"members\":{\
+        \"stringValue\":{\
+          \"shape\":\"AssetPropertyStringValue\",\
+          \"documentation\":\"<p>Optional. The string value of the value entry. Accepts substitution templates.</p>\"\
+        },\
+        \"integerValue\":{\
+          \"shape\":\"AssetPropertyIntegerValue\",\
+          \"documentation\":\"<p>Optional. A string that contains the integer value of the value entry. Accepts substitution templates.</p>\"\
+        },\
+        \"doubleValue\":{\
+          \"shape\":\"AssetPropertyDoubleValue\",\
+          \"documentation\":\"<p>Optional. A string that contains the double value of the value entry. Accepts substitution templates.</p>\"\
+        },\
+        \"booleanValue\":{\
+          \"shape\":\"AssetPropertyBooleanValue\",\
+          \"documentation\":\"<p>Optional. A string that contains the boolean value (<code>true</code> or <code>false</code>) of the value entry. Accepts substitution templates.</p>\"\
+        }\
+      },\
+      \"documentation\":\"<p>Contains an asset property value (of a single type).</p>\"\
+    },\
     \"AssociateTargetsWithJobRequest\":{\
       \"type\":\"structure\",\
       \"required\":[\
@@ -3440,6 +4325,12 @@
         \"comment\":{\
           \"shape\":\"Comment\",\
           \"documentation\":\"<p>An optional comment string describing why the job was associated with the targets.</p>\"\
+        },\
+        \"namespaceId\":{\
+          \"shape\":\"NamespaceId\",\
+          \"documentation\":\"<p>The namespace used to indicate that a job is a customer-managed job.</p> <p>When you specify a value for this parameter, AWS IoT Core sends jobs notifications to MQTT topics that contain the value in the following format.</p> <p> <code>$aws/things/<i>THING_NAME</i>/jobs/<i>JOB_ID</i>/notify-namespace-<i>NAMESPACE_ID</i>/</code> </p> <note> <p>The <code>namespaceId</code> feature is in public preview.</p> </note>\",\
+          \"location\":\"querystring\",\
+          \"locationName\":\"namespaceId\"\
         }\
       }\
     },\
@@ -3475,7 +4366,7 @@
         },\
         \"target\":{\
           \"shape\":\"PolicyTarget\",\
-          \"documentation\":\"<p>The <a href=\\\"https://docs.aws.amazon.com/iot/latest/developerguide/iot-security-identity.html\\\">identity</a> to which the policy is attached.</p>\"\
+          \"documentation\":\"<p>The <a href=\\\"https://docs.aws.amazon.com/iot/latest/developerguide/security-iam.html\\\">identity</a> to which the policy is attached.</p>\"\
         }\
       }\
     },\
@@ -3542,7 +4433,7 @@
         },\
         \"principal\":{\
           \"shape\":\"Principal\",\
-          \"documentation\":\"<p>The principal, such as a certificate or other credential.</p>\",\
+          \"documentation\":\"<p>The principal, which can be a certificate ARN (as returned from the CreateCertificate operation) or an Amazon Cognito ID.</p>\",\
           \"location\":\"header\",\
           \"locationName\":\"x-amzn-principal\"\
         }\
@@ -3624,6 +4515,10 @@
           \"shape\":\"NonCompliantResourcesCount\",\
           \"documentation\":\"<p>The number of resources that were found noncompliant during the check.</p>\"\
         },\
+        \"suppressedNonCompliantResourcesCount\":{\
+          \"shape\":\"SuppressedNonCompliantResourcesCount\",\
+          \"documentation\":\"<p> Describes how many of the non-compliant resources created during the evaluation of an audit check were marked as suppressed. </p>\"\
+        },\
         \"errorCode\":{\
           \"shape\":\"ErrorCode\",\
           \"documentation\":\"<p>The code of any error encountered when this check is performed during this audit. One of \\\"INSUFFICIENT_PERMISSIONS\\\" or \\\"AUDIT_CHECK_DISABLED\\\".</p>\"\
@@ -3659,6 +4554,11 @@
       \"type\":\"map\",\
       \"key\":{\"shape\":\"AuditCheckName\"},\
       \"value\":{\"shape\":\"ReasonForNonComplianceCodes\"}\
+    },\
+    \"AuditDescription\":{\
+      \"type\":\"string\",\
+      \"max\":1000,\
+      \"pattern\":\"[\\\\p{Graph}\\\\x20]*\"\
     },\
     \"AuditDetails\":{\
       \"type\":\"map\",\
@@ -3707,6 +4607,10 @@
         \"reasonForNonComplianceCode\":{\
           \"shape\":\"ReasonForNonComplianceCode\",\
           \"documentation\":\"<p>A code that indicates the reason that the resource was noncompliant.</p>\"\
+        },\
+        \"isSuppressed\":{\
+          \"shape\":\"IsSuppressed\",\
+          \"documentation\":\"<p> Indicates whether the audit finding was suppressed or not during reporting. </p>\"\
         }\
       },\
       \"documentation\":\"<p>The findings (results) of the audit.</p>\"\
@@ -3737,7 +4641,7 @@
       \"type\":\"structure\",\
       \"members\":{\
         \"taskId\":{\
-          \"shape\":\"AuditMitigationActionsTaskId\",\
+          \"shape\":\"MitigationActionsTaskId\",\
           \"documentation\":\"<p>The unique identifier for the task that applies the mitigation action.</p>\"\
         },\
         \"findingId\":{\
@@ -3790,17 +4694,11 @@
         \"PENDING\"\
       ]\
     },\
-    \"AuditMitigationActionsTaskId\":{\
-      \"type\":\"string\",\
-      \"max\":128,\
-      \"min\":1,\
-      \"pattern\":\"[a-zA-Z0-9_-]+\"\
-    },\
     \"AuditMitigationActionsTaskMetadata\":{\
       \"type\":\"structure\",\
       \"members\":{\
         \"taskId\":{\
-          \"shape\":\"AuditMitigationActionsTaskId\",\
+          \"shape\":\"MitigationActionsTaskId\",\
           \"documentation\":\"<p>The unique identifier for the task.</p>\"\
         },\
         \"startTime\":{\
@@ -3877,6 +4775,34 @@
       \"type\":\"string\",\
       \"enum\":[\"SNS\"]\
     },\
+    \"AuditSuppression\":{\
+      \"type\":\"structure\",\
+      \"required\":[\
+        \"checkName\",\
+        \"resourceIdentifier\"\
+      ],\
+      \"members\":{\
+        \"checkName\":{\"shape\":\"AuditCheckName\"},\
+        \"resourceIdentifier\":{\"shape\":\"ResourceIdentifier\"},\
+        \"expirationDate\":{\
+          \"shape\":\"Timestamp\",\
+          \"documentation\":\"<p> The expiration date (epoch timestamp in seconds) that you want the suppression to adhere to. </p>\"\
+        },\
+        \"suppressIndefinitely\":{\
+          \"shape\":\"SuppressIndefinitely\",\
+          \"documentation\":\"<p> Indicates whether a suppression should exist indefinitely or not. </p>\"\
+        },\
+        \"description\":{\
+          \"shape\":\"AuditDescription\",\
+          \"documentation\":\"<p> The description of the audit suppression. </p>\"\
+        }\
+      },\
+      \"documentation\":\"<p> Filters out specific findings of a Device Defender audit. </p>\"\
+    },\
+    \"AuditSuppressionList\":{\
+      \"type\":\"list\",\
+      \"member\":{\"shape\":\"AuditSuppression\"}\
+    },\
     \"AuditTaskId\":{\
       \"type\":\"string\",\
       \"max\":40,\
@@ -3931,6 +4857,7 @@
     },\
     \"AuthInfo\":{\
       \"type\":\"structure\",\
+      \"required\":[\"resources\"],\
       \"members\":{\
         \"actionType\":{\
           \"shape\":\"ActionType\",\
@@ -3979,7 +4906,25 @@
       \"type\":\"list\",\
       \"member\":{\"shape\":\"AuthResult\"}\
     },\
-    \"AuthorizerArn\":{\"type\":\"string\"},\
+    \"AuthorizerArn\":{\
+      \"type\":\"string\",\
+      \"max\":2048\
+    },\
+    \"AuthorizerConfig\":{\
+      \"type\":\"structure\",\
+      \"members\":{\
+        \"defaultAuthorizerName\":{\
+          \"shape\":\"AuthorizerName\",\
+          \"documentation\":\"<p>The name of the authorization service for a domain configuration.</p>\"\
+        },\
+        \"allowAuthorizerOverride\":{\
+          \"shape\":\"AllowAuthorizerOverride\",\
+          \"documentation\":\"<p>A Boolean that specifies whether the domain configuration's authorization service can be overridden.</p>\",\
+          \"box\":true\
+        }\
+      },\
+      \"documentation\":\"<p>An object that specifies the authorization service for a domain.</p>\"\
+    },\
     \"AuthorizerDescription\":{\
       \"type\":\"structure\",\
       \"members\":{\
@@ -4014,11 +4959,18 @@
         \"lastModifiedDate\":{\
           \"shape\":\"DateType\",\
           \"documentation\":\"<p>The UNIX timestamp of when the authorizer was last updated.</p>\"\
+        },\
+        \"signingDisabled\":{\
+          \"shape\":\"BooleanKey\",\
+          \"documentation\":\"<p>Specifies whether AWS IoT validates the token signature in an authorization request.</p>\"\
         }\
       },\
       \"documentation\":\"<p>The authorizer description.</p>\"\
     },\
-    \"AuthorizerFunctionArn\":{\"type\":\"string\"},\
+    \"AuthorizerFunctionArn\":{\
+      \"type\":\"string\",\
+      \"max\":2048\
+    },\
     \"AuthorizerName\":{\
       \"type\":\"string\",\
       \"max\":128,\
@@ -4057,6 +5009,7 @@
         \"DISABLE\"\
       ]\
     },\
+    \"Average\":{\"type\":\"double\"},\
     \"AwsAccountId\":{\
       \"type\":\"string\",\
       \"max\":12,\
@@ -4067,31 +5020,177 @@
     \"AwsIotJobArn\":{\"type\":\"string\"},\
     \"AwsIotJobId\":{\"type\":\"string\"},\
     \"AwsIotSqlVersion\":{\"type\":\"string\"},\
+    \"AwsJobAbortConfig\":{\
+      \"type\":\"structure\",\
+      \"required\":[\"abortCriteriaList\"],\
+      \"members\":{\
+        \"abortCriteriaList\":{\
+          \"shape\":\"AwsJobAbortCriteriaList\",\
+          \"documentation\":\"<p>The list of criteria that determine when and how to abort the job.</p>\"\
+        }\
+      },\
+      \"documentation\":\"<p>The criteria that determine when and how a job abort takes place.</p>\"\
+    },\
+    \"AwsJobAbortCriteria\":{\
+      \"type\":\"structure\",\
+      \"required\":[\
+        \"failureType\",\
+        \"action\",\
+        \"thresholdPercentage\",\
+        \"minNumberOfExecutedThings\"\
+      ],\
+      \"members\":{\
+        \"failureType\":{\
+          \"shape\":\"AwsJobAbortCriteriaFailureType\",\
+          \"documentation\":\"<p>The type of job execution failures that can initiate a job abort.</p>\"\
+        },\
+        \"action\":{\
+          \"shape\":\"AwsJobAbortCriteriaAbortAction\",\
+          \"documentation\":\"<p>The type of job action to take to initiate the job abort.</p>\"\
+        },\
+        \"thresholdPercentage\":{\
+          \"shape\":\"AwsJobAbortCriteriaAbortThresholdPercentage\",\
+          \"documentation\":\"<p>The minimum percentage of job execution failures that must occur to initiate the job abort.</p> <p>AWS IoT supports up to two digits after the decimal (for example, 10.9 and 10.99, but not 10.999).</p>\"\
+        },\
+        \"minNumberOfExecutedThings\":{\
+          \"shape\":\"AwsJobAbortCriteriaMinimumNumberOfExecutedThings\",\
+          \"documentation\":\"<p>The minimum number of things which must receive job execution notifications before the job can be aborted.</p>\"\
+        }\
+      },\
+      \"documentation\":\"<p>The criteria that determine when and how a job abort takes place.</p>\"\
+    },\
+    \"AwsJobAbortCriteriaAbortAction\":{\
+      \"type\":\"string\",\
+      \"enum\":[\"CANCEL\"]\
+    },\
+    \"AwsJobAbortCriteriaAbortThresholdPercentage\":{\
+      \"type\":\"double\",\
+      \"max\":100\
+    },\
+    \"AwsJobAbortCriteriaFailureType\":{\
+      \"type\":\"string\",\
+      \"enum\":[\
+        \"FAILED\",\
+        \"REJECTED\",\
+        \"TIMED_OUT\",\
+        \"ALL\"\
+      ]\
+    },\
+    \"AwsJobAbortCriteriaList\":{\
+      \"type\":\"list\",\
+      \"member\":{\"shape\":\"AwsJobAbortCriteria\"},\
+      \"min\":1\
+    },\
+    \"AwsJobAbortCriteriaMinimumNumberOfExecutedThings\":{\
+      \"type\":\"integer\",\
+      \"min\":1\
+    },\
     \"AwsJobExecutionsRolloutConfig\":{\
       \"type\":\"structure\",\
       \"members\":{\
         \"maximumPerMinute\":{\
           \"shape\":\"MaximumPerMinute\",\
           \"documentation\":\"<p>The maximum number of OTA update job executions started per minute.</p>\"\
+        },\
+        \"exponentialRate\":{\
+          \"shape\":\"AwsJobExponentialRolloutRate\",\
+          \"documentation\":\"<p>The rate of increase for a job rollout. This parameter allows you to define an exponential rate increase for a job rollout.</p>\"\
         }\
       },\
       \"documentation\":\"<p>Configuration for the rollout of OTA updates.</p>\"\
     },\
+    \"AwsJobExponentialRolloutRate\":{\
+      \"type\":\"structure\",\
+      \"required\":[\
+        \"baseRatePerMinute\",\
+        \"incrementFactor\",\
+        \"rateIncreaseCriteria\"\
+      ],\
+      \"members\":{\
+        \"baseRatePerMinute\":{\
+          \"shape\":\"AwsJobRolloutRatePerMinute\",\
+          \"documentation\":\"<p>The minimum number of things that will be notified of a pending job, per minute, at the start of the job rollout. This is the initial rate of the rollout.</p>\"\
+        },\
+        \"incrementFactor\":{\
+          \"shape\":\"AwsJobRolloutIncrementFactor\",\
+          \"documentation\":\"<p>The rate of increase for a job rollout. The number of things notified is multiplied by this factor.</p>\"\
+        },\
+        \"rateIncreaseCriteria\":{\
+          \"shape\":\"AwsJobRateIncreaseCriteria\",\
+          \"documentation\":\"<p>The criteria to initiate the increase in rate of rollout for a job.</p> <p>AWS IoT supports up to one digit after the decimal (for example, 1.5, but not 1.55).</p>\"\
+        }\
+      },\
+      \"documentation\":\"<p>The rate of increase for a job rollout. This parameter allows you to define an exponential rate increase for a job rollout.</p>\"\
+    },\
+    \"AwsJobPresignedUrlConfig\":{\
+      \"type\":\"structure\",\
+      \"members\":{\
+        \"expiresInSec\":{\
+          \"shape\":\"ExpiresInSeconds\",\
+          \"documentation\":\"<p>How long (in seconds) pre-signed URLs are valid. Valid values are 60 - 3600, the default value is 1800 seconds. Pre-signed URLs are generated when a request for the job document is received.</p>\"\
+        }\
+      },\
+      \"documentation\":\"<p>Configuration information for pre-signed URLs. Valid when <code>protocols</code> contains HTTP.</p>\"\
+    },\
+    \"AwsJobRateIncreaseCriteria\":{\
+      \"type\":\"structure\",\
+      \"members\":{\
+        \"numberOfNotifiedThings\":{\
+          \"shape\":\"AwsJobRateIncreaseCriteriaNumberOfThings\",\
+          \"documentation\":\"<p>When this number of things have been notified, it will initiate an increase in the rollout rate.</p>\"\
+        },\
+        \"numberOfSucceededThings\":{\
+          \"shape\":\"AwsJobRateIncreaseCriteriaNumberOfThings\",\
+          \"documentation\":\"<p>When this number of things have succeeded in their job execution, it will initiate an increase in the rollout rate.</p>\"\
+        }\
+      },\
+      \"documentation\":\"<p>The criteria to initiate the increase in rate of rollout for a job.</p>\"\
+    },\
+    \"AwsJobRateIncreaseCriteriaNumberOfThings\":{\
+      \"type\":\"integer\",\
+      \"min\":1\
+    },\
+    \"AwsJobRolloutIncrementFactor\":{\"type\":\"double\"},\
+    \"AwsJobRolloutRatePerMinute\":{\
+      \"type\":\"integer\",\
+      \"max\":1000,\
+      \"min\":1\
+    },\
+    \"AwsJobTimeoutConfig\":{\
+      \"type\":\"structure\",\
+      \"members\":{\
+        \"inProgressTimeoutInMinutes\":{\
+          \"shape\":\"AwsJobTimeoutInProgressTimeoutInMinutes\",\
+          \"documentation\":\"<p>Specifies the amount of time, in minutes, this device has to finish execution of this job. The timeout interval can be anywhere between 1 minute and 7 days (1 to 10080 minutes). The in progress timer can't be updated and will apply to all job executions for the job. Whenever a job execution remains in the IN_PROGRESS status for longer than this interval, the job execution will fail and switch to the terminal <code>TIMED_OUT</code> status.</p>\"\
+        }\
+      },\
+      \"documentation\":\"<p>Specifies the amount of time each device has to finish its execution of the job. A timer is started when the job execution status is set to <code>IN_PROGRESS</code>. If the job execution status is not set to another terminal state before the timer expires, it will be automatically set to <code>TIMED_OUT</code>.</p>\"\
+    },\
+    \"AwsJobTimeoutInProgressTimeoutInMinutes\":{\"type\":\"long\"},\
+    \"BatchMode\":{\"type\":\"boolean\"},\
     \"Behavior\":{\
       \"type\":\"structure\",\
       \"required\":[\"name\"],\
       \"members\":{\
         \"name\":{\
           \"shape\":\"BehaviorName\",\
-          \"documentation\":\"<p>The name you have given to the behavior.</p>\"\
+          \"documentation\":\"<p>The name you've given to the behavior.</p>\"\
         },\
         \"metric\":{\
           \"shape\":\"BehaviorMetric\",\
           \"documentation\":\"<p>What is measured by the behavior.</p>\"\
         },\
+        \"metricDimension\":{\
+          \"shape\":\"MetricDimension\",\
+          \"documentation\":\"<p>The dimension for a metric in your behavior. For example, using a <code>TOPIC_FILTER</code> dimension, you can narrow down the scope of the metric to only MQTT topics where the name matches the pattern specified in the dimension. This can't be used with custom metrics.</p>\"\
+        },\
         \"criteria\":{\
           \"shape\":\"BehaviorCriteria\",\
           \"documentation\":\"<p>The criteria that determine if a device is behaving normally in regard to the <code>metric</code>.</p>\"\
+        },\
+        \"suppressAlerts\":{\
+          \"shape\":\"SuppressAlerts\",\
+          \"documentation\":\"<p> Suppresses alerts. </p>\"\
         }\
       },\
       \"documentation\":\"<p>A Device Defender security profile behavior.</p>\"\
@@ -4101,7 +5200,7 @@
       \"members\":{\
         \"comparisonOperator\":{\
           \"shape\":\"ComparisonOperator\",\
-          \"documentation\":\"<p>The operator that relates the thing measured (<code>metric</code>) to the criteria (containing a <code>value</code> or <code>statisticalThreshold</code>).</p>\"\
+          \"documentation\":\"<p>The operator that relates the thing measured (<code>metric</code>) to the criteria (containing a <code>value</code> or <code>statisticalThreshold</code>). Valid operators include:</p> <ul> <li> <p> <code>string-list</code>: <code>in-set</code> and <code>not-in-set</code> </p> </li> <li> <p> <code>number-list</code>: <code>in-set</code> and <code>not-in-set</code> </p> </li> <li> <p> <code>ip-address-list</code>: <code>in-cidr-set</code> and <code>not-in-cidr-set</code> </p> </li> <li> <p> <code>number</code>: <code>less-than</code>, <code>less-than-equals</code>, <code>greater-than</code>, and <code>greater-than-equals</code> </p> </li> </ul>\"\
         },\
         \"value\":{\
           \"shape\":\"MetricValue\",\
@@ -4109,7 +5208,7 @@
         },\
         \"durationSeconds\":{\
           \"shape\":\"DurationSeconds\",\
-          \"documentation\":\"<p>Use this to specify the time duration over which the behavior is evaluated, for those criteria which have a time dimension (for example, <code>NUM_MESSAGES_SENT</code>). For a <code>statisticalThreshhold</code> metric comparison, measurements from all devices are accumulated over this time duration before being used to calculate percentiles, and later, measurements from an individual device are also accumulated over this time duration before being given a percentile rank.</p>\"\
+          \"documentation\":\"<p>Use this to specify the time duration over which the behavior is evaluated, for those criteria that have a time dimension (for example, <code>NUM_MESSAGES_SENT</code>). For a <code>statisticalThreshhold</code> metric comparison, measurements from all devices are accumulated over this time duration before being used to calculate percentiles, and later, measurements from an individual device are also accumulated over this time duration before being given a percentile rank. Cannot be used with list-based metric datatypes.</p>\"\
         },\
         \"consecutiveDatapointsToAlarm\":{\
           \"shape\":\"ConsecutiveDatapointsToAlarm\",\
@@ -4121,12 +5220,58 @@
         },\
         \"statisticalThreshold\":{\
           \"shape\":\"StatisticalThreshold\",\
-          \"documentation\":\"<p>A statistical ranking (percentile) which indicates a threshold value by which a behavior is determined to be in compliance or in violation of the behavior.</p>\"\
+          \"documentation\":\"<p>A statistical ranking (percentile)that indicates a threshold value by which a behavior is determined to be in compliance or in violation of the behavior.</p>\"\
+        },\
+        \"mlDetectionConfig\":{\
+          \"shape\":\"MachineLearningDetectionConfig\",\
+          \"documentation\":\"<p> The configuration of an ML Detect </p>\"\
         }\
       },\
       \"documentation\":\"<p>The criteria by which the behavior is determined to be normal.</p>\"\
     },\
+    \"BehaviorCriteriaType\":{\
+      \"type\":\"string\",\
+      \"enum\":[\
+        \"STATIC\",\
+        \"STATISTICAL\",\
+        \"MACHINE_LEARNING\"\
+      ]\
+    },\
     \"BehaviorMetric\":{\"type\":\"string\"},\
+    \"BehaviorModelTrainingSummaries\":{\
+      \"type\":\"list\",\
+      \"member\":{\"shape\":\"BehaviorModelTrainingSummary\"}\
+    },\
+    \"BehaviorModelTrainingSummary\":{\
+      \"type\":\"structure\",\
+      \"members\":{\
+        \"securityProfileName\":{\
+          \"shape\":\"SecurityProfileName\",\
+          \"documentation\":\"<p> The name of the security profile. </p>\"\
+        },\
+        \"behaviorName\":{\
+          \"shape\":\"BehaviorName\",\
+          \"documentation\":\"<p> The name of the behavior. </p>\"\
+        },\
+        \"trainingDataCollectionStartDate\":{\
+          \"shape\":\"Timestamp\",\
+          \"documentation\":\"<p> The date a training model started collecting data. </p>\"\
+        },\
+        \"modelStatus\":{\
+          \"shape\":\"ModelStatus\",\
+          \"documentation\":\"<p> The status of the behavior model. </p>\"\
+        },\
+        \"datapointsCollectionPercentage\":{\
+          \"shape\":\"DataCollectionPercentage\",\
+          \"documentation\":\"<p> The percentage of datapoints collected. </p>\"\
+        },\
+        \"lastModelRefreshDate\":{\
+          \"shape\":\"Timestamp\",\
+          \"documentation\":\"<p> The date the model was last refreshed. </p>\"\
+        }\
+      },\
+      \"documentation\":\"<p> The summary of an ML Detect behavior model. </p>\"\
+    },\
     \"BehaviorName\":{\
       \"type\":\"string\",\
       \"max\":128,\
@@ -4181,6 +5326,7 @@
       \"documentation\":\"<p>The properties of a billing group.</p>\"\
     },\
     \"Boolean\":{\"type\":\"boolean\"},\
+    \"BooleanKey\":{\"type\":\"boolean\"},\
     \"BucketName\":{\"type\":\"string\"},\
     \"CACertificate\":{\
       \"type\":\"structure\",\
@@ -4274,7 +5420,7 @@
       \"required\":[\"taskId\"],\
       \"members\":{\
         \"taskId\":{\
-          \"shape\":\"AuditMitigationActionsTaskId\",\
+          \"shape\":\"MitigationActionsTaskId\",\
           \"documentation\":\"<p>The unique identifier for the task that you want to cancel. </p>\",\
           \"location\":\"uri\",\
           \"locationName\":\"taskId\"\
@@ -4315,6 +5461,23 @@
         }\
       },\
       \"documentation\":\"<p>The input for the CancelCertificateTransfer operation.</p>\"\
+    },\
+    \"CancelDetectMitigationActionsTaskRequest\":{\
+      \"type\":\"structure\",\
+      \"required\":[\"taskId\"],\
+      \"members\":{\
+        \"taskId\":{\
+          \"shape\":\"MitigationActionsTaskId\",\
+          \"documentation\":\"<p> The unique identifier of the task. </p>\",\
+          \"location\":\"uri\",\
+          \"locationName\":\"taskId\"\
+        }\
+      }\
+    },\
+    \"CancelDetectMitigationActionsTaskResponse\":{\
+      \"type\":\"structure\",\
+      \"members\":{\
+      }\
     },\
     \"CancelJobExecutionRequest\":{\
       \"type\":\"structure\",\
@@ -4425,6 +5588,10 @@
           \"shape\":\"CertificateStatus\",\
           \"documentation\":\"<p>The status of the certificate.</p> <p>The status value REGISTER_INACTIVE is deprecated and should not be used.</p>\"\
         },\
+        \"certificateMode\":{\
+          \"shape\":\"CertificateMode\",\
+          \"documentation\":\"<p>The mode of the certificate.</p>\"\
+        },\
         \"creationDate\":{\
           \"shape\":\"DateType\",\
           \"documentation\":\"<p>The date and time the certificate was created.</p>\"\
@@ -4499,6 +5666,10 @@
         \"validity\":{\
           \"shape\":\"CertificateValidity\",\
           \"documentation\":\"<p>When the certificate is valid.</p>\"\
+        },\
+        \"certificateMode\":{\
+          \"shape\":\"CertificateMode\",\
+          \"documentation\":\"<p>The mode of the certificate.</p>\"\
         }\
       },\
       \"documentation\":\"<p>Describes a certificate.</p>\"\
@@ -4508,6 +5679,13 @@
       \"max\":64,\
       \"min\":64,\
       \"pattern\":\"(0x)?[a-fA-F0-9]+\"\
+    },\
+    \"CertificateMode\":{\
+      \"type\":\"string\",\
+      \"enum\":[\
+        \"DEFAULT\",\
+        \"SNI_ONLY\"\
+      ]\
     },\
     \"CertificateName\":{\"type\":\"string\"},\
     \"CertificatePathOnDevice\":{\"type\":\"string\"},\
@@ -4597,6 +5775,11 @@
       }\
     },\
     \"ClientId\":{\"type\":\"string\"},\
+    \"ClientProperties\":{\
+      \"type\":\"map\",\
+      \"key\":{\"shape\":\"String\"},\
+      \"value\":{\"shape\":\"String\"}\
+    },\
     \"ClientRequestToken\":{\
       \"type\":\"string\",\
       \"max\":64,\
@@ -4630,6 +5813,24 @@
         }\
       },\
       \"documentation\":\"<p>Describes an action that updates a CloudWatch alarm.</p>\"\
+    },\
+    \"CloudwatchLogsAction\":{\
+      \"type\":\"structure\",\
+      \"required\":[\
+        \"roleArn\",\
+        \"logGroupName\"\
+      ],\
+      \"members\":{\
+        \"roleArn\":{\
+          \"shape\":\"AwsArn\",\
+          \"documentation\":\"<p>The IAM role that allows access to the CloudWatch log.</p>\"\
+        },\
+        \"logGroupName\":{\
+          \"shape\":\"LogGroupName\",\
+          \"documentation\":\"<p>The CloudWatch log group to which the action sends data.</p>\"\
+        }\
+      },\
+      \"documentation\":\"<p>Describes an action that sends data to CloudWatch Logs.</p>\"\
     },\
     \"CloudwatchMetricAction\":{\
       \"type\":\"structure\",\
@@ -4727,10 +5928,20 @@
         \"in-cidr-set\",\
         \"not-in-cidr-set\",\
         \"in-port-set\",\
-        \"not-in-port-set\"\
+        \"not-in-port-set\",\
+        \"in-set\",\
+        \"not-in-set\"\
       ]\
     },\
     \"CompliantChecksCount\":{\"type\":\"integer\"},\
+    \"ConfidenceLevel\":{\
+      \"type\":\"string\",\
+      \"enum\":[\
+        \"LOW\",\
+        \"MEDIUM\",\
+        \"HIGH\"\
+      ]\
+    },\
     \"Configuration\":{\
       \"type\":\"structure\",\
       \"members\":{\
@@ -4740,6 +5951,28 @@
         }\
       },\
       \"documentation\":\"<p>Configuration.</p>\"\
+    },\
+    \"ConfirmTopicRuleDestinationRequest\":{\
+      \"type\":\"structure\",\
+      \"required\":[\"confirmationToken\"],\
+      \"members\":{\
+        \"confirmationToken\":{\
+          \"shape\":\"ConfirmationToken\",\
+          \"documentation\":\"<p>The token used to confirm ownership or access to the topic rule confirmation URL.</p>\",\
+          \"location\":\"uri\",\
+          \"locationName\":\"confirmationToken\"\
+        }\
+      }\
+    },\
+    \"ConfirmTopicRuleDestinationResponse\":{\
+      \"type\":\"structure\",\
+      \"members\":{\
+      }\
+    },\
+    \"ConfirmationToken\":{\
+      \"type\":\"string\",\
+      \"max\":2048,\
+      \"min\":1\
     },\
     \"ConflictingResourceUpdateException\":{\
       \"type\":\"structure\",\
@@ -4765,13 +5998,45 @@
       \"min\":1\
     },\
     \"Count\":{\"type\":\"integer\"},\
+    \"CreateAuditSuppressionRequest\":{\
+      \"type\":\"structure\",\
+      \"required\":[\
+        \"checkName\",\
+        \"resourceIdentifier\",\
+        \"clientRequestToken\"\
+      ],\
+      \"members\":{\
+        \"checkName\":{\"shape\":\"AuditCheckName\"},\
+        \"resourceIdentifier\":{\"shape\":\"ResourceIdentifier\"},\
+        \"expirationDate\":{\
+          \"shape\":\"Timestamp\",\
+          \"documentation\":\"<p> The epoch timestamp in seconds at which this suppression expires. </p>\"\
+        },\
+        \"suppressIndefinitely\":{\
+          \"shape\":\"SuppressIndefinitely\",\
+          \"documentation\":\"<p> Indicates whether a suppression should exist indefinitely or not. </p>\"\
+        },\
+        \"description\":{\
+          \"shape\":\"AuditDescription\",\
+          \"documentation\":\"<p> The description of the audit suppression. </p>\"\
+        },\
+        \"clientRequestToken\":{\
+          \"shape\":\"ClientRequestToken\",\
+          \"documentation\":\"<p> The epoch timestamp in seconds at which this suppression expires. </p>\",\
+          \"idempotencyToken\":true\
+        }\
+      }\
+    },\
+    \"CreateAuditSuppressionResponse\":{\
+      \"type\":\"structure\",\
+      \"members\":{\
+      }\
+    },\
     \"CreateAuthorizerRequest\":{\
       \"type\":\"structure\",\
       \"required\":[\
         \"authorizerName\",\
-        \"authorizerFunctionArn\",\
-        \"tokenKeyName\",\
-        \"tokenSigningPublicKeys\"\
+        \"authorizerFunctionArn\"\
       ],\
       \"members\":{\
         \"authorizerName\":{\
@@ -4795,6 +6060,14 @@
         \"status\":{\
           \"shape\":\"AuthorizerStatus\",\
           \"documentation\":\"<p>The status of the create authorizer request.</p>\"\
+        },\
+        \"tags\":{\
+          \"shape\":\"TagList\",\
+          \"documentation\":\"<p>Metadata which can be used to manage the custom authorizer.</p> <note> <p>For URI Request parameters use format: ...key1=value1&amp;key2=value2...</p> <p>For the CLI command-line parameter use format: &amp;&amp;tags \\\"key1=value1&amp;key2=value2...\\\"</p> <p>For the cli-input-json file use format: \\\"tags\\\": \\\"key1=value1&amp;key2=value2...\\\"</p> </note>\"\
+        },\
+        \"signingDisabled\":{\
+          \"shape\":\"BooleanKey\",\
+          \"documentation\":\"<p>Specifies whether AWS IoT validates the token signature in an authorization request.</p>\"\
         }\
       }\
     },\
@@ -4882,6 +6155,148 @@
         }\
       },\
       \"documentation\":\"<p>The output from the CreateCertificateFromCsr operation.</p>\"\
+    },\
+    \"CreateCustomMetricRequest\":{\
+      \"type\":\"structure\",\
+      \"required\":[\
+        \"metricName\",\
+        \"metricType\",\
+        \"clientRequestToken\"\
+      ],\
+      \"members\":{\
+        \"metricName\":{\
+          \"shape\":\"MetricName\",\
+          \"documentation\":\"<p> The name of the custom metric. This will be used in the metric report submitted from the device/thing. Shouldn't begin with <code>aws:</code>. Cannot be updated once defined.</p>\",\
+          \"location\":\"uri\",\
+          \"locationName\":\"metricName\"\
+        },\
+        \"displayName\":{\
+          \"shape\":\"CustomMetricDisplayName\",\
+          \"documentation\":\"<p> Field represents a friendly name in the console for the custom metric; it doesn't have to be unique. Don't use this name as the metric identifier in the device metric report. Can be updated once defined.</p>\"\
+        },\
+        \"metricType\":{\
+          \"shape\":\"CustomMetricType\",\
+          \"documentation\":\"<p> The type of the custom metric. Types include <code>string-list</code>, <code>ip-address-list</code>, <code>number-list</code>, and <code>number</code>. </p>\"\
+        },\
+        \"tags\":{\
+          \"shape\":\"TagList\",\
+          \"documentation\":\"<p> Metadata that can be used to manage the custom metric. </p>\"\
+        },\
+        \"clientRequestToken\":{\
+          \"shape\":\"ClientRequestToken\",\
+          \"documentation\":\"<p>Each custom metric must have a unique client request token. If you try to create a new custom metric that already exists with a different token, an exception occurs. If you omit this value, AWS SDKs will automatically generate a unique client request. </p>\",\
+          \"idempotencyToken\":true\
+        }\
+      }\
+    },\
+    \"CreateCustomMetricResponse\":{\
+      \"type\":\"structure\",\
+      \"members\":{\
+        \"metricName\":{\
+          \"shape\":\"MetricName\",\
+          \"documentation\":\"<p> The name of the custom metric to be used in the metric report. </p>\"\
+        },\
+        \"metricArn\":{\
+          \"shape\":\"CustomMetricArn\",\
+          \"documentation\":\"<p> The Amazon Resource Number (ARN) of the custom metric, e.g. <code>arn:<i>aws-partition</i>:iot:<i>region</i>:<i>accountId</i>:custommetric/<i>metricName</i> </code> </p>\"\
+        }\
+      }\
+    },\
+    \"CreateDimensionRequest\":{\
+      \"type\":\"structure\",\
+      \"required\":[\
+        \"name\",\
+        \"type\",\
+        \"stringValues\",\
+        \"clientRequestToken\"\
+      ],\
+      \"members\":{\
+        \"name\":{\
+          \"shape\":\"DimensionName\",\
+          \"documentation\":\"<p>A unique identifier for the dimension. Choose something that describes the type and value to make it easy to remember what it does.</p>\",\
+          \"location\":\"uri\",\
+          \"locationName\":\"name\"\
+        },\
+        \"type\":{\
+          \"shape\":\"DimensionType\",\
+          \"documentation\":\"<p>Specifies the type of dimension. Supported types: <code>TOPIC_FILTER.</code> </p>\"\
+        },\
+        \"stringValues\":{\
+          \"shape\":\"DimensionStringValues\",\
+          \"documentation\":\"<p>Specifies the value or list of values for the dimension. For <code>TOPIC_FILTER</code> dimensions, this is a pattern used to match the MQTT topic (for example, \\\"admin/#\\\").</p>\"\
+        },\
+        \"tags\":{\
+          \"shape\":\"TagList\",\
+          \"documentation\":\"<p>Metadata that can be used to manage the dimension.</p>\"\
+        },\
+        \"clientRequestToken\":{\
+          \"shape\":\"ClientRequestToken\",\
+          \"documentation\":\"<p>Each dimension must have a unique client request token. If you try to create a new dimension with the same token as a dimension that already exists, an exception occurs. If you omit this value, AWS SDKs will automatically generate a unique client request.</p>\",\
+          \"idempotencyToken\":true\
+        }\
+      }\
+    },\
+    \"CreateDimensionResponse\":{\
+      \"type\":\"structure\",\
+      \"members\":{\
+        \"name\":{\
+          \"shape\":\"DimensionName\",\
+          \"documentation\":\"<p>A unique identifier for the dimension.</p>\"\
+        },\
+        \"arn\":{\
+          \"shape\":\"DimensionArn\",\
+          \"documentation\":\"<p>The Amazon Resource Name (ARN) of the created dimension.</p>\"\
+        }\
+      }\
+    },\
+    \"CreateDomainConfigurationRequest\":{\
+      \"type\":\"structure\",\
+      \"required\":[\"domainConfigurationName\"],\
+      \"members\":{\
+        \"domainConfigurationName\":{\
+          \"shape\":\"DomainConfigurationName\",\
+          \"documentation\":\"<p>The name of the domain configuration. This value must be unique to a region.</p>\",\
+          \"location\":\"uri\",\
+          \"locationName\":\"domainConfigurationName\"\
+        },\
+        \"domainName\":{\
+          \"shape\":\"DomainName\",\
+          \"documentation\":\"<p>The name of the domain.</p>\"\
+        },\
+        \"serverCertificateArns\":{\
+          \"shape\":\"ServerCertificateArns\",\
+          \"documentation\":\"<p>The ARNs of the certificates that AWS IoT passes to the device during the TLS handshake. Currently you can specify only one certificate ARN. This value is not required for AWS-managed domains.</p>\"\
+        },\
+        \"validationCertificateArn\":{\
+          \"shape\":\"AcmCertificateArn\",\
+          \"documentation\":\"<p>The certificate used to validate the server certificate and prove domain name ownership. This certificate must be signed by a public certificate authority. This value is not required for AWS-managed domains.</p>\"\
+        },\
+        \"authorizerConfig\":{\
+          \"shape\":\"AuthorizerConfig\",\
+          \"documentation\":\"<p>An object that specifies the authorization service for a domain.</p>\"\
+        },\
+        \"serviceType\":{\
+          \"shape\":\"ServiceType\",\
+          \"documentation\":\"<p>The type of service delivered by the endpoint.</p> <note> <p>AWS IoT Core currently supports only the <code>DATA</code> service type.</p> </note>\"\
+        },\
+        \"tags\":{\
+          \"shape\":\"TagList\",\
+          \"documentation\":\"<p>Metadata which can be used to manage the domain configuration.</p> <note> <p>For URI Request parameters use format: ...key1=value1&amp;key2=value2...</p> <p>For the CLI command-line parameter use format: &amp;&amp;tags \\\"key1=value1&amp;key2=value2...\\\"</p> <p>For the cli-input-json file use format: \\\"tags\\\": \\\"key1=value1&amp;key2=value2...\\\"</p> </note>\"\
+        }\
+      }\
+    },\
+    \"CreateDomainConfigurationResponse\":{\
+      \"type\":\"structure\",\
+      \"members\":{\
+        \"domainConfigurationName\":{\
+          \"shape\":\"DomainConfigurationName\",\
+          \"documentation\":\"<p>The name of the domain configuration.</p>\"\
+        },\
+        \"domainConfigurationArn\":{\
+          \"shape\":\"DomainConfigurationArn\",\
+          \"documentation\":\"<p>The ARN of the domain configuration.</p>\"\
+        }\
+      }\
     },\
     \"CreateDynamicThingGroupRequest\":{\
       \"type\":\"structure\",\
@@ -4999,6 +6414,10 @@
         \"tags\":{\
           \"shape\":\"TagList\",\
           \"documentation\":\"<p>Metadata which can be used to manage the job.</p>\"\
+        },\
+        \"namespaceId\":{\
+          \"shape\":\"NamespaceId\",\
+          \"documentation\":\"<p>The namespace used to indicate that a job is a customer-managed job.</p> <p>When you specify a value for this parameter, AWS IoT Core sends jobs notifications to MQTT topics that contain the value in the following format.</p> <p> <code>$aws/things/<i>THING_NAME</i>/jobs/<i>JOB_ID</i>/notify-namespace-<i>NAMESPACE_ID</i>/</code> </p> <note> <p>The <code>namespaceId</code> feature is in public preview.</p> </note>\"\
         }\
       }\
     },\
@@ -5115,7 +6534,11 @@
         },\
         \"targets\":{\
           \"shape\":\"Targets\",\
-          \"documentation\":\"<p>The targeted devices to receive OTA updates.</p>\"\
+          \"documentation\":\"<p>The devices targeted to receive OTA updates.</p>\"\
+        },\
+        \"protocols\":{\
+          \"shape\":\"Protocols\",\
+          \"documentation\":\"<p>The protocol used to transfer the OTA update image. Valid values are [HTTP], [MQTT], [HTTP, MQTT]. When both HTTP and MQTT are specified, the target device can choose the protocol.</p>\"\
         },\
         \"targetSelection\":{\
           \"shape\":\"TargetSelection\",\
@@ -5125,13 +6548,25 @@
           \"shape\":\"AwsJobExecutionsRolloutConfig\",\
           \"documentation\":\"<p>Configuration for the rollout of OTA updates.</p>\"\
         },\
+        \"awsJobPresignedUrlConfig\":{\
+          \"shape\":\"AwsJobPresignedUrlConfig\",\
+          \"documentation\":\"<p>Configuration information for pre-signed URLs.</p>\"\
+        },\
+        \"awsJobAbortConfig\":{\
+          \"shape\":\"AwsJobAbortConfig\",\
+          \"documentation\":\"<p>The criteria that determine when and how a job abort takes place.</p>\"\
+        },\
+        \"awsJobTimeoutConfig\":{\
+          \"shape\":\"AwsJobTimeoutConfig\",\
+          \"documentation\":\"<p>Specifies the amount of time each device has to finish its execution of the job. A timer is started when the job execution status is set to <code>IN_PROGRESS</code>. If the job execution status is not set to another terminal state before the timer expires, it will be automatically set to <code>TIMED_OUT</code>.</p>\"\
+        },\
         \"files\":{\
           \"shape\":\"OTAUpdateFiles\",\
           \"documentation\":\"<p>The files to be streamed by the OTA update.</p>\"\
         },\
         \"roleArn\":{\
           \"shape\":\"RoleArn\",\
-          \"documentation\":\"<p>The IAM role that allows access to the AWS IoT Jobs service.</p>\"\
+          \"documentation\":\"<p>The IAM role that grants AWS IoT access to the Amazon S3, AWS IoT jobs and AWS Code Signing resources to create an OTA update job.</p>\"\
         },\
         \"additionalParameters\":{\
           \"shape\":\"AdditionalParameterMap\",\
@@ -5184,6 +6619,10 @@
         \"policyDocument\":{\
           \"shape\":\"PolicyDocument\",\
           \"documentation\":\"<p>The JSON document that describes the policy. <b>policyDocument</b> must have a minimum length of 1, with a maximum length of 2048, excluding whitespace.</p>\"\
+        },\
+        \"tags\":{\
+          \"shape\":\"TagList\",\
+          \"documentation\":\"<p>Metadata which can be used to manage the policy.</p> <note> <p>For URI Request parameters use format: ...key1=value1&amp;key2=value2...</p> <p>For the CLI command-line parameter use format: &amp;&amp;tags \\\"key1=value1&amp;key2=value2...\\\"</p> <p>For the cli-input-json file use format: \\\"tags\\\": \\\"key1=value1&amp;key2=value2...\\\"</p> </note>\"\
         }\
       },\
       \"documentation\":\"<p>The input for the CreatePolicy operation.</p>\"\
@@ -5258,6 +6697,140 @@
       },\
       \"documentation\":\"<p>The output of the CreatePolicyVersion operation.</p>\"\
     },\
+    \"CreateProvisioningClaimRequest\":{\
+      \"type\":\"structure\",\
+      \"required\":[\"templateName\"],\
+      \"members\":{\
+        \"templateName\":{\
+          \"shape\":\"TemplateName\",\
+          \"documentation\":\"<p>The name of the provisioning template to use.</p>\",\
+          \"location\":\"uri\",\
+          \"locationName\":\"templateName\"\
+        }\
+      }\
+    },\
+    \"CreateProvisioningClaimResponse\":{\
+      \"type\":\"structure\",\
+      \"members\":{\
+        \"certificateId\":{\
+          \"shape\":\"CertificateId\",\
+          \"documentation\":\"<p>The ID of the certificate.</p>\"\
+        },\
+        \"certificatePem\":{\
+          \"shape\":\"CertificatePem\",\
+          \"documentation\":\"<p>The provisioning claim certificate.</p>\"\
+        },\
+        \"keyPair\":{\
+          \"shape\":\"KeyPair\",\
+          \"documentation\":\"<p>The provisioning claim key pair.</p>\"\
+        },\
+        \"expiration\":{\
+          \"shape\":\"DateType\",\
+          \"documentation\":\"<p>The provisioning claim expiration time.</p>\"\
+        }\
+      }\
+    },\
+    \"CreateProvisioningTemplateRequest\":{\
+      \"type\":\"structure\",\
+      \"required\":[\
+        \"templateName\",\
+        \"templateBody\",\
+        \"provisioningRoleArn\"\
+      ],\
+      \"members\":{\
+        \"templateName\":{\
+          \"shape\":\"TemplateName\",\
+          \"documentation\":\"<p>The name of the fleet provisioning template.</p>\"\
+        },\
+        \"description\":{\
+          \"shape\":\"TemplateDescription\",\
+          \"documentation\":\"<p>The description of the fleet provisioning template.</p>\"\
+        },\
+        \"templateBody\":{\
+          \"shape\":\"TemplateBody\",\
+          \"documentation\":\"<p>The JSON formatted contents of the fleet provisioning template.</p>\"\
+        },\
+        \"enabled\":{\
+          \"shape\":\"Enabled\",\
+          \"documentation\":\"<p>True to enable the fleet provisioning template, otherwise false.</p>\"\
+        },\
+        \"provisioningRoleArn\":{\
+          \"shape\":\"RoleArn\",\
+          \"documentation\":\"<p>The role ARN for the role associated with the fleet provisioning template. This IoT role grants permission to provision a device.</p>\"\
+        },\
+        \"preProvisioningHook\":{\
+          \"shape\":\"ProvisioningHook\",\
+          \"documentation\":\"<p>Creates a pre-provisioning hook template.</p>\"\
+        },\
+        \"tags\":{\
+          \"shape\":\"TagList\",\
+          \"documentation\":\"<p>Metadata which can be used to manage the fleet provisioning template.</p> <note> <p>For URI Request parameters use format: ...key1=value1&amp;key2=value2...</p> <p>For the CLI command-line parameter use format: &amp;&amp;tags \\\"key1=value1&amp;key2=value2...\\\"</p> <p>For the cli-input-json file use format: \\\"tags\\\": \\\"key1=value1&amp;key2=value2...\\\"</p> </note>\"\
+        }\
+      }\
+    },\
+    \"CreateProvisioningTemplateResponse\":{\
+      \"type\":\"structure\",\
+      \"members\":{\
+        \"templateArn\":{\
+          \"shape\":\"TemplateArn\",\
+          \"documentation\":\"<p>The ARN that identifies the provisioning template.</p>\"\
+        },\
+        \"templateName\":{\
+          \"shape\":\"TemplateName\",\
+          \"documentation\":\"<p>The name of the fleet provisioning template.</p>\"\
+        },\
+        \"defaultVersionId\":{\
+          \"shape\":\"TemplateVersionId\",\
+          \"documentation\":\"<p>The default version of the fleet provisioning template.</p>\"\
+        }\
+      }\
+    },\
+    \"CreateProvisioningTemplateVersionRequest\":{\
+      \"type\":\"structure\",\
+      \"required\":[\
+        \"templateName\",\
+        \"templateBody\"\
+      ],\
+      \"members\":{\
+        \"templateName\":{\
+          \"shape\":\"TemplateName\",\
+          \"documentation\":\"<p>The name of the fleet provisioning template.</p>\",\
+          \"location\":\"uri\",\
+          \"locationName\":\"templateName\"\
+        },\
+        \"templateBody\":{\
+          \"shape\":\"TemplateBody\",\
+          \"documentation\":\"<p>The JSON formatted contents of the fleet provisioning template.</p>\"\
+        },\
+        \"setAsDefault\":{\
+          \"shape\":\"SetAsDefault\",\
+          \"documentation\":\"<p>Sets a fleet provision template version as the default version.</p>\",\
+          \"location\":\"querystring\",\
+          \"locationName\":\"setAsDefault\"\
+        }\
+      }\
+    },\
+    \"CreateProvisioningTemplateVersionResponse\":{\
+      \"type\":\"structure\",\
+      \"members\":{\
+        \"templateArn\":{\
+          \"shape\":\"TemplateArn\",\
+          \"documentation\":\"<p>The ARN that identifies the provisioning template.</p>\"\
+        },\
+        \"templateName\":{\
+          \"shape\":\"TemplateName\",\
+          \"documentation\":\"<p>The name of the fleet provisioning template.</p>\"\
+        },\
+        \"versionId\":{\
+          \"shape\":\"TemplateVersionId\",\
+          \"documentation\":\"<p>The version of the fleet provisioning template.</p>\"\
+        },\
+        \"isDefaultVersion\":{\
+          \"shape\":\"IsDefaultVersion\",\
+          \"documentation\":\"<p>True if the fleet provisioning template version is the default version, otherwise false.</p>\"\
+        }\
+      }\
+    },\
     \"CreateRoleAliasRequest\":{\
       \"type\":\"structure\",\
       \"required\":[\
@@ -5278,6 +6851,10 @@
         \"credentialDurationSeconds\":{\
           \"shape\":\"CredentialDurationSeconds\",\
           \"documentation\":\"<p>How long (in seconds) the credentials will be valid.</p>\"\
+        },\
+        \"tags\":{\
+          \"shape\":\"TagList\",\
+          \"documentation\":\"<p>Metadata which can be used to manage the role alias.</p> <note> <p>For URI Request parameters use format: ...key1=value1&amp;key2=value2...</p> <p>For the CLI command-line parameter use format: &amp;&amp;tags \\\"key1=value1&amp;key2=value2...\\\"</p> <p>For the cli-input-json file use format: \\\"tags\\\": \\\"key1=value1&amp;key2=value2...\\\"</p> </note>\"\
         }\
       }\
     },\
@@ -5304,15 +6881,15 @@
       \"members\":{\
         \"frequency\":{\
           \"shape\":\"AuditFrequency\",\
-          \"documentation\":\"<p>How often the scheduled audit takes place. Can be one of \\\"DAILY\\\", \\\"WEEKLY\\\", \\\"BIWEEKLY\\\" or \\\"MONTHLY\\\". The start time of each audit is determined by the system.</p>\"\
+          \"documentation\":\"<p>How often the scheduled audit takes place, either <code>DAILY</code>, <code>WEEKLY</code>, <code>BIWEEKLY</code> or <code>MONTHLY</code>. The start time of each audit is determined by the system.</p>\"\
         },\
         \"dayOfMonth\":{\
           \"shape\":\"DayOfMonth\",\
-          \"documentation\":\"<p>The day of the month on which the scheduled audit takes place. Can be \\\"1\\\" through \\\"31\\\" or \\\"LAST\\\". This field is required if the \\\"frequency\\\" parameter is set to \\\"MONTHLY\\\". If days 29-31 are specified, and the month does not have that many days, the audit takes place on the \\\"LAST\\\" day of the month.</p>\"\
+          \"documentation\":\"<p>The day of the month on which the scheduled audit takes place. This can be \\\"1\\\" through \\\"31\\\" or \\\"LAST\\\". This field is required if the \\\"frequency\\\" parameter is set to <code>MONTHLY</code>. If days 29 to 31 are specified, and the month doesn't have that many days, the audit takes place on the <code>LAST</code> day of the month.</p>\"\
         },\
         \"dayOfWeek\":{\
           \"shape\":\"DayOfWeek\",\
-          \"documentation\":\"<p>The day of the week on which the scheduled audit takes place. Can be one of \\\"SUN\\\", \\\"MON\\\", \\\"TUE\\\", \\\"WED\\\", \\\"THU\\\", \\\"FRI\\\", or \\\"SAT\\\". This field is required if the \\\"frequency\\\" parameter is set to \\\"WEEKLY\\\" or \\\"BIWEEKLY\\\".</p>\"\
+          \"documentation\":\"<p>The day of the week on which the scheduled audit takes place, either <code>SUN</code>, <code>MON</code>, <code>TUE</code>, <code>WED</code>, <code>THU</code>, <code>FRI</code>, or <code>SAT</code>. This field is required if the <code>frequency</code> parameter is set to <code>WEEKLY</code> or <code>BIWEEKLY</code>.</p>\"\
         },\
         \"targetCheckNames\":{\
           \"shape\":\"TargetAuditCheckNames\",\
@@ -5363,7 +6940,13 @@
         },\
         \"additionalMetricsToRetain\":{\
           \"shape\":\"AdditionalMetricsToRetainList\",\
-          \"documentation\":\"<p>A list of metrics whose data is retained (stored). By default, data is retained for any metric used in the profile's <code>behaviors</code>, but it is also retained for any metric specified here.</p>\"\
+          \"documentation\":\"<p> <i>Please use <a>CreateSecurityProfileRequest$additionalMetricsToRetainV2</a> instead.</i> </p> <p>A list of metrics whose data is retained (stored). By default, data is retained for any metric used in the profile's <code>behaviors</code>, but it is also retained for any metric specified here. Can be used with custom metrics; cannot be used with dimensions.</p>\",\
+          \"deprecated\":true,\
+          \"deprecatedMessage\":\"Use additionalMetricsToRetainV2.\"\
+        },\
+        \"additionalMetricsToRetainV2\":{\
+          \"shape\":\"AdditionalMetricsToRetainV2List\",\
+          \"documentation\":\"<p>A list of metrics whose data is retained (stored). By default, data is retained for any metric used in the profile's <code>behaviors</code>, but it is also retained for any metric specified here. Can be used with custom metrics; cannot be used with dimensions.</p>\"\
         },\
         \"tags\":{\
           \"shape\":\"TagList\",\
@@ -5484,7 +7067,7 @@
       \"members\":{\
         \"thingName\":{\
           \"shape\":\"ThingName\",\
-          \"documentation\":\"<p>The name of the thing to create.</p>\",\
+          \"documentation\":\"<p>The name of the thing to create.</p> <p>You can't change a thing's name after you create it. To change a thing's name, you must create a new thing, give it the new name, and then delete the old thing.</p>\",\
           \"location\":\"uri\",\
           \"locationName\":\"thingName\"\
         },\
@@ -5560,6 +7143,25 @@
       },\
       \"documentation\":\"<p>The output of the CreateThingType operation.</p>\"\
     },\
+    \"CreateTopicRuleDestinationRequest\":{\
+      \"type\":\"structure\",\
+      \"required\":[\"destinationConfiguration\"],\
+      \"members\":{\
+        \"destinationConfiguration\":{\
+          \"shape\":\"TopicRuleDestinationConfiguration\",\
+          \"documentation\":\"<p>The topic rule destination configuration.</p>\"\
+        }\
+      }\
+    },\
+    \"CreateTopicRuleDestinationResponse\":{\
+      \"type\":\"structure\",\
+      \"members\":{\
+        \"topicRuleDestination\":{\
+          \"shape\":\"TopicRuleDestination\",\
+          \"documentation\":\"<p>The topic rule destination.</p>\"\
+        }\
+      }\
+    },\
     \"CreateTopicRuleRequest\":{\
       \"type\":\"structure\",\
       \"required\":[\
@@ -5616,9 +7218,29 @@
       },\
       \"documentation\":\"<p>Describes a custom method used to code sign a file.</p>\"\
     },\
+    \"CustomMetricArn\":{\"type\":\"string\"},\
+    \"CustomMetricDisplayName\":{\
+      \"type\":\"string\",\
+      \"max\":128,\
+      \"pattern\":\"[\\\\p{Graph}\\\\x20]*\"\
+    },\
+    \"CustomMetricType\":{\
+      \"type\":\"string\",\
+      \"enum\":[\
+        \"string-list\",\
+        \"ip-address-list\",\
+        \"number-list\",\
+        \"number\"\
+      ]\
+    },\
     \"CustomerVersion\":{\
       \"type\":\"integer\",\
       \"min\":1\
+    },\
+    \"DataCollectionPercentage\":{\
+      \"type\":\"double\",\
+      \"max\":100,\
+      \"min\":0\
     },\
     \"DateType\":{\"type\":\"timestamp\"},\
     \"DayOfMonth\":{\
@@ -5655,6 +7277,22 @@
     },\
     \"DeleteAdditionalMetricsToRetain\":{\"type\":\"boolean\"},\
     \"DeleteAlertTargets\":{\"type\":\"boolean\"},\
+    \"DeleteAuditSuppressionRequest\":{\
+      \"type\":\"structure\",\
+      \"required\":[\
+        \"checkName\",\
+        \"resourceIdentifier\"\
+      ],\
+      \"members\":{\
+        \"checkName\":{\"shape\":\"AuditCheckName\"},\
+        \"resourceIdentifier\":{\"shape\":\"ResourceIdentifier\"}\
+      }\
+    },\
+    \"DeleteAuditSuppressionResponse\":{\
+      \"type\":\"structure\",\
+      \"members\":{\
+      }\
+    },\
     \"DeleteAuthorizerRequest\":{\
       \"type\":\"structure\",\
       \"required\":[\"authorizerName\"],\
@@ -5746,6 +7384,57 @@
       \"error\":{\"httpStatusCode\":409},\
       \"exception\":true\
     },\
+    \"DeleteCustomMetricRequest\":{\
+      \"type\":\"structure\",\
+      \"required\":[\"metricName\"],\
+      \"members\":{\
+        \"metricName\":{\
+          \"shape\":\"MetricName\",\
+          \"documentation\":\"<p> The name of the custom metric. </p>\",\
+          \"location\":\"uri\",\
+          \"locationName\":\"metricName\"\
+        }\
+      }\
+    },\
+    \"DeleteCustomMetricResponse\":{\
+      \"type\":\"structure\",\
+      \"members\":{\
+      }\
+    },\
+    \"DeleteDimensionRequest\":{\
+      \"type\":\"structure\",\
+      \"required\":[\"name\"],\
+      \"members\":{\
+        \"name\":{\
+          \"shape\":\"DimensionName\",\
+          \"documentation\":\"<p>The unique identifier for the dimension that you want to delete.</p>\",\
+          \"location\":\"uri\",\
+          \"locationName\":\"name\"\
+        }\
+      }\
+    },\
+    \"DeleteDimensionResponse\":{\
+      \"type\":\"structure\",\
+      \"members\":{\
+      }\
+    },\
+    \"DeleteDomainConfigurationRequest\":{\
+      \"type\":\"structure\",\
+      \"required\":[\"domainConfigurationName\"],\
+      \"members\":{\
+        \"domainConfigurationName\":{\
+          \"shape\":\"DomainConfigurationName\",\
+          \"documentation\":\"<p>The name of the domain configuration to be deleted.</p>\",\
+          \"location\":\"uri\",\
+          \"locationName\":\"domainConfigurationName\"\
+        }\
+      }\
+    },\
+    \"DeleteDomainConfigurationResponse\":{\
+      \"type\":\"structure\",\
+      \"members\":{\
+      }\
+    },\
     \"DeleteDynamicThingGroupRequest\":{\
       \"type\":\"structure\",\
       \"required\":[\"thingGroupName\"],\
@@ -5800,6 +7489,12 @@
           \"documentation\":\"<p>(Optional) When true, you can delete a job execution which is \\\"IN_PROGRESS\\\". Otherwise, you can only delete a job execution which is in a terminal state (\\\"SUCCEEDED\\\", \\\"FAILED\\\", \\\"REJECTED\\\", \\\"REMOVED\\\" or \\\"CANCELED\\\") or an exception will occur. The default is false.</p> <note> <p>Deleting a job execution which is \\\"IN_PROGRESS\\\", will cause the device to be unable to access job information or update the job execution status. Use caution and ensure that the device is able to recover to a valid state.</p> </note>\",\
           \"location\":\"querystring\",\
           \"locationName\":\"force\"\
+        },\
+        \"namespaceId\":{\
+          \"shape\":\"NamespaceId\",\
+          \"documentation\":\"<p>The namespace used to indicate that a job is a customer-managed job.</p> <p>When you specify a value for this parameter, AWS IoT Core sends jobs notifications to MQTT topics that contain the value in the following format.</p> <p> <code>$aws/things/<i>THING_NAME</i>/jobs/<i>JOB_ID</i>/notify-namespace-<i>NAMESPACE_ID</i>/</code> </p> <note> <p>The <code>namespaceId</code> feature is in public preview.</p> </note>\",\
+          \"location\":\"querystring\",\
+          \"locationName\":\"namespaceId\"\
         }\
       }\
     },\
@@ -5818,6 +7513,12 @@
           \"documentation\":\"<p>(Optional) When true, you can delete a job which is \\\"IN_PROGRESS\\\". Otherwise, you can only delete a job which is in a terminal state (\\\"COMPLETED\\\" or \\\"CANCELED\\\") or an exception will occur. The default is false.</p> <note> <p>Deleting a job which is \\\"IN_PROGRESS\\\", will cause a device which is executing the job to be unable to access job information or update the job execution status. Use caution and ensure that each device executing a job which is deleted is able to recover to a valid state.</p> </note>\",\
           \"location\":\"querystring\",\
           \"locationName\":\"force\"\
+        },\
+        \"namespaceId\":{\
+          \"shape\":\"NamespaceId\",\
+          \"documentation\":\"<p>The namespace used to indicate that a job is a customer-managed job.</p> <p>When you specify a value for this parameter, AWS IoT Core sends jobs notifications to MQTT topics that contain the value in the following format.</p> <p> <code>$aws/things/<i>THING_NAME</i>/jobs/<i>JOB_ID</i>/notify-namespace-<i>NAMESPACE_ID</i>/</code> </p> <note> <p>The <code>namespaceId</code> feature is in public preview.</p> </note>\",\
+          \"location\":\"querystring\",\
+          \"locationName\":\"namespaceId\"\
         }\
       }\
     },\
@@ -5844,7 +7545,7 @@
       \"members\":{\
         \"otaUpdateId\":{\
           \"shape\":\"OTAUpdateId\",\
-          \"documentation\":\"<p>The OTA update ID to delete.</p>\",\
+          \"documentation\":\"<p>The ID of the OTA update to delete.</p>\",\
           \"location\":\"uri\",\
           \"locationName\":\"otaUpdateId\"\
         },\
@@ -5856,7 +7557,7 @@
         },\
         \"forceDeleteAWSJob\":{\
           \"shape\":\"ForceDeleteAWSJob\",\
-          \"documentation\":\"<p>Specifies if the AWS Job associated with the OTA update should be deleted with the OTA update is deleted.</p>\",\
+          \"documentation\":\"<p>Specifies if the AWS Job associated with the OTA update should be deleted when the OTA update is deleted.</p>\",\
           \"location\":\"querystring\",\
           \"locationName\":\"forceDeleteAWSJob\"\
         }\
@@ -5901,6 +7602,49 @@
         }\
       },\
       \"documentation\":\"<p>The input for the DeletePolicyVersion operation.</p>\"\
+    },\
+    \"DeleteProvisioningTemplateRequest\":{\
+      \"type\":\"structure\",\
+      \"required\":[\"templateName\"],\
+      \"members\":{\
+        \"templateName\":{\
+          \"shape\":\"TemplateName\",\
+          \"documentation\":\"<p>The name of the fleet provision template to delete.</p>\",\
+          \"location\":\"uri\",\
+          \"locationName\":\"templateName\"\
+        }\
+      }\
+    },\
+    \"DeleteProvisioningTemplateResponse\":{\
+      \"type\":\"structure\",\
+      \"members\":{\
+      }\
+    },\
+    \"DeleteProvisioningTemplateVersionRequest\":{\
+      \"type\":\"structure\",\
+      \"required\":[\
+        \"templateName\",\
+        \"versionId\"\
+      ],\
+      \"members\":{\
+        \"templateName\":{\
+          \"shape\":\"TemplateName\",\
+          \"documentation\":\"<p>The name of the fleet provisioning template version to delete.</p>\",\
+          \"location\":\"uri\",\
+          \"locationName\":\"templateName\"\
+        },\
+        \"versionId\":{\
+          \"shape\":\"TemplateVersionId\",\
+          \"documentation\":\"<p>The fleet provisioning template version ID to delete.</p>\",\
+          \"location\":\"uri\",\
+          \"locationName\":\"versionId\"\
+        }\
+      }\
+    },\
+    \"DeleteProvisioningTemplateVersionResponse\":{\
+      \"type\":\"structure\",\
+      \"members\":{\
+      }\
     },\
     \"DeleteRegistrationCodeRequest\":{\
       \"type\":\"structure\",\
@@ -6057,6 +7801,23 @@
       },\
       \"documentation\":\"<p>The output for the DeleteThingType operation.</p>\"\
     },\
+    \"DeleteTopicRuleDestinationRequest\":{\
+      \"type\":\"structure\",\
+      \"required\":[\"arn\"],\
+      \"members\":{\
+        \"arn\":{\
+          \"shape\":\"AwsArn\",\
+          \"documentation\":\"<p>The ARN of the topic rule destination to delete.</p>\",\
+          \"location\":\"uri\",\
+          \"locationName\":\"arn\"\
+        }\
+      }\
+    },\
+    \"DeleteTopicRuleDestinationResponse\":{\
+      \"type\":\"structure\",\
+      \"members\":{\
+      }\
+    },\
     \"DeleteTopicRuleRequest\":{\
       \"type\":\"structure\",\
       \"required\":[\"ruleName\"],\
@@ -6175,7 +7936,7 @@
       \"required\":[\"taskId\"],\
       \"members\":{\
         \"taskId\":{\
-          \"shape\":\"AuditMitigationActionsTaskId\",\
+          \"shape\":\"MitigationActionsTaskId\",\
           \"documentation\":\"<p>The unique identifier for the audit mitigation task.</p>\",\
           \"location\":\"uri\",\
           \"locationName\":\"taskId\"\
@@ -6212,6 +7973,36 @@
         \"actionsDefinition\":{\
           \"shape\":\"MitigationActionList\",\
           \"documentation\":\"<p>Specifies the mitigation actions and their parameters that are applied as part of this task.</p>\"\
+        }\
+      }\
+    },\
+    \"DescribeAuditSuppressionRequest\":{\
+      \"type\":\"structure\",\
+      \"required\":[\
+        \"checkName\",\
+        \"resourceIdentifier\"\
+      ],\
+      \"members\":{\
+        \"checkName\":{\"shape\":\"AuditCheckName\"},\
+        \"resourceIdentifier\":{\"shape\":\"ResourceIdentifier\"}\
+      }\
+    },\
+    \"DescribeAuditSuppressionResponse\":{\
+      \"type\":\"structure\",\
+      \"members\":{\
+        \"checkName\":{\"shape\":\"AuditCheckName\"},\
+        \"resourceIdentifier\":{\"shape\":\"ResourceIdentifier\"},\
+        \"expirationDate\":{\
+          \"shape\":\"Timestamp\",\
+          \"documentation\":\"<p> The epoch timestamp in seconds at which this suppression expires. </p>\"\
+        },\
+        \"suppressIndefinitely\":{\
+          \"shape\":\"SuppressIndefinitely\",\
+          \"documentation\":\"<p> Indicates whether a suppression should exist indefinitely or not. </p>\"\
+        },\
+        \"description\":{\
+          \"shape\":\"AuditDescription\",\
+          \"documentation\":\"<p> The description of the audit suppression. </p>\"\
         }\
       }\
     },\
@@ -6368,6 +8159,47 @@
       },\
       \"documentation\":\"<p>The output of the DescribeCertificate operation.</p>\"\
     },\
+    \"DescribeCustomMetricRequest\":{\
+      \"type\":\"structure\",\
+      \"required\":[\"metricName\"],\
+      \"members\":{\
+        \"metricName\":{\
+          \"shape\":\"MetricName\",\
+          \"documentation\":\"<p> The name of the custom metric. </p>\",\
+          \"location\":\"uri\",\
+          \"locationName\":\"metricName\"\
+        }\
+      }\
+    },\
+    \"DescribeCustomMetricResponse\":{\
+      \"type\":\"structure\",\
+      \"members\":{\
+        \"metricName\":{\
+          \"shape\":\"MetricName\",\
+          \"documentation\":\"<p> The name of the custom metric. </p>\"\
+        },\
+        \"metricArn\":{\
+          \"shape\":\"CustomMetricArn\",\
+          \"documentation\":\"<p> The Amazon Resource Number (ARN) of the custom metric. </p>\"\
+        },\
+        \"metricType\":{\
+          \"shape\":\"CustomMetricType\",\
+          \"documentation\":\"<p> The type of the custom metric. Types include <code>string-list</code>, <code>ip-address-list</code>, <code>number-list</code>, and <code>number</code>. </p>\"\
+        },\
+        \"displayName\":{\
+          \"shape\":\"CustomMetricDisplayName\",\
+          \"documentation\":\"<p> Field represents a friendly name in the console for the custom metric; doesn't have to be unique. Don't use this name as the metric identifier in the device metric report. Can be updated. </p>\"\
+        },\
+        \"creationDate\":{\
+          \"shape\":\"Timestamp\",\
+          \"documentation\":\"<p> The creation date of the custom metric in milliseconds since epoch. </p>\"\
+        },\
+        \"lastModifiedDate\":{\
+          \"shape\":\"Timestamp\",\
+          \"documentation\":\"<p> The time the custom metric was last modified in milliseconds since epoch. </p>\"\
+        }\
+      }\
+    },\
     \"DescribeDefaultAuthorizerRequest\":{\
       \"type\":\"structure\",\
       \"members\":{\
@@ -6382,12 +8214,127 @@
         }\
       }\
     },\
+    \"DescribeDetectMitigationActionsTaskRequest\":{\
+      \"type\":\"structure\",\
+      \"required\":[\"taskId\"],\
+      \"members\":{\
+        \"taskId\":{\
+          \"shape\":\"MitigationActionsTaskId\",\
+          \"documentation\":\"<p> The unique identifier of the task. </p>\",\
+          \"location\":\"uri\",\
+          \"locationName\":\"taskId\"\
+        }\
+      }\
+    },\
+    \"DescribeDetectMitigationActionsTaskResponse\":{\
+      \"type\":\"structure\",\
+      \"members\":{\
+        \"taskSummary\":{\
+          \"shape\":\"DetectMitigationActionsTaskSummary\",\
+          \"documentation\":\"<p> The description of a task. </p>\"\
+        }\
+      }\
+    },\
+    \"DescribeDimensionRequest\":{\
+      \"type\":\"structure\",\
+      \"required\":[\"name\"],\
+      \"members\":{\
+        \"name\":{\
+          \"shape\":\"DimensionName\",\
+          \"documentation\":\"<p>The unique identifier for the dimension.</p>\",\
+          \"location\":\"uri\",\
+          \"locationName\":\"name\"\
+        }\
+      }\
+    },\
+    \"DescribeDimensionResponse\":{\
+      \"type\":\"structure\",\
+      \"members\":{\
+        \"name\":{\
+          \"shape\":\"DimensionName\",\
+          \"documentation\":\"<p>The unique identifier for the dimension.</p>\"\
+        },\
+        \"arn\":{\
+          \"shape\":\"DimensionArn\",\
+          \"documentation\":\"<p>The Amazon Resource Name (ARN) for the dimension.</p>\"\
+        },\
+        \"type\":{\
+          \"shape\":\"DimensionType\",\
+          \"documentation\":\"<p>The type of the dimension.</p>\"\
+        },\
+        \"stringValues\":{\
+          \"shape\":\"DimensionStringValues\",\
+          \"documentation\":\"<p>The value or list of values used to scope the dimension. For example, for topic filters, this is the pattern used to match the MQTT topic name.</p>\"\
+        },\
+        \"creationDate\":{\
+          \"shape\":\"Timestamp\",\
+          \"documentation\":\"<p>The date the dimension was created.</p>\"\
+        },\
+        \"lastModifiedDate\":{\
+          \"shape\":\"Timestamp\",\
+          \"documentation\":\"<p>The date the dimension was last modified.</p>\"\
+        }\
+      }\
+    },\
+    \"DescribeDomainConfigurationRequest\":{\
+      \"type\":\"structure\",\
+      \"required\":[\"domainConfigurationName\"],\
+      \"members\":{\
+        \"domainConfigurationName\":{\
+          \"shape\":\"ReservedDomainConfigurationName\",\
+          \"documentation\":\"<p>The name of the domain configuration.</p>\",\
+          \"location\":\"uri\",\
+          \"locationName\":\"domainConfigurationName\"\
+        }\
+      }\
+    },\
+    \"DescribeDomainConfigurationResponse\":{\
+      \"type\":\"structure\",\
+      \"members\":{\
+        \"domainConfigurationName\":{\
+          \"shape\":\"ReservedDomainConfigurationName\",\
+          \"documentation\":\"<p>The name of the domain configuration.</p>\"\
+        },\
+        \"domainConfigurationArn\":{\
+          \"shape\":\"DomainConfigurationArn\",\
+          \"documentation\":\"<p>The ARN of the domain configuration.</p>\"\
+        },\
+        \"domainName\":{\
+          \"shape\":\"DomainName\",\
+          \"documentation\":\"<p>The name of the domain.</p>\"\
+        },\
+        \"serverCertificates\":{\
+          \"shape\":\"ServerCertificates\",\
+          \"documentation\":\"<p>A list containing summary information about the server certificate included in the domain configuration.</p>\"\
+        },\
+        \"authorizerConfig\":{\
+          \"shape\":\"AuthorizerConfig\",\
+          \"documentation\":\"<p>An object that specifies the authorization service for a domain.</p>\"\
+        },\
+        \"domainConfigurationStatus\":{\
+          \"shape\":\"DomainConfigurationStatus\",\
+          \"documentation\":\"<p>A Boolean value that specifies the current state of the domain configuration.</p>\"\
+        },\
+        \"serviceType\":{\
+          \"shape\":\"ServiceType\",\
+          \"documentation\":\"<p>The type of service delivered by the endpoint.</p>\"\
+        },\
+        \"domainType\":{\
+          \"shape\":\"DomainType\",\
+          \"documentation\":\"<p>The type of the domain.</p>\"\
+        },\
+        \"lastStatusChangeDate\":{\
+          \"shape\":\"DateType\",\
+          \"documentation\":\"<p>The date and time the domain configuration's status was last changed.</p>\"\
+        }\
+      }\
+    },\
     \"DescribeEndpointRequest\":{\
       \"type\":\"structure\",\
       \"members\":{\
         \"endpointType\":{\
           \"shape\":\"EndpointType\",\
-          \"documentation\":\"<p>The endpoint type. Valid endpoint types include:</p> <ul> <li> <p> <code>iot:Data</code> - Returns a VeriSign signed data endpoint.</p> </li> </ul> <ul> <li> <p> <code>iot:Data-ATS</code> - Returns an ATS signed data endpoint.</p> </li> </ul> <ul> <li> <p> <code>iot:CredentialProvider</code> - Returns an AWS IoT credentials provider API endpoint.</p> </li> </ul> <ul> <li> <p> <code>iot:Jobs</code> - Returns an AWS IoT device management Jobs API endpoint.</p> </li> </ul>\",\
+          \"documentation\":\"<p>The endpoint type. Valid endpoint types include:</p> <ul> <li> <p> <code>iot:Data</code> - Returns a VeriSign signed data endpoint.</p> </li> </ul> <ul> <li> <p> <code>iot:Data-ATS</code> - Returns an ATS signed data endpoint.</p> </li> </ul> <ul> <li> <p> <code>iot:CredentialProvider</code> - Returns an AWS IoT credentials provider API endpoint.</p> </li> </ul> <ul> <li> <p> <code>iot:Jobs</code> - Returns an AWS IoT device management Jobs API endpoint.</p> </li> </ul> <p>We strongly recommend that customers use the newer <code>iot:Data-ATS</code> endpoint type to avoid issues related to the widespread distrust of Symantec certificate authorities.</p>\",\
           \"location\":\"querystring\",\
           \"locationName\":\"endpointType\"\
         }\
@@ -6565,6 +8512,105 @@
         }\
       }\
     },\
+    \"DescribeProvisioningTemplateRequest\":{\
+      \"type\":\"structure\",\
+      \"required\":[\"templateName\"],\
+      \"members\":{\
+        \"templateName\":{\
+          \"shape\":\"TemplateName\",\
+          \"documentation\":\"<p>The name of the fleet provisioning template.</p>\",\
+          \"location\":\"uri\",\
+          \"locationName\":\"templateName\"\
+        }\
+      }\
+    },\
+    \"DescribeProvisioningTemplateResponse\":{\
+      \"type\":\"structure\",\
+      \"members\":{\
+        \"templateArn\":{\
+          \"shape\":\"TemplateArn\",\
+          \"documentation\":\"<p>The ARN of the fleet provisioning template.</p>\"\
+        },\
+        \"templateName\":{\
+          \"shape\":\"TemplateName\",\
+          \"documentation\":\"<p>The name of the fleet provisioning template.</p>\"\
+        },\
+        \"description\":{\
+          \"shape\":\"TemplateDescription\",\
+          \"documentation\":\"<p>The description of the fleet provisioning template.</p>\"\
+        },\
+        \"creationDate\":{\
+          \"shape\":\"DateType\",\
+          \"documentation\":\"<p>The date when the fleet provisioning template was created.</p>\"\
+        },\
+        \"lastModifiedDate\":{\
+          \"shape\":\"DateType\",\
+          \"documentation\":\"<p>The date when the fleet provisioning template was last modified.</p>\"\
+        },\
+        \"defaultVersionId\":{\
+          \"shape\":\"TemplateVersionId\",\
+          \"documentation\":\"<p>The default fleet template version ID.</p>\"\
+        },\
+        \"templateBody\":{\
+          \"shape\":\"TemplateBody\",\
+          \"documentation\":\"<p>The JSON formatted contents of the fleet provisioning template.</p>\"\
+        },\
+        \"enabled\":{\
+          \"shape\":\"Enabled\",\
+          \"documentation\":\"<p>True if the fleet provisioning template is enabled, otherwise false.</p>\"\
+        },\
+        \"provisioningRoleArn\":{\
+          \"shape\":\"RoleArn\",\
+          \"documentation\":\"<p>The ARN of the role associated with the provisioning template. This IoT role grants permission to provision a device.</p>\"\
+        },\
+        \"preProvisioningHook\":{\
+          \"shape\":\"ProvisioningHook\",\
+          \"documentation\":\"<p>Gets information about a pre-provisioned hook.</p>\"\
+        }\
+      }\
+    },\
+    \"DescribeProvisioningTemplateVersionRequest\":{\
+      \"type\":\"structure\",\
+      \"required\":[\
+        \"templateName\",\
+        \"versionId\"\
+      ],\
+      \"members\":{\
+        \"templateName\":{\
+          \"shape\":\"TemplateName\",\
+          \"documentation\":\"<p>The template name.</p>\",\
+          \"location\":\"uri\",\
+          \"locationName\":\"templateName\"\
+        },\
+        \"versionId\":{\
+          \"shape\":\"TemplateVersionId\",\
+          \"documentation\":\"<p>The fleet provisioning template version ID.</p>\",\
+          \"location\":\"uri\",\
+          \"locationName\":\"versionId\"\
+        }\
+      }\
+    },\
+    \"DescribeProvisioningTemplateVersionResponse\":{\
+      \"type\":\"structure\",\
+      \"members\":{\
+        \"versionId\":{\
+          \"shape\":\"TemplateVersionId\",\
+          \"documentation\":\"<p>The fleet provisioning template version ID.</p>\"\
+        },\
+        \"creationDate\":{\
+          \"shape\":\"DateType\",\
+          \"documentation\":\"<p>The date when the fleet provisioning template version was created.</p>\"\
+        },\
+        \"templateBody\":{\
+          \"shape\":\"TemplateBody\",\
+          \"documentation\":\"<p>The JSON formatted contents of the fleet provisioning template version.</p>\"\
+        },\
+        \"isDefaultVersion\":{\
+          \"shape\":\"IsDefaultVersion\",\
+          \"documentation\":\"<p>True if the fleet provisioning template version is the default version.</p>\"\
+        }\
+      }\
+    },\
     \"DescribeRoleAliasRequest\":{\
       \"type\":\"structure\",\
       \"required\":[\"roleAlias\"],\
@@ -6603,15 +8649,15 @@
       \"members\":{\
         \"frequency\":{\
           \"shape\":\"AuditFrequency\",\
-          \"documentation\":\"<p>How often the scheduled audit takes place. One of \\\"DAILY\\\", \\\"WEEKLY\\\", \\\"BIWEEKLY\\\", or \\\"MONTHLY\\\". The start time of each audit is determined by the system.</p>\"\
+          \"documentation\":\"<p>How often the scheduled audit takes place, either one of <code>DAILY</code>, <code>WEEKLY</code>, <code>BIWEEKLY</code>, or <code>MONTHLY</code>. The start time of each audit is determined by the system.</p>\"\
         },\
         \"dayOfMonth\":{\
           \"shape\":\"DayOfMonth\",\
-          \"documentation\":\"<p>The day of the month on which the scheduled audit takes place. Will be \\\"1\\\" through \\\"31\\\" or \\\"LAST\\\". If days 29-31 are specified, and the month does not have that many days, the audit takes place on the \\\"LAST\\\" day of the month.</p>\"\
+          \"documentation\":\"<p>The day of the month on which the scheduled audit takes place. This is will be <code>1</code> through <code>31</code> or <code>LAST</code>. If days <code>29</code>-<code>31</code> are specified, and the month does not have that many days, the audit takes place on the <code>LAST</code> day of the month.</p>\"\
         },\
         \"dayOfWeek\":{\
           \"shape\":\"DayOfWeek\",\
-          \"documentation\":\"<p>The day of the week on which the scheduled audit takes place. One of \\\"SUN\\\", \\\"MON\\\", \\\"TUE\\\", \\\"WED\\\", \\\"THU\\\", \\\"FRI\\\", or \\\"SAT\\\".</p>\"\
+          \"documentation\":\"<p>The day of the week on which the scheduled audit takes place, either one of <code>SUN</code>, <code>MON</code>, <code>TUE</code>, <code>WED</code>, <code>THU</code>, <code>FRI</code>, or <code>SAT</code>.</p>\"\
         },\
         \"targetCheckNames\":{\
           \"shape\":\"TargetAuditCheckNames\",\
@@ -6664,7 +8710,13 @@
         },\
         \"additionalMetricsToRetain\":{\
           \"shape\":\"AdditionalMetricsToRetainList\",\
-          \"documentation\":\"<p>A list of metrics whose data is retained (stored). By default, data is retained for any metric used in the profile's <code>behaviors</code>, but it is also retained for any metric specified here.</p>\"\
+          \"documentation\":\"<p> <i>Please use <a>DescribeSecurityProfileResponse$additionalMetricsToRetainV2</a> instead.</i> </p> <p>A list of metrics whose data is retained (stored). By default, data is retained for any metric used in the profile's <code>behaviors</code>, but it is also retained for any metric specified here.</p>\",\
+          \"deprecated\":true,\
+          \"deprecatedMessage\":\"Use additionalMetricsToRetainV2.\"\
+        },\
+        \"additionalMetricsToRetainV2\":{\
+          \"shape\":\"AdditionalMetricsToRetainV2List\",\
+          \"documentation\":\"<p>A list of metrics whose data is retained (stored). By default, data is retained for any metric used in the profile's behaviors, but it is also retained for any metric specified here.</p>\"\
         },\
         \"version\":{\
           \"shape\":\"Version\",\
@@ -6841,7 +8893,7 @@
       \"members\":{\
         \"defaultClientId\":{\
           \"shape\":\"ClientId\",\
-          \"documentation\":\"<p>The default client ID.</p>\"\
+          \"documentation\":\"<p>The default MQTT client ID. For a typical device, the thing name is also used as the default MQTT client ID. Although we donât require a mapping between a thing's registry name and its use of MQTT client IDs, certificates, or shadow state, we recommend that you choose a thing name and use it as the MQTT client ID for the registry and the Device Shadow service.</p> <p>This lets you better organize your AWS IoT fleet without removing the flexibility of the underlying device certificate model or shadows.</p>\"\
         },\
         \"thingName\":{\
           \"shape\":\"ThingName\",\
@@ -6958,7 +9010,7 @@
         },\
         \"principal\":{\
           \"shape\":\"Principal\",\
-          \"documentation\":\"<p>The principal.</p> <p>If the principal is a certificate, specify the certificate ARN. If the principal is an Amazon Cognito identity, specify the identity ID.</p>\",\
+          \"documentation\":\"<p>The principal.</p> <p>Valid principals are CertificateArn (arn:aws:iot:<i>region</i>:<i>accountId</i>:cert/<i>certificateId</i>), thingGroupArn (arn:aws:iot:<i>region</i>:<i>accountId</i>:thinggroup/<i>groupName</i>) and CognitoId (<i>region</i>:<i>id</i>).</p>\",\
           \"location\":\"header\",\
           \"locationName\":\"x-amzn-iot-principal\"\
         }\
@@ -7032,9 +9084,165 @@
     },\
     \"DetailsValue\":{\
       \"type\":\"string\",\
-      \"max\":1024,\
       \"min\":1,\
-      \"pattern\":\"[^\\\\p{C}]*+\"\
+      \"pattern\":\"[^\\\\p{C}]+\"\
+    },\
+    \"DetectMitigationActionExecution\":{\
+      \"type\":\"structure\",\
+      \"members\":{\
+        \"taskId\":{\
+          \"shape\":\"MitigationActionsTaskId\",\
+          \"documentation\":\"<p> The unique identifier of the task. </p>\"\
+        },\
+        \"violationId\":{\
+          \"shape\":\"ViolationId\",\
+          \"documentation\":\"<p> The unique identifier of the violation. </p>\"\
+        },\
+        \"actionName\":{\
+          \"shape\":\"MitigationActionName\",\
+          \"documentation\":\"<p> The friendly name that uniquely identifies the mitigation action. </p>\"\
+        },\
+        \"thingName\":{\
+          \"shape\":\"DeviceDefenderThingName\",\
+          \"documentation\":\"<p> The name of the thing. </p>\"\
+        },\
+        \"executionStartDate\":{\
+          \"shape\":\"Timestamp\",\
+          \"documentation\":\"<p> The date a mitigation action was started. </p>\"\
+        },\
+        \"executionEndDate\":{\
+          \"shape\":\"Timestamp\",\
+          \"documentation\":\"<p> The date a mitigation action ended. </p>\"\
+        },\
+        \"status\":{\
+          \"shape\":\"DetectMitigationActionExecutionStatus\",\
+          \"documentation\":\"<p> The status of a mitigation action. </p>\"\
+        },\
+        \"errorCode\":{\
+          \"shape\":\"DetectMitigationActionExecutionErrorCode\",\
+          \"documentation\":\"<p> The error code of a mitigation action. </p>\"\
+        },\
+        \"message\":{\
+          \"shape\":\"ErrorMessage\",\
+          \"documentation\":\"<p> The message of a mitigation action. </p>\"\
+        }\
+      },\
+      \"documentation\":\"<p> Describes which mitigation actions should be executed. </p>\"\
+    },\
+    \"DetectMitigationActionExecutionErrorCode\":{\"type\":\"string\"},\
+    \"DetectMitigationActionExecutionList\":{\
+      \"type\":\"list\",\
+      \"member\":{\"shape\":\"DetectMitigationActionExecution\"}\
+    },\
+    \"DetectMitigationActionExecutionStatus\":{\
+      \"type\":\"string\",\
+      \"enum\":[\
+        \"IN_PROGRESS\",\
+        \"SUCCESSFUL\",\
+        \"FAILED\",\
+        \"SKIPPED\"\
+      ]\
+    },\
+    \"DetectMitigationActionsTaskStatistics\":{\
+      \"type\":\"structure\",\
+      \"members\":{\
+        \"actionsExecuted\":{\
+          \"shape\":\"GenericLongValue\",\
+          \"documentation\":\"<p> The actions that were performed. </p>\"\
+        },\
+        \"actionsSkipped\":{\
+          \"shape\":\"GenericLongValue\",\
+          \"documentation\":\"<p> The actions that were skipped. </p>\"\
+        },\
+        \"actionsFailed\":{\
+          \"shape\":\"GenericLongValue\",\
+          \"documentation\":\"<p> The actions that failed. </p>\"\
+        }\
+      },\
+      \"documentation\":\"<p> The statistics of a mitigation action task. </p>\"\
+    },\
+    \"DetectMitigationActionsTaskStatus\":{\
+      \"type\":\"string\",\
+      \"enum\":[\
+        \"IN_PROGRESS\",\
+        \"SUCCESSFUL\",\
+        \"FAILED\",\
+        \"CANCELED\"\
+      ]\
+    },\
+    \"DetectMitigationActionsTaskSummary\":{\
+      \"type\":\"structure\",\
+      \"members\":{\
+        \"taskId\":{\
+          \"shape\":\"MitigationActionsTaskId\",\
+          \"documentation\":\"<p> The unique identifier of the task. </p>\"\
+        },\
+        \"taskStatus\":{\
+          \"shape\":\"DetectMitigationActionsTaskStatus\",\
+          \"documentation\":\"<p> The status of the task. </p>\"\
+        },\
+        \"taskStartTime\":{\
+          \"shape\":\"Timestamp\",\
+          \"documentation\":\"<p> The date the task started. </p>\"\
+        },\
+        \"taskEndTime\":{\
+          \"shape\":\"Timestamp\",\
+          \"documentation\":\"<p> The date the task ended. </p>\"\
+        },\
+        \"target\":{\
+          \"shape\":\"DetectMitigationActionsTaskTarget\",\
+          \"documentation\":\"<p> Specifies the ML Detect findings to which the mitigation actions are applied. </p>\"\
+        },\
+        \"violationEventOccurrenceRange\":{\
+          \"shape\":\"ViolationEventOccurrenceRange\",\
+          \"documentation\":\"<p> Specifies the time period of which violation events occurred between. </p>\"\
+        },\
+        \"onlyActiveViolationsIncluded\":{\
+          \"shape\":\"PrimitiveBoolean\",\
+          \"documentation\":\"<p> Includes only active violations. </p>\"\
+        },\
+        \"suppressedAlertsIncluded\":{\
+          \"shape\":\"PrimitiveBoolean\",\
+          \"documentation\":\"<p> Includes suppressed alerts. </p>\"\
+        },\
+        \"actionsDefinition\":{\
+          \"shape\":\"MitigationActionList\",\
+          \"documentation\":\"<p> The definition of the actions. </p>\"\
+        },\
+        \"taskStatistics\":{\
+          \"shape\":\"DetectMitigationActionsTaskStatistics\",\
+          \"documentation\":\"<p> The statistics of a mitigation action task. </p>\"\
+        }\
+      },\
+      \"documentation\":\"<p> The summary of the mitigation action tasks. </p>\"\
+    },\
+    \"DetectMitigationActionsTaskSummaryList\":{\
+      \"type\":\"list\",\
+      \"member\":{\"shape\":\"DetectMitigationActionsTaskSummary\"}\
+    },\
+    \"DetectMitigationActionsTaskTarget\":{\
+      \"type\":\"structure\",\
+      \"members\":{\
+        \"violationIds\":{\
+          \"shape\":\"TargetViolationIdsForDetectMitigationActions\",\
+          \"documentation\":\"<p> The unique identifiers of the violations. </p>\"\
+        },\
+        \"securityProfileName\":{\
+          \"shape\":\"SecurityProfileName\",\
+          \"documentation\":\"<p> The name of the security profile. </p>\"\
+        },\
+        \"behaviorName\":{\
+          \"shape\":\"BehaviorName\",\
+          \"documentation\":\"<p> The name of the behavior. </p>\"\
+        }\
+      },\
+      \"documentation\":\"<p> The target of a mitigation action task. </p>\"\
+    },\
+    \"DetectMitigationActionsToExecuteList\":{\
+      \"type\":\"list\",\
+      \"member\":{\"shape\":\"MitigationActionName\"},\
+      \"max\":5,\
+      \"min\":1\
     },\
     \"DeviceCertificateUpdateAction\":{\
       \"type\":\"string\",\
@@ -7044,6 +9252,39 @@
       \"type\":\"string\",\
       \"max\":128,\
       \"min\":1\
+    },\
+    \"DimensionArn\":{\"type\":\"string\"},\
+    \"DimensionName\":{\
+      \"type\":\"string\",\
+      \"max\":128,\
+      \"min\":1,\
+      \"pattern\":\"[a-zA-Z0-9:_-]+\"\
+    },\
+    \"DimensionNames\":{\
+      \"type\":\"list\",\
+      \"member\":{\"shape\":\"DimensionName\"}\
+    },\
+    \"DimensionStringValue\":{\
+      \"type\":\"string\",\
+      \"max\":256,\
+      \"min\":1\
+    },\
+    \"DimensionStringValues\":{\
+      \"type\":\"list\",\
+      \"member\":{\"shape\":\"DimensionStringValue\"},\
+      \"max\":100,\
+      \"min\":1\
+    },\
+    \"DimensionType\":{\
+      \"type\":\"string\",\
+      \"enum\":[\"TOPIC_FILTER\"]\
+    },\
+    \"DimensionValueOperator\":{\
+      \"type\":\"string\",\
+      \"enum\":[\
+        \"IN\",\
+        \"NOT_IN\"\
+      ]\
     },\
     \"DisableAllLogs\":{\"type\":\"boolean\"},\
     \"DisableTopicRuleRequest\":{\
@@ -7058,6 +9299,55 @@
         }\
       },\
       \"documentation\":\"<p>The input for the DisableTopicRuleRequest operation.</p>\"\
+    },\
+    \"DomainConfigurationArn\":{\"type\":\"string\"},\
+    \"DomainConfigurationName\":{\
+      \"type\":\"string\",\
+      \"max\":128,\
+      \"min\":1,\
+      \"pattern\":\"[\\\\w.-]+\"\
+    },\
+    \"DomainConfigurationStatus\":{\
+      \"type\":\"string\",\
+      \"enum\":[\
+        \"ENABLED\",\
+        \"DISABLED\"\
+      ]\
+    },\
+    \"DomainConfigurationSummary\":{\
+      \"type\":\"structure\",\
+      \"members\":{\
+        \"domainConfigurationName\":{\
+          \"shape\":\"ReservedDomainConfigurationName\",\
+          \"documentation\":\"<p>The name of the domain configuration. This value must be unique to a region.</p>\"\
+        },\
+        \"domainConfigurationArn\":{\
+          \"shape\":\"DomainConfigurationArn\",\
+          \"documentation\":\"<p>The ARN of the domain configuration.</p>\"\
+        },\
+        \"serviceType\":{\
+          \"shape\":\"ServiceType\",\
+          \"documentation\":\"<p>The type of service delivered by the endpoint.</p>\"\
+        }\
+      },\
+      \"documentation\":\"<p>The summary of a domain configuration. A domain configuration specifies custom IoT-specific information about a domain. A domain configuration can be associated with an AWS-managed domain (for example, dbc123defghijk.iot.us-west-2.amazonaws.com), a customer managed domain, or a default endpoint.</p> <ul> <li> <p>Data</p> </li> <li> <p>Jobs</p> </li> <li> <p>CredentialProvider</p> </li> </ul> <note> <p>The domain configuration feature is in public preview and is subject to change.</p> </note>\"\
+    },\
+    \"DomainConfigurations\":{\
+      \"type\":\"list\",\
+      \"member\":{\"shape\":\"DomainConfigurationSummary\"}\
+    },\
+    \"DomainName\":{\
+      \"type\":\"string\",\
+      \"max\":253,\
+      \"min\":1\
+    },\
+    \"DomainType\":{\
+      \"type\":\"string\",\
+      \"enum\":[\
+        \"ENDPOINT\",\
+        \"AWS_MANAGED\",\
+        \"CUSTOMER_MANAGED\"\
+      ]\
     },\
     \"DurationSeconds\":{\"type\":\"integer\"},\
     \"DynamicGroupStatus\":{\
@@ -7217,11 +9507,11 @@
       \"members\":{\
         \"roleArnForLogging\":{\
           \"shape\":\"RoleArn\",\
-          \"documentation\":\"<p>The ARN of the IAM role used for logging.</p>\"\
+          \"documentation\":\"<p>The Amazon Resource Name (ARN) of the IAM role used for logging.</p>\"\
         },\
         \"logLevel\":{\
           \"shape\":\"LogLevel\",\
-          \"documentation\":\"<p>Specifies the types of information to be logged.</p>\"\
+          \"documentation\":\"<p>Specifies the type of information to be logged.</p>\"\
         }\
       },\
       \"documentation\":\"<p>Parameters used when defining a mitigation action that enable AWS IoT logging.</p>\"\
@@ -7241,7 +9531,10 @@
     },\
     \"Enabled\":{\"type\":\"boolean\"},\
     \"EndpointAddress\":{\"type\":\"string\"},\
-    \"EndpointType\":{\"type\":\"string\"},\
+    \"EndpointType\":{\
+      \"type\":\"string\",\
+      \"max\":128\
+    },\
     \"ErrorCode\":{\"type\":\"string\"},\
     \"ErrorInfo\":{\
       \"type\":\"structure\",\
@@ -7294,6 +9587,7 @@
       \"max\":3600,\
       \"min\":60\
     },\
+    \"ExpiresInSeconds\":{\"type\":\"long\"},\
     \"ExplicitDeny\":{\
       \"type\":\"structure\",\
       \"members\":{\
@@ -7318,11 +9612,11 @@
         },\
         \"incrementFactor\":{\
           \"shape\":\"IncrementFactor\",\
-          \"documentation\":\"<p>The exponential factor to increase the rate of rollout for a job.</p>\"\
+          \"documentation\":\"<p>The exponential factor to increase the rate of rollout for a job.</p> <p>AWS IoT supports up to one digit after the decimal (for example, 1.5, but not 1.55).</p>\"\
         },\
         \"rateIncreaseCriteria\":{\
           \"shape\":\"RateIncreaseCriteria\",\
-          \"documentation\":\"<p>The criteria to initiate the increase in rate of rollout for a job.</p> <p>AWS IoT supports up to one digit after the decimal (for example, 1.5, but not 1.55).</p>\"\
+          \"documentation\":\"<p>The criteria to initiate the increase in rate of rollout for a job.</p>\"\
         }\
       },\
       \"documentation\":\"<p>Allows you to create an exponential rate of rollout for a job.</p>\"\
@@ -7330,6 +9624,33 @@
     \"FailedChecksCount\":{\"type\":\"integer\"},\
     \"FailedFindingsCount\":{\"type\":\"long\"},\
     \"FailedThings\":{\"type\":\"integer\"},\
+    \"Field\":{\
+      \"type\":\"structure\",\
+      \"members\":{\
+        \"name\":{\
+          \"shape\":\"FieldName\",\
+          \"documentation\":\"<p>The name of the field.</p>\"\
+        },\
+        \"type\":{\
+          \"shape\":\"FieldType\",\
+          \"documentation\":\"<p>The datatype of the field.</p>\"\
+        }\
+      },\
+      \"documentation\":\"<p>Describes the name and data type at a field.</p>\"\
+    },\
+    \"FieldName\":{\"type\":\"string\"},\
+    \"FieldType\":{\
+      \"type\":\"string\",\
+      \"enum\":[\
+        \"Number\",\
+        \"String\",\
+        \"Boolean\"\
+      ]\
+    },\
+    \"Fields\":{\
+      \"type\":\"list\",\
+      \"member\":{\"shape\":\"Field\"}\
+    },\
     \"FileId\":{\
       \"type\":\"integer\",\
       \"max\":255,\
@@ -7350,6 +9671,11 @@
       \"documentation\":\"<p>The location of the OTA update.</p>\"\
     },\
     \"FileName\":{\"type\":\"string\"},\
+    \"FileType\":{\
+      \"type\":\"integer\",\
+      \"max\":255,\
+      \"min\":0\
+    },\
     \"FindingId\":{\
       \"type\":\"string\",\
       \"max\":128,\
@@ -7380,6 +9706,10 @@
         \"separator\":{\
           \"shape\":\"FirehoseSeparator\",\
           \"documentation\":\"<p>A character separator that will be used to separate records written to the Firehose stream. Valid values are: '\\\\n' (newline), '\\\\t' (tab), '\\\\r\\\\n' (Windows newline), ',' (comma).</p>\"\
+        },\
+        \"batchMode\":{\
+          \"shape\":\"BatchMode\",\
+          \"documentation\":\"<p>Whether to deliver the Kinesis Data Firehose stream as a batch by using <a href=\\\"https://docs.aws.amazon.com/firehose/latest/APIReference/API_PutRecordBatch.html\\\"> <code>PutRecordBatch</code> </a>. The default value is <code>false</code>.</p> <p>When <code>batchMode</code> is <code>true</code> and the rule's SQL statement evaluates to an Array, each Array element forms one record in the <a href=\\\"https://docs.aws.amazon.com/firehose/latest/APIReference/API_PutRecordBatch.html\\\"> <code>PutRecordBatch</code> </a> request. The resulting array can't have more than 500 records.</p>\"\
         }\
       },\
       \"documentation\":\"<p>Describes an action that writes data to an Amazon Kinesis Firehose stream.</p>\"\
@@ -7394,18 +9724,81 @@
     \"ForceFlag\":{\"type\":\"boolean\"},\
     \"Forced\":{\"type\":\"boolean\"},\
     \"FunctionArn\":{\"type\":\"string\"},\
-    \"GEMaxResults\":{\
-      \"type\":\"integer\",\
-      \"max\":10000,\
-      \"min\":1\
-    },\
     \"GenerationId\":{\"type\":\"string\"},\
+    \"GenericLongValue\":{\"type\":\"long\"},\
+    \"GetBehaviorModelTrainingSummariesRequest\":{\
+      \"type\":\"structure\",\
+      \"members\":{\
+        \"securityProfileName\":{\
+          \"shape\":\"SecurityProfileName\",\
+          \"documentation\":\"<p> The name of the security profile. </p>\",\
+          \"location\":\"querystring\",\
+          \"locationName\":\"securityProfileName\"\
+        },\
+        \"maxResults\":{\
+          \"shape\":\"TinyMaxResults\",\
+          \"documentation\":\"<p> The maximum number of results to return at one time. The default is 25. </p>\",\
+          \"location\":\"querystring\",\
+          \"locationName\":\"maxResults\"\
+        },\
+        \"nextToken\":{\
+          \"shape\":\"NextToken\",\
+          \"documentation\":\"<p> The token for the next set of results. </p>\",\
+          \"location\":\"querystring\",\
+          \"locationName\":\"nextToken\"\
+        }\
+      }\
+    },\
+    \"GetBehaviorModelTrainingSummariesResponse\":{\
+      \"type\":\"structure\",\
+      \"members\":{\
+        \"summaries\":{\
+          \"shape\":\"BehaviorModelTrainingSummaries\",\
+          \"documentation\":\"<p> A list of all ML Detect behaviors and their model status for a given Security Profile. </p>\"\
+        },\
+        \"nextToken\":{\
+          \"shape\":\"NextToken\",\
+          \"documentation\":\"<p> A token that can be used to retrieve the next set of results, or <code>null</code> if there are no additional results. </p>\"\
+        }\
+      }\
+    },\
+    \"GetCardinalityRequest\":{\
+      \"type\":\"structure\",\
+      \"required\":[\"queryString\"],\
+      \"members\":{\
+        \"indexName\":{\
+          \"shape\":\"IndexName\",\
+          \"documentation\":\"<p>The name of the index to search.</p>\"\
+        },\
+        \"queryString\":{\
+          \"shape\":\"QueryString\",\
+          \"documentation\":\"<p>The search query.</p>\"\
+        },\
+        \"aggregationField\":{\
+          \"shape\":\"AggregationField\",\
+          \"documentation\":\"<p>The field to aggregate.</p>\"\
+        },\
+        \"queryVersion\":{\
+          \"shape\":\"QueryVersion\",\
+          \"documentation\":\"<p>The query version.</p>\"\
+        }\
+      }\
+    },\
+    \"GetCardinalityResponse\":{\
+      \"type\":\"structure\",\
+      \"members\":{\
+        \"cardinality\":{\
+          \"shape\":\"Count\",\
+          \"documentation\":\"<p>The approximate count of unique values that match the query.</p>\"\
+        }\
+      }\
+    },\
     \"GetEffectivePoliciesRequest\":{\
       \"type\":\"structure\",\
       \"members\":{\
         \"principal\":{\
           \"shape\":\"Principal\",\
-          \"documentation\":\"<p>The principal.</p>\"\
+          \"documentation\":\"<p>The principal. Valid principals are CertificateArn (arn:aws:iot:<i>region</i>:<i>accountId</i>:cert/<i>certificateId</i>), thingGroupArn (arn:aws:iot:<i>region</i>:<i>accountId</i>:thinggroup/<i>groupName</i>) and CognitoId (<i>region</i>:<i>id</i>).</p>\"\
         },\
         \"cognitoIdentityPoolId\":{\
           \"shape\":\"CognitoIdentityPoolId\",\
@@ -7508,6 +9901,41 @@
         }\
       }\
     },\
+    \"GetPercentilesRequest\":{\
+      \"type\":\"structure\",\
+      \"required\":[\"queryString\"],\
+      \"members\":{\
+        \"indexName\":{\
+          \"shape\":\"IndexName\",\
+          \"documentation\":\"<p>The name of the index to search.</p>\"\
+        },\
+        \"queryString\":{\
+          \"shape\":\"QueryString\",\
+          \"documentation\":\"<p>The query string.</p>\"\
+        },\
+        \"aggregationField\":{\
+          \"shape\":\"AggregationField\",\
+          \"documentation\":\"<p>The field to aggregate.</p>\"\
+        },\
+        \"queryVersion\":{\
+          \"shape\":\"QueryVersion\",\
+          \"documentation\":\"<p>The query version.</p>\"\
+        },\
+        \"percents\":{\
+          \"shape\":\"PercentList\",\
+          \"documentation\":\"<p>The percentile groups returned.</p>\"\
+        }\
+      }\
+    },\
+    \"GetPercentilesResponse\":{\
+      \"type\":\"structure\",\
+      \"members\":{\
+        \"percentiles\":{\
+          \"shape\":\"Percentiles\",\
+          \"documentation\":\"<p>The percentile values of the aggregated fields.</p>\"\
+        }\
+      }\
+    },\
     \"GetPolicyRequest\":{\
       \"type\":\"structure\",\
       \"required\":[\"policyName\"],\
@@ -7602,11 +10030,11 @@
         },\
         \"creationDate\":{\
           \"shape\":\"DateType\",\
-          \"documentation\":\"<p>The date the policy version was created.</p>\"\
+          \"documentation\":\"<p>The date the policy was created.</p>\"\
         },\
         \"lastModifiedDate\":{\
           \"shape\":\"DateType\",\
-          \"documentation\":\"<p>The date the policy version was last modified.</p>\"\
+          \"documentation\":\"<p>The date the policy was last modified.</p>\"\
         },\
         \"generationId\":{\
           \"shape\":\"GenerationId\",\
@@ -7645,7 +10073,7 @@
         },\
         \"aggregationField\":{\
           \"shape\":\"AggregationField\",\
-          \"documentation\":\"<p>The aggregation field name. Currently not supported.</p>\"\
+          \"documentation\":\"<p>The aggregation field name.</p>\"\
         },\
         \"queryVersion\":{\
           \"shape\":\"QueryVersion\",\
@@ -7659,6 +10087,27 @@
         \"statistics\":{\
           \"shape\":\"Statistics\",\
           \"documentation\":\"<p>The statistics returned by the Fleet Indexing service based on the query and aggregation field.</p>\"\
+        }\
+      }\
+    },\
+    \"GetTopicRuleDestinationRequest\":{\
+      \"type\":\"structure\",\
+      \"required\":[\"arn\"],\
+      \"members\":{\
+        \"arn\":{\
+          \"shape\":\"AwsArn\",\
+          \"documentation\":\"<p>The ARN of the topic rule destination.</p>\",\
+          \"location\":\"uri\",\
+          \"locationName\":\"arn\"\
+        }\
+      }\
+    },\
+    \"GetTopicRuleDestinationResponse\":{\
+      \"type\":\"structure\",\
+      \"members\":{\
+        \"topicRuleDestination\":{\
+          \"shape\":\"TopicRuleDestination\",\
+          \"documentation\":\"<p>The topic rule destination.</p>\"\
         }\
       }\
     },\
@@ -7728,6 +10177,134 @@
     \"HashAlgorithm\":{\"type\":\"string\"},\
     \"HashKeyField\":{\"type\":\"string\"},\
     \"HashKeyValue\":{\"type\":\"string\"},\
+    \"HeaderKey\":{\
+      \"type\":\"string\",\
+      \"max\":256,\
+      \"min\":1\
+    },\
+    \"HeaderList\":{\
+      \"type\":\"list\",\
+      \"member\":{\"shape\":\"HttpActionHeader\"},\
+      \"max\":100,\
+      \"min\":0\
+    },\
+    \"HeaderValue\":{\"type\":\"string\"},\
+    \"HttpAction\":{\
+      \"type\":\"structure\",\
+      \"required\":[\"url\"],\
+      \"members\":{\
+        \"url\":{\
+          \"shape\":\"Url\",\
+          \"documentation\":\"<p>The endpoint URL. If substitution templates are used in the URL, you must also specify a <code>confirmationUrl</code>. If this is a new destination, a new <code>TopicRuleDestination</code> is created if possible.</p>\"\
+        },\
+        \"confirmationUrl\":{\
+          \"shape\":\"Url\",\
+          \"documentation\":\"<p>The URL to which AWS IoT sends a confirmation message. The value of the confirmation URL must be a prefix of the endpoint URL. If you do not specify a confirmation URL AWS IoT uses the endpoint URL as the confirmation URL. If you use substitution templates in the confirmationUrl, you must create and enable topic rule destinations that match each possible value of the substitution template before traffic is allowed to your endpoint URL.</p>\"\
+        },\
+        \"headers\":{\
+          \"shape\":\"HeaderList\",\
+          \"documentation\":\"<p>The HTTP headers to send with the message data.</p>\"\
+        },\
+        \"auth\":{\
+          \"shape\":\"HttpAuthorization\",\
+          \"documentation\":\"<p>The authentication method to use when sending data to an HTTPS endpoint.</p>\"\
+        }\
+      },\
+      \"documentation\":\"<p>Send data to an HTTPS endpoint.</p>\"\
+    },\
+    \"HttpActionHeader\":{\
+      \"type\":\"structure\",\
+      \"required\":[\
+        \"key\",\
+        \"value\"\
+      ],\
+      \"members\":{\
+        \"key\":{\
+          \"shape\":\"HeaderKey\",\
+          \"documentation\":\"<p>The HTTP header key.</p>\"\
+        },\
+        \"value\":{\
+          \"shape\":\"HeaderValue\",\
+          \"documentation\":\"<p>The HTTP header value. Substitution templates are supported.</p>\"\
+        }\
+      },\
+      \"documentation\":\"<p>The HTTP action header.</p>\"\
+    },\
+    \"HttpAuthorization\":{\
+      \"type\":\"structure\",\
+      \"members\":{\
+        \"sigv4\":{\
+          \"shape\":\"SigV4Authorization\",\
+          \"documentation\":\"<p>Use Sig V4 authorization. For more information, see <a href=\\\"https://docs.aws.amazon.com/general/latest/gr/signature-version-4.html\\\">Signature Version 4 Signing Process</a>.</p>\"\
+        }\
+      },\
+      \"documentation\":\"<p>The authorization method used to send messages.</p>\"\
+    },\
+    \"HttpContext\":{\
+      \"type\":\"structure\",\
+      \"members\":{\
+        \"headers\":{\
+          \"shape\":\"HttpHeaders\",\
+          \"documentation\":\"<p>The header keys and values in an HTTP authorization request.</p>\"\
+        },\
+        \"queryString\":{\
+          \"shape\":\"HttpQueryString\",\
+          \"documentation\":\"<p>The query string keys and values in an HTTP authorization request.</p>\"\
+        }\
+      },\
+      \"documentation\":\"<p>Specifies the HTTP context to use for the test authorizer request.</p>\"\
+    },\
+    \"HttpHeaderName\":{\
+      \"type\":\"string\",\
+      \"max\":8192,\
+      \"min\":1\
+    },\
+    \"HttpHeaderValue\":{\
+      \"type\":\"string\",\
+      \"max\":8192,\
+      \"min\":1\
+    },\
+    \"HttpHeaders\":{\
+      \"type\":\"map\",\
+      \"key\":{\"shape\":\"HttpHeaderName\"},\
+      \"value\":{\"shape\":\"HttpHeaderValue\"}\
+    },\
+    \"HttpQueryString\":{\
+      \"type\":\"string\",\
+      \"max\":4096,\
+      \"min\":1\
+    },\
+    \"HttpUrlDestinationConfiguration\":{\
+      \"type\":\"structure\",\
+      \"required\":[\"confirmationUrl\"],\
+      \"members\":{\
+        \"confirmationUrl\":{\
+          \"shape\":\"Url\",\
+          \"documentation\":\"<p>The URL AWS IoT uses to confirm ownership of or access to the topic rule destination URL.</p>\"\
+        }\
+      },\
+      \"documentation\":\"<p>HTTP URL destination configuration used by the topic rule's HTTP action.</p>\"\
+    },\
+    \"HttpUrlDestinationProperties\":{\
+      \"type\":\"structure\",\
+      \"members\":{\
+        \"confirmationUrl\":{\
+          \"shape\":\"Url\",\
+          \"documentation\":\"<p>The URL used to confirm the HTTP topic rule destination URL.</p>\"\
+        }\
+      },\
+      \"documentation\":\"<p>HTTP URL destination properties.</p>\"\
+    },\
+    \"HttpUrlDestinationSummary\":{\
+      \"type\":\"structure\",\
+      \"members\":{\
+        \"confirmationUrl\":{\
+          \"shape\":\"Url\",\
+          \"documentation\":\"<p>The URL used to confirm ownership of or access to the HTTP topic rule destination URL.</p>\"\
+        }\
+      },\
+      \"documentation\":\"<p>Information about an HTTP URL destination.</p>\"\
+    },\
     \"ImplicitDeny\":{\
       \"type\":\"structure\",\
       \"members\":{\
@@ -7877,6 +10454,10 @@
           \"shape\":\"ChannelName\",\
           \"documentation\":\"<p>The name of the IoT Analytics channel to which message data will be sent.</p>\"\
         },\
+        \"batchMode\":{\
+          \"shape\":\"BatchMode\",\
+          \"documentation\":\"<p>Whether to process the action as a batch. The default value is <code>false</code>.</p> <p>When <code>batchMode</code> is <code>true</code> and the rule SQL statement evaluates to an Array, each Array element is delivered as a separate message when passed by <a href=\\\"https://docs.aws.amazon.com/iotanalytics/latest/APIReference/API_BatchPutMessage.html\\\"> <code>BatchPutMessage</code> </a> to the AWS IoT Analytics channel. The resulting array can't have more than 100 messages.</p>\"\
+        },\
         \"roleArn\":{\
           \"shape\":\"AwsArn\",\
           \"documentation\":\"<p>The ARN of the role which has a policy that grants IoT Analytics permission to send message data via IoT Analytics (iotanalytics:BatchPutMessage).</p>\"\
@@ -7897,7 +10478,11 @@
         },\
         \"messageId\":{\
           \"shape\":\"MessageId\",\
-          \"documentation\":\"<p>[Optional] Use this to ensure that only one input (message) with a given messageId will be processed by an AWS IoT Events detector.</p>\"\
+          \"documentation\":\"<p>The ID of the message. The default <code>messageId</code> is a new UUID value.</p> <p>When <code>batchMode</code> is <code>true</code>, you can't specify a <code>messageId</code>--a new UUID value will be assigned.</p> <p>Assign a value to this property to ensure that only one input (message) with a given <code>messageId</code> will be processed by an AWS IoT Events detector.</p>\"\
+        },\
+        \"batchMode\":{\
+          \"shape\":\"BatchMode\",\
+          \"documentation\":\"<p>Whether to process the event actions as a batch. The default value is <code>false</code>.</p> <p>When <code>batchMode</code> is <code>true</code>, you can't specify a <code>messageId</code>. </p> <p>When <code>batchMode</code> is <code>true</code> and the rule SQL statement evaluates to an Array, each Array element is treated as a separate message when it's sent to AWS IoT Events by calling <a href=\\\"https://docs.aws.amazon.com/iotevents/latest/apireference/API_iotevents-data_BatchPutMessage.html\\\"> <code>BatchPutMessage</code> </a>. The resulting array can't have more than 10 messages.</p>\"\
         },\
         \"roleArn\":{\
           \"shape\":\"AwsArn\",\
@@ -7906,9 +10491,28 @@
       },\
       \"documentation\":\"<p>Sends an input to an AWS IoT Events detector.</p>\"\
     },\
+    \"IotSiteWiseAction\":{\
+      \"type\":\"structure\",\
+      \"required\":[\
+        \"putAssetPropertyValueEntries\",\
+        \"roleArn\"\
+      ],\
+      \"members\":{\
+        \"putAssetPropertyValueEntries\":{\
+          \"shape\":\"PutAssetPropertyValueEntryList\",\
+          \"documentation\":\"<p>A list of asset property value entries.</p>\"\
+        },\
+        \"roleArn\":{\
+          \"shape\":\"AwsArn\",\
+          \"documentation\":\"<p>The ARN of the role that grants AWS IoT permission to send an asset property value to AWS IoTSiteWise. (<code>\\\"Action\\\": \\\"iotsitewise:BatchPutAssetPropertyValue\\\"</code>). The trust policy can restrict access to specific asset hierarchy paths.</p>\"\
+        }\
+      },\
+      \"documentation\":\"<p>Describes an action to send data from an MQTT message that triggered the rule to AWS IoT SiteWise asset properties.</p>\"\
+    },\
     \"IsAuthenticated\":{\"type\":\"boolean\"},\
     \"IsDefaultVersion\":{\"type\":\"boolean\"},\
     \"IsDisabled\":{\"type\":\"boolean\"},\
+    \"IsSuppressed\":{\"type\":\"boolean\"},\
     \"Job\":{\
       \"type\":\"structure\",\
       \"members\":{\
@@ -7979,6 +10583,10 @@
         \"timeoutConfig\":{\
           \"shape\":\"TimeoutConfig\",\
           \"documentation\":\"<p>Specifies the amount of time each device has to finish its execution of the job. A timer is started when the job execution status is set to <code>IN_PROGRESS</code>. If the job execution status is not set to another terminal state before the timer expires, it will be automatically set to <code>TIMED_OUT</code>.</p>\"\
+        },\
+        \"namespaceId\":{\
+          \"shape\":\"NamespaceId\",\
+          \"documentation\":\"<p>The namespace used to indicate that a job is a customer-managed job.</p> <p>When you specify a value for this parameter, AWS IoT Core sends jobs notifications to MQTT topics that contain the value in the following format.</p> <p> <code>$aws/things/<i>THING_NAME</i>/jobs/<i>JOB_ID</i>/notify-namespace-<i>NAMESPACE_ID</i>/</code> </p> <note> <p>The <code>namespaceId</code> feature is in public preview.</p> </note>\"\
         }\
       },\
       \"documentation\":\"<p>The <code>Job</code> object contains details about a job.</p>\"\
@@ -8261,6 +10869,37 @@
       \"min\":1\
     },\
     \"JsonDocument\":{\"type\":\"string\"},\
+    \"KafkaAction\":{\
+      \"type\":\"structure\",\
+      \"required\":[\
+        \"destinationArn\",\
+        \"topic\",\
+        \"clientProperties\"\
+      ],\
+      \"members\":{\
+        \"destinationArn\":{\
+          \"shape\":\"AwsArn\",\
+          \"documentation\":\"<p>The ARN of Kafka action's VPC <code>TopicRuleDestination</code>.</p>\"\
+        },\
+        \"topic\":{\
+          \"shape\":\"String\",\
+          \"documentation\":\"<p>The Kafka topic for messages to be sent to the Kafka broker.</p>\"\
+        },\
+        \"key\":{\
+          \"shape\":\"String\",\
+          \"documentation\":\"<p>The Kafka message key.</p>\"\
+        },\
+        \"partition\":{\
+          \"shape\":\"String\",\
+          \"documentation\":\"<p>The Kafka message partition.</p>\"\
+        },\
+        \"clientProperties\":{\
+          \"shape\":\"ClientProperties\",\
+          \"documentation\":\"<p>Properties of the Apache Kafka producer client.</p>\"\
+        }\
+      },\
+      \"documentation\":\"<p>Send messages to an Amazon Managed Streaming for Apache Kafka (Amazon MSK) or self-managed Apache Kafka cluster.</p>\"\
+    },\
     \"Key\":{\"type\":\"string\"},\
     \"KeyName\":{\
       \"type\":\"string\",\
@@ -8325,6 +10964,7 @@
       \"min\":1\
     },\
     \"LastModifiedDate\":{\"type\":\"timestamp\"},\
+    \"LastUpdatedAtDate\":{\"type\":\"timestamp\"},\
     \"LimitExceededException\":{\
       \"type\":\"structure\",\
       \"members\":{\
@@ -8351,6 +10991,18 @@
           \"documentation\":\"<p>The name of the Device Defender security profile for which violations are listed.</p>\",\
           \"location\":\"querystring\",\
           \"locationName\":\"securityProfileName\"\
+        },\
+        \"behaviorCriteriaType\":{\
+          \"shape\":\"BehaviorCriteriaType\",\
+          \"documentation\":\"<p> The criteria for a behavior. </p>\",\
+          \"location\":\"querystring\",\
+          \"locationName\":\"behaviorCriteriaType\"\
+        },\
+        \"listSuppressedAlerts\":{\
+          \"shape\":\"ListSuppressedAlerts\",\
+          \"documentation\":\"<p> A list of all suppressed alerts. </p>\",\
+          \"location\":\"querystring\",\
+          \"locationName\":\"listSuppressedAlerts\"\
         },\
         \"nextToken\":{\
           \"shape\":\"NextToken\",\
@@ -8385,7 +11037,7 @@
       \"members\":{\
         \"target\":{\
           \"shape\":\"PolicyTarget\",\
-          \"documentation\":\"<p>The group or principal for which the policies will be listed.</p>\",\
+          \"documentation\":\"<p>The group or principal for which the policies will be listed. Valid principals are CertificateArn (arn:aws:iot:<i>region</i>:<i>accountId</i>:cert/<i>certificateId</i>), thingGroupArn (arn:aws:iot:<i>region</i>:<i>accountId</i>:thinggroup/<i>groupName</i>) and CognitoId (<i>region</i>:<i>id</i>).</p>\",\
           \"location\":\"uri\",\
           \"locationName\":\"target\"\
         },\
@@ -8452,6 +11104,10 @@
         \"endTime\":{\
           \"shape\":\"Timestamp\",\
           \"documentation\":\"<p>A filter to limit results to those found before the specified time. You must specify either the startTime and endTime or the taskId, but not both.</p>\"\
+        },\
+        \"listSuppressedFindings\":{\
+          \"shape\":\"ListSuppressedFindings\",\
+          \"documentation\":\"<p> Boolean flag indicating whether only the suppressed findings or the unsuppressed findings should be listed. If this parameter isn't provided, the response will list both suppressed and unsuppressed findings. </p>\"\
         }\
       }\
     },\
@@ -8476,7 +11132,7 @@
       ],\
       \"members\":{\
         \"taskId\":{\
-          \"shape\":\"AuditMitigationActionsTaskId\",\
+          \"shape\":\"MitigationActionsTaskId\",\
           \"documentation\":\"<p>Specify this filter to limit results to actions for a specific audit mitigation actions task.</p>\",\
           \"location\":\"querystring\",\
           \"locationName\":\"taskId\"\
@@ -8584,6 +11240,38 @@
         }\
       }\
     },\
+    \"ListAuditSuppressionsRequest\":{\
+      \"type\":\"structure\",\
+      \"members\":{\
+        \"checkName\":{\"shape\":\"AuditCheckName\"},\
+        \"resourceIdentifier\":{\"shape\":\"ResourceIdentifier\"},\
+        \"ascendingOrder\":{\
+          \"shape\":\"AscendingOrder\",\
+          \"documentation\":\"<p> Determines whether suppressions are listed in ascending order by expiration date or not. If parameter isn't provided, <code>ascendingOrder=true</code>. </p>\"\
+        },\
+        \"nextToken\":{\
+          \"shape\":\"NextToken\",\
+          \"documentation\":\"<p> The token for the next set of results. </p>\"\
+        },\
+        \"maxResults\":{\
+          \"shape\":\"MaxResults\",\
+          \"documentation\":\"<p> The maximum number of results to return at one time. The default is 25. </p>\"\
+        }\
+      }\
+    },\
+    \"ListAuditSuppressionsResponse\":{\
+      \"type\":\"structure\",\
+      \"members\":{\
+        \"suppressions\":{\
+          \"shape\":\"AuditSuppressionList\",\
+          \"documentation\":\"<p> List of audit suppressions. </p>\"\
+        },\
+        \"nextToken\":{\
+          \"shape\":\"NextToken\",\
+          \"documentation\":\"<p> A token that can be used to retrieve the next set of results, or <code>null</code> if there are no additional results. </p>\"\
+        }\
+      }\
+    },\
     \"ListAuditTasksRequest\":{\
       \"type\":\"structure\",\
       \"required\":[\
@@ -8593,7 +11281,7 @@
       \"members\":{\
         \"startTime\":{\
           \"shape\":\"Timestamp\",\
-          \"documentation\":\"<p>The beginning of the time period. Audit information is retained for a limited time (180 days). Requesting a start time prior to what is retained results in an \\\"InvalidRequestException\\\".</p>\",\
+          \"documentation\":\"<p>The beginning of the time period. Audit information is retained for a limited time (90 days). Requesting a start time prior to what is retained results in an \\\"InvalidRequestException\\\".</p>\",\
           \"location\":\"querystring\",\
           \"locationName\":\"startTime\"\
         },\
@@ -8689,7 +11377,7 @@
       \"members\":{\
         \"nextToken\":{\
           \"shape\":\"NextToken\",\
-          \"documentation\":\"<p>The token to retrieve the next set of results.</p>\",\
+          \"documentation\":\"<p>To retrieve the next set of results, the <code>nextToken</code> value from a previous response; otherwise <b>null</b> to receive the first set of results.</p>\",\
           \"location\":\"querystring\",\
           \"locationName\":\"nextToken\"\
         },\
@@ -8716,7 +11404,7 @@
         },\
         \"nextToken\":{\
           \"shape\":\"NextToken\",\
-          \"documentation\":\"<p>The token used to get the next set of results, or <b>null</b> if there are no additional results.</p>\"\
+          \"documentation\":\"<p>The token to use to get the next set of results, or <b>null</b> if there are no additional results.</p>\"\
         }\
       }\
     },\
@@ -8841,12 +11529,214 @@
       },\
       \"documentation\":\"<p>The output of the ListCertificates operation.</p>\"\
     },\
+    \"ListCustomMetricsRequest\":{\
+      \"type\":\"structure\",\
+      \"members\":{\
+        \"nextToken\":{\
+          \"shape\":\"NextToken\",\
+          \"documentation\":\"<p> The token for the next set of results. </p>\",\
+          \"location\":\"querystring\",\
+          \"locationName\":\"nextToken\"\
+        },\
+        \"maxResults\":{\
+          \"shape\":\"MaxResults\",\
+          \"documentation\":\"<p> The maximum number of results to return at one time. The default is 25. </p>\",\
+          \"location\":\"querystring\",\
+          \"locationName\":\"maxResults\"\
+        }\
+      }\
+    },\
+    \"ListCustomMetricsResponse\":{\
+      \"type\":\"structure\",\
+      \"members\":{\
+        \"metricNames\":{\
+          \"shape\":\"MetricNames\",\
+          \"documentation\":\"<p> The name of the custom metric. </p>\"\
+        },\
+        \"nextToken\":{\
+          \"shape\":\"NextToken\",\
+          \"documentation\":\"<p> A token that can be used to retrieve the next set of results, or <code>null</code> if there are no additional results. </p>\"\
+        }\
+      }\
+    },\
+    \"ListDetectMitigationActionsExecutionsRequest\":{\
+      \"type\":\"structure\",\
+      \"members\":{\
+        \"taskId\":{\
+          \"shape\":\"MitigationActionsTaskId\",\
+          \"documentation\":\"<p> The unique identifier of the task. </p>\",\
+          \"location\":\"querystring\",\
+          \"locationName\":\"taskId\"\
+        },\
+        \"violationId\":{\
+          \"shape\":\"ViolationId\",\
+          \"documentation\":\"<p> The unique identifier of the violation. </p>\",\
+          \"location\":\"querystring\",\
+          \"locationName\":\"violationId\"\
+        },\
+        \"thingName\":{\
+          \"shape\":\"DeviceDefenderThingName\",\
+          \"documentation\":\"<p> The name of the thing whose mitigation actions are listed. </p>\",\
+          \"location\":\"querystring\",\
+          \"locationName\":\"thingName\"\
+        },\
+        \"startTime\":{\
+          \"shape\":\"Timestamp\",\
+          \"documentation\":\"<p> A filter to limit results to those found after the specified time. You must specify either the startTime and endTime or the taskId, but not both. </p>\",\
+          \"location\":\"querystring\",\
+          \"locationName\":\"startTime\"\
+        },\
+        \"endTime\":{\
+          \"shape\":\"Timestamp\",\
+          \"documentation\":\"<p> The end of the time period for which ML Detect mitigation actions executions are returned. </p>\",\
+          \"location\":\"querystring\",\
+          \"locationName\":\"endTime\"\
+        },\
+        \"maxResults\":{\
+          \"shape\":\"MaxResults\",\
+          \"documentation\":\"<p> The maximum number of results to return at one time. The default is 25. </p>\",\
+          \"location\":\"querystring\",\
+          \"locationName\":\"maxResults\"\
+        },\
+        \"nextToken\":{\
+          \"shape\":\"NextToken\",\
+          \"documentation\":\"<p> The token for the next set of results. </p>\",\
+          \"location\":\"querystring\",\
+          \"locationName\":\"nextToken\"\
+        }\
+      }\
+    },\
+    \"ListDetectMitigationActionsExecutionsResponse\":{\
+      \"type\":\"structure\",\
+      \"members\":{\
+        \"actionsExecutions\":{\
+          \"shape\":\"DetectMitigationActionExecutionList\",\
+          \"documentation\":\"<p> List of actions executions. </p>\"\
+        },\
+        \"nextToken\":{\
+          \"shape\":\"NextToken\",\
+          \"documentation\":\"<p> A token that can be used to retrieve the next set of results, or <code>null</code> if there are no additional results. </p>\"\
+        }\
+      }\
+    },\
+    \"ListDetectMitigationActionsTasksRequest\":{\
+      \"type\":\"structure\",\
+      \"required\":[\
+        \"startTime\",\
+        \"endTime\"\
+      ],\
+      \"members\":{\
+        \"maxResults\":{\
+          \"shape\":\"MaxResults\",\
+          \"documentation\":\"<p>The maximum number of results to return at one time. The default is 25.</p>\",\
+          \"location\":\"querystring\",\
+          \"locationName\":\"maxResults\"\
+        },\
+        \"nextToken\":{\
+          \"shape\":\"NextToken\",\
+          \"documentation\":\"<p> The token for the next set of results. </p>\",\
+          \"location\":\"querystring\",\
+          \"locationName\":\"nextToken\"\
+        },\
+        \"startTime\":{\
+          \"shape\":\"Timestamp\",\
+          \"documentation\":\"<p> A filter to limit results to those found after the specified time. You must specify either the startTime and endTime or the taskId, but not both. </p>\",\
+          \"location\":\"querystring\",\
+          \"locationName\":\"startTime\"\
+        },\
+        \"endTime\":{\
+          \"shape\":\"Timestamp\",\
+          \"documentation\":\"<p> The end of the time period for which ML Detect mitigation actions tasks are returned. </p>\",\
+          \"location\":\"querystring\",\
+          \"locationName\":\"endTime\"\
+        }\
+      }\
+    },\
+    \"ListDetectMitigationActionsTasksResponse\":{\
+      \"type\":\"structure\",\
+      \"members\":{\
+        \"tasks\":{\
+          \"shape\":\"DetectMitigationActionsTaskSummaryList\",\
+          \"documentation\":\"<p> The collection of ML Detect mitigation tasks that matched the filter criteria. </p>\"\
+        },\
+        \"nextToken\":{\
+          \"shape\":\"NextToken\",\
+          \"documentation\":\"<p> A token that can be used to retrieve the next set of results, or <code>null</code> if there are no additional results. </p>\"\
+        }\
+      }\
+    },\
+    \"ListDimensionsRequest\":{\
+      \"type\":\"structure\",\
+      \"members\":{\
+        \"nextToken\":{\
+          \"shape\":\"NextToken\",\
+          \"documentation\":\"<p>The token for the next set of results.</p>\",\
+          \"location\":\"querystring\",\
+          \"locationName\":\"nextToken\"\
+        },\
+        \"maxResults\":{\
+          \"shape\":\"MaxResults\",\
+          \"documentation\":\"<p>The maximum number of results to retrieve at one time.</p>\",\
+          \"location\":\"querystring\",\
+          \"locationName\":\"maxResults\"\
+        }\
+      }\
+    },\
+    \"ListDimensionsResponse\":{\
+      \"type\":\"structure\",\
+      \"members\":{\
+        \"dimensionNames\":{\
+          \"shape\":\"DimensionNames\",\
+          \"documentation\":\"<p>A list of the names of the defined dimensions. Use <code>DescribeDimension</code> to get details for a dimension.</p>\"\
+        },\
+        \"nextToken\":{\
+          \"shape\":\"NextToken\",\
+          \"documentation\":\"<p>A token that can be used to retrieve the next set of results, or <code>null</code> if there are no additional results.</p>\"\
+        }\
+      }\
+    },\
+    \"ListDomainConfigurationsRequest\":{\
+      \"type\":\"structure\",\
+      \"members\":{\
+        \"marker\":{\
+          \"shape\":\"Marker\",\
+          \"documentation\":\"<p>The marker for the next set of results.</p>\",\
+          \"location\":\"querystring\",\
+          \"locationName\":\"marker\"\
+        },\
+        \"pageSize\":{\
+          \"shape\":\"PageSize\",\
+          \"documentation\":\"<p>The result page size.</p>\",\
+          \"location\":\"querystring\",\
+          \"locationName\":\"pageSize\"\
+        },\
+        \"serviceType\":{\
+          \"shape\":\"ServiceType\",\
+          \"documentation\":\"<p>The type of service delivered by the endpoint.</p>\",\
+          \"location\":\"querystring\",\
+          \"locationName\":\"serviceType\"\
+        }\
+      }\
+    },\
+    \"ListDomainConfigurationsResponse\":{\
+      \"type\":\"structure\",\
+      \"members\":{\
+        \"domainConfigurations\":{\
+          \"shape\":\"DomainConfigurations\",\
+          \"documentation\":\"<p>A list of objects that contain summary information about the user's domain configurations.</p>\"\
+        },\
+        \"nextMarker\":{\
+          \"shape\":\"Marker\",\
+          \"documentation\":\"<p>The marker for the next set of results.</p>\"\
+        }\
+      }\
+    },\
     \"ListIndicesRequest\":{\
       \"type\":\"structure\",\
       \"members\":{\
         \"nextToken\":{\
           \"shape\":\"NextToken\",\
-          \"documentation\":\"<p>The token used to get the next set of results, or null if there are no additional results.</p>\",\
+          \"documentation\":\"<p>The token used to get the next set of results, or <code>null</code> if there are no additional results.</p>\",\
           \"location\":\"querystring\",\
           \"locationName\":\"nextToken\"\
         },\
@@ -8867,7 +11757,7 @@
         },\
         \"nextToken\":{\
           \"shape\":\"NextToken\",\
-          \"documentation\":\"<p>The token used to get the next set of results, or null if there are no additional results.</p>\"\
+          \"documentation\":\"<p>The token used to get the next set of results, or <code>null</code> if there are no additional results.</p>\"\
         }\
       }\
     },\
@@ -8929,6 +11819,12 @@
           \"documentation\":\"<p>An optional filter that lets you search for jobs that have the specified status.</p>\",\
           \"location\":\"querystring\",\
           \"locationName\":\"status\"\
+        },\
+        \"namespaceId\":{\
+          \"shape\":\"NamespaceId\",\
+          \"documentation\":\"<p>The namespace used to indicate that a job is a customer-managed job.</p> <p>When you specify a value for this parameter, AWS IoT Core sends jobs notifications to MQTT topics that contain the value in the following format.</p> <p> <code>$aws/things/<i>THING_NAME</i>/jobs/<i>JOB_ID</i>/notify-namespace-<i>NAMESPACE_ID</i>/</code> </p> <note> <p>The <code>namespaceId</code> feature is in public preview.</p> </note>\",\
+          \"location\":\"querystring\",\
+          \"locationName\":\"namespaceId\"\
         },\
         \"maxResults\":{\
           \"shape\":\"LaserMaxResults\",\
@@ -8995,6 +11891,12 @@
           \"documentation\":\"<p>A filter that limits the returned jobs to those for the specified group.</p>\",\
           \"location\":\"querystring\",\
           \"locationName\":\"thingGroupId\"\
+        },\
+        \"namespaceId\":{\
+          \"shape\":\"NamespaceId\",\
+          \"documentation\":\"<p>The namespace used to indicate that a job is a customer-managed job.</p> <p>When you specify a value for this parameter, AWS IoT Core sends jobs notifications to MQTT topics that contain the value in the following format.</p> <p> <code>$aws/things/<i>THING_NAME</i>/jobs/<i>JOB_ID</i>/notify-namespace-<i>NAMESPACE_ID</i>/</code> </p> <note> <p>The <code>namespaceId</code> feature is in public preview.</p> </note>\",\
+          \"location\":\"querystring\",\
+          \"locationName\":\"namespaceId\"\
         }\
       }\
     },\
@@ -9233,7 +12135,7 @@
       \"members\":{\
         \"principal\":{\
           \"shape\":\"Principal\",\
-          \"documentation\":\"<p>The principal.</p>\",\
+          \"documentation\":\"<p>The principal. Valid principals are CertificateArn (arn:aws:iot:<i>region</i>:<i>accountId</i>:cert/<i>certificateId</i>), thingGroupArn (arn:aws:iot:<i>region</i>:<i>accountId</i>:thinggroup/<i>groupName</i>) and CognitoId (<i>region</i>:<i>id</i>).</p>\",\
           \"location\":\"header\",\
           \"locationName\":\"x-amzn-iot-principal\"\
         },\
@@ -9278,7 +12180,7 @@
       \"members\":{\
         \"nextToken\":{\
           \"shape\":\"NextToken\",\
-          \"documentation\":\"<p>The token to retrieve the next set of results.</p>\",\
+          \"documentation\":\"<p>To retrieve the next set of results, the <code>nextToken</code> value from a previous response; otherwise <b>null</b> to receive the first set of results.</p>\",\
           \"location\":\"querystring\",\
           \"locationName\":\"nextToken\"\
         },\
@@ -9306,10 +12208,77 @@
         },\
         \"nextToken\":{\
           \"shape\":\"NextToken\",\
-          \"documentation\":\"<p>The token used to get the next set of results, or <b>null</b> if there are no additional results.</p>\"\
+          \"documentation\":\"<p>The token to use to get the next set of results, or <b>null</b> if there are no additional results.</p>\"\
         }\
       },\
       \"documentation\":\"<p>The output from the ListPrincipalThings operation.</p>\"\
+    },\
+    \"ListProvisioningTemplateVersionsRequest\":{\
+      \"type\":\"structure\",\
+      \"required\":[\"templateName\"],\
+      \"members\":{\
+        \"templateName\":{\
+          \"shape\":\"TemplateName\",\
+          \"documentation\":\"<p>The name of the fleet provisioning template.</p>\",\
+          \"location\":\"uri\",\
+          \"locationName\":\"templateName\"\
+        },\
+        \"maxResults\":{\
+          \"shape\":\"MaxResults\",\
+          \"documentation\":\"<p>The maximum number of results to return at one time.</p>\",\
+          \"location\":\"querystring\",\
+          \"locationName\":\"maxResults\"\
+        },\
+        \"nextToken\":{\
+          \"shape\":\"NextToken\",\
+          \"documentation\":\"<p>A token to retrieve the next set of results.</p>\",\
+          \"location\":\"querystring\",\
+          \"locationName\":\"nextToken\"\
+        }\
+      }\
+    },\
+    \"ListProvisioningTemplateVersionsResponse\":{\
+      \"type\":\"structure\",\
+      \"members\":{\
+        \"versions\":{\
+          \"shape\":\"ProvisioningTemplateVersionListing\",\
+          \"documentation\":\"<p>The list of fleet provisioning template versions.</p>\"\
+        },\
+        \"nextToken\":{\
+          \"shape\":\"NextToken\",\
+          \"documentation\":\"<p>A token to retrieve the next set of results.</p>\"\
+        }\
+      }\
+    },\
+    \"ListProvisioningTemplatesRequest\":{\
+      \"type\":\"structure\",\
+      \"members\":{\
+        \"maxResults\":{\
+          \"shape\":\"MaxResults\",\
+          \"documentation\":\"<p>The maximum number of results to return at one time.</p>\",\
+          \"location\":\"querystring\",\
+          \"locationName\":\"maxResults\"\
+        },\
+        \"nextToken\":{\
+          \"shape\":\"NextToken\",\
+          \"documentation\":\"<p>A token to retrieve the next set of results.</p>\",\
+          \"location\":\"querystring\",\
+          \"locationName\":\"nextToken\"\
+        }\
+      }\
+    },\
+    \"ListProvisioningTemplatesResponse\":{\
+      \"type\":\"structure\",\
+      \"members\":{\
+        \"templates\":{\
+          \"shape\":\"ProvisioningTemplateListing\",\
+          \"documentation\":\"<p>A list of fleet provisioning templates</p>\"\
+        },\
+        \"nextToken\":{\
+          \"shape\":\"NextToken\",\
+          \"documentation\":\"<p>A token to retrieve the next set of results.</p>\"\
+        }\
+      }\
     },\
     \"ListRoleAliasesRequest\":{\
       \"type\":\"structure\",\
@@ -9434,6 +12403,18 @@
           \"documentation\":\"<p>The maximum number of results to return at one time.</p>\",\
           \"location\":\"querystring\",\
           \"locationName\":\"maxResults\"\
+        },\
+        \"dimensionName\":{\
+          \"shape\":\"DimensionName\",\
+          \"documentation\":\"<p>A filter to limit results to the security profiles that use the defined dimension. Cannot be used with <code>metricName</code> </p>\",\
+          \"location\":\"querystring\",\
+          \"locationName\":\"dimensionName\"\
+        },\
+        \"metricName\":{\
+          \"shape\":\"MetricName\",\
+          \"documentation\":\"<p> The name of the custom metric. Cannot be used with <code>dimensionName</code>. </p>\",\
+          \"location\":\"querystring\",\
+          \"locationName\":\"metricName\"\
         }\
       }\
     },\
@@ -9486,6 +12467,8 @@
         }\
       }\
     },\
+    \"ListSuppressedAlerts\":{\"type\":\"boolean\"},\
+    \"ListSuppressedFindings\":{\"type\":\"boolean\"},\
     \"ListTagsForResourceRequest\":{\
       \"type\":\"structure\",\
       \"required\":[\"resourceArn\"],\
@@ -9498,7 +12481,7 @@
         },\
         \"nextToken\":{\
           \"shape\":\"NextToken\",\
-          \"documentation\":\"<p>The token to retrieve the next set of results.</p>\",\
+          \"documentation\":\"<p>To retrieve the next set of results, the <code>nextToken</code> value from a previous response; otherwise <b>null</b> to receive the first set of results.</p>\",\
           \"location\":\"querystring\",\
           \"locationName\":\"nextToken\"\
         }\
@@ -9513,7 +12496,7 @@
         },\
         \"nextToken\":{\
           \"shape\":\"NextToken\",\
-          \"documentation\":\"<p>The token used to get the next set of results, or <b>null</b> if there are no additional results.</p>\"\
+          \"documentation\":\"<p>The token to use to get the next set of results, or <b>null</b> if there are no additional results.</p>\"\
         }\
       }\
     },\
@@ -9603,7 +12586,7 @@
         },\
         \"nextToken\":{\
           \"shape\":\"NextToken\",\
-          \"documentation\":\"<p>The token to retrieve the next set of results.</p>\",\
+          \"documentation\":\"<p>To retrieve the next set of results, the <code>nextToken</code> value from a previous response; otherwise <b>null</b> to receive the first set of results.</p>\",\
           \"location\":\"querystring\",\
           \"locationName\":\"nextToken\"\
         },\
@@ -9624,7 +12607,7 @@
         },\
         \"nextToken\":{\
           \"shape\":\"NextToken\",\
-          \"documentation\":\"<p>The token used to get the next set of results, or <b>null</b> if there are no additional results.</p>\"\
+          \"documentation\":\"<p>The token to use to get the next set of results, or <b>null</b> if there are no additional results.</p>\"\
         }\
       }\
     },\
@@ -9633,7 +12616,7 @@
       \"members\":{\
         \"nextToken\":{\
           \"shape\":\"NextToken\",\
-          \"documentation\":\"<p>The token to retrieve the next set of results.</p>\",\
+          \"documentation\":\"<p>To retrieve the next set of results, the <code>nextToken</code> value from a previous response; otherwise <b>null</b> to receive the first set of results.</p>\",\
           \"location\":\"querystring\",\
           \"locationName\":\"nextToken\"\
         },\
@@ -9672,7 +12655,7 @@
         },\
         \"nextToken\":{\
           \"shape\":\"NextToken\",\
-          \"documentation\":\"<p>The token used to get the next set of results, or <b>null</b> if there are no additional results.</p>\"\
+          \"documentation\":\"<p>The token to use to get the next set of results. Will not be returned if operation has returned all results.</p>\"\
         }\
       }\
     },\
@@ -9680,6 +12663,18 @@
       \"type\":\"structure\",\
       \"required\":[\"thingName\"],\
       \"members\":{\
+        \"nextToken\":{\
+          \"shape\":\"NextToken\",\
+          \"documentation\":\"<p>To retrieve the next set of results, the <code>nextToken</code> value from a previous response; otherwise <b>null</b> to receive the first set of results.</p>\",\
+          \"location\":\"querystring\",\
+          \"locationName\":\"nextToken\"\
+        },\
+        \"maxResults\":{\
+          \"shape\":\"RegistryMaxResults\",\
+          \"documentation\":\"<p>The maximum number of results to return in this operation.</p>\",\
+          \"location\":\"querystring\",\
+          \"locationName\":\"maxResults\"\
+        },\
         \"thingName\":{\
           \"shape\":\"ThingName\",\
           \"documentation\":\"<p>The name of the thing.</p>\",\
@@ -9695,6 +12690,10 @@
         \"principals\":{\
           \"shape\":\"Principals\",\
           \"documentation\":\"<p>The principals associated with the thing.</p>\"\
+        },\
+        \"nextToken\":{\
+          \"shape\":\"NextToken\",\
+          \"documentation\":\"<p>The token to use to get the next set of results, or <b>null</b> if there are no additional results.</p>\"\
         }\
       },\
       \"documentation\":\"<p>The output from the ListThingPrincipals operation.</p>\"\
@@ -9720,7 +12719,7 @@
         },\
         \"nextToken\":{\
           \"shape\":\"NextToken\",\
-          \"documentation\":\"<p>The token to retrieve the next set of results.</p>\",\
+          \"documentation\":\"<p>To retrieve the next set of results, the <code>nextToken</code> value from a previous response; otherwise <b>null</b> to receive the first set of results.</p>\",\
           \"location\":\"querystring\",\
           \"locationName\":\"nextToken\"\
         },\
@@ -9745,7 +12744,7 @@
         },\
         \"nextToken\":{\
           \"shape\":\"NextToken\",\
-          \"documentation\":\"<p>The token used to get the next set of results, or <b>null</b> if there are no additional results.</p>\"\
+          \"documentation\":\"<p>The token to use to get the next set of results, or <b>null</b> if there are no additional results.</p>\"\
         }\
       }\
     },\
@@ -9754,7 +12753,7 @@
       \"members\":{\
         \"nextToken\":{\
           \"shape\":\"NextToken\",\
-          \"documentation\":\"<p>The token to retrieve the next set of results.</p>\",\
+          \"documentation\":\"<p>To retrieve the next set of results, the <code>nextToken</code> value from a previous response; otherwise <b>null</b> to receive the first set of results.</p>\",\
           \"location\":\"querystring\",\
           \"locationName\":\"nextToken\"\
         },\
@@ -9781,7 +12780,7 @@
         },\
         \"nextToken\":{\
           \"shape\":\"NextToken\",\
-          \"documentation\":\"<p>The token used to get the next set of results, or <b>null</b> if there are no additional results.</p>\"\
+          \"documentation\":\"<p>The token to use to get the next set of results, or <b>null</b> if there are no additional results.</p>\"\
         }\
       }\
     },\
@@ -9790,7 +12789,7 @@
       \"members\":{\
         \"nextToken\":{\
           \"shape\":\"NextToken\",\
-          \"documentation\":\"<p>The token to retrieve the next set of results.</p>\",\
+          \"documentation\":\"<p>To retrieve the next set of results, the <code>nextToken</code> value from a previous response; otherwise <b>null</b> to receive the first set of results.</p>\",\
           \"location\":\"querystring\",\
           \"locationName\":\"nextToken\"\
         },\
@@ -9818,7 +12817,7 @@
         },\
         \"nextToken\":{\
           \"shape\":\"NextToken\",\
-          \"documentation\":\"<p>The token for the next set of results, or <b>null</b> if there are no additional results.</p>\"\
+          \"documentation\":\"<p>The token for the next set of results. Will not be returned if operation has returned all results.</p>\"\
         }\
       },\
       \"documentation\":\"<p>The output for the ListThingTypes operation.</p>\"\
@@ -9835,7 +12834,7 @@
         },\
         \"nextToken\":{\
           \"shape\":\"NextToken\",\
-          \"documentation\":\"<p>The token to retrieve the next set of results.</p>\",\
+          \"documentation\":\"<p>To retrieve the next set of results, the <code>nextToken</code> value from a previous response; otherwise <b>null</b> to receive the first set of results.</p>\",\
           \"location\":\"querystring\",\
           \"locationName\":\"nextToken\"\
         },\
@@ -9856,7 +12855,7 @@
         },\
         \"nextToken\":{\
           \"shape\":\"NextToken\",\
-          \"documentation\":\"<p>The token used to get the next set of results, or <b>null</b> if there are no additional results.</p>\"\
+          \"documentation\":\"<p>The token to use to get the next set of results. Will not be returned if operation has returned all results.</p>\"\
         }\
       }\
     },\
@@ -9878,7 +12877,7 @@
         },\
         \"nextToken\":{\
           \"shape\":\"NextToken\",\
-          \"documentation\":\"<p>The token to retrieve the next set of results.</p>\",\
+          \"documentation\":\"<p>To retrieve the next set of results, the <code>nextToken</code> value from a previous response; otherwise <b>null</b> to receive the first set of results.</p>\",\
           \"location\":\"querystring\",\
           \"locationName\":\"nextToken\"\
         },\
@@ -9899,7 +12898,7 @@
         },\
         \"nextToken\":{\
           \"shape\":\"NextToken\",\
-          \"documentation\":\"<p>The token used to get the next set of results, or <b>null</b> if there are no additional results.</p>\"\
+          \"documentation\":\"<p>The token to use to get the next set of results, or <b>null</b> if there are no additional results.</p>\"\
         }\
       }\
     },\
@@ -9908,7 +12907,7 @@
       \"members\":{\
         \"nextToken\":{\
           \"shape\":\"NextToken\",\
-          \"documentation\":\"<p>The token to retrieve the next set of results.</p>\",\
+          \"documentation\":\"<p>To retrieve the next set of results, the <code>nextToken</code> value from a previous response; otherwise <b>null</b> to receive the first set of results.</p>\",\
           \"location\":\"querystring\",\
           \"locationName\":\"nextToken\"\
         },\
@@ -9948,10 +12947,40 @@
         },\
         \"nextToken\":{\
           \"shape\":\"NextToken\",\
-          \"documentation\":\"<p>The token used to get the next set of results, or <b>null</b> if there are no additional results.</p>\"\
+          \"documentation\":\"<p>The token to use to get the next set of results. Will not be returned if operation has returned all results.</p>\"\
         }\
       },\
       \"documentation\":\"<p>The output from the ListThings operation.</p>\"\
+    },\
+    \"ListTopicRuleDestinationsRequest\":{\
+      \"type\":\"structure\",\
+      \"members\":{\
+        \"maxResults\":{\
+          \"shape\":\"TopicRuleDestinationMaxResults\",\
+          \"documentation\":\"<p>The maximum number of results to return at one time.</p>\",\
+          \"location\":\"querystring\",\
+          \"locationName\":\"maxResults\"\
+        },\
+        \"nextToken\":{\
+          \"shape\":\"NextToken\",\
+          \"documentation\":\"<p>To retrieve the next set of results, the <code>nextToken</code> value from a previous response; otherwise <b>null</b> to receive the first set of results.</p>\",\
+          \"location\":\"querystring\",\
+          \"locationName\":\"nextToken\"\
+        }\
+      }\
+    },\
+    \"ListTopicRuleDestinationsResponse\":{\
+      \"type\":\"structure\",\
+      \"members\":{\
+        \"destinationSummaries\":{\
+          \"shape\":\"TopicRuleDestinationSummaries\",\
+          \"documentation\":\"<p>Information about a topic rule destination.</p>\"\
+        },\
+        \"nextToken\":{\
+          \"shape\":\"NextToken\",\
+          \"documentation\":\"<p>The token to use to get the next set of results, or <b>null</b> if there are no additional results.</p>\"\
+        }\
+      }\
     },\
     \"ListTopicRulesRequest\":{\
       \"type\":\"structure\",\
@@ -9963,14 +12992,14 @@
           \"locationName\":\"topic\"\
         },\
         \"maxResults\":{\
-          \"shape\":\"GEMaxResults\",\
+          \"shape\":\"TopicRuleMaxResults\",\
           \"documentation\":\"<p>The maximum number of results to return.</p>\",\
           \"location\":\"querystring\",\
           \"locationName\":\"maxResults\"\
         },\
         \"nextToken\":{\
           \"shape\":\"NextToken\",\
-          \"documentation\":\"<p>A token used to retrieve the next value.</p>\",\
+          \"documentation\":\"<p>To retrieve the next set of results, the <code>nextToken</code> value from a previous response; otherwise <b>null</b> to receive the first set of results.</p>\",\
           \"location\":\"querystring\",\
           \"locationName\":\"nextToken\"\
         },\
@@ -9992,7 +13021,7 @@
         },\
         \"nextToken\":{\
           \"shape\":\"NextToken\",\
-          \"documentation\":\"<p>A token used to retrieve the next value.</p>\"\
+          \"documentation\":\"<p>The token to use to get the next set of results, or <b>null</b> if there are no additional results.</p>\"\
         }\
       },\
       \"documentation\":\"<p>The output from the ListTopicRules operation.</p>\"\
@@ -10008,7 +13037,7 @@
         },\
         \"nextToken\":{\
           \"shape\":\"NextToken\",\
-          \"documentation\":\"<p>The token used to get the next set of results, or <b>null</b> if there are no additional results.</p>\",\
+          \"documentation\":\"<p>To retrieve the next set of results, the <code>nextToken</code> value from a previous response; otherwise <b>null</b> to receive the first set of results.</p>\",\
           \"location\":\"querystring\",\
           \"locationName\":\"nextToken\"\
         },\
@@ -10029,7 +13058,7 @@
         },\
         \"nextToken\":{\
           \"shape\":\"NextToken\",\
-          \"documentation\":\"<p>The token used to get the next set of results, or <b>null</b> if there are no additional results.</p>\"\
+          \"documentation\":\"<p>The token to use to get the next set of results, or <b>null</b> if there are no additional results.</p>\"\
         }\
       }\
     },\
@@ -10064,6 +13093,18 @@
           \"location\":\"querystring\",\
           \"locationName\":\"securityProfileName\"\
         },\
+        \"behaviorCriteriaType\":{\
+          \"shape\":\"BehaviorCriteriaType\",\
+          \"documentation\":\"<p> The criteria for a behavior. </p>\",\
+          \"location\":\"querystring\",\
+          \"locationName\":\"behaviorCriteriaType\"\
+        },\
+        \"listSuppressedAlerts\":{\
+          \"shape\":\"ListSuppressedAlerts\",\
+          \"documentation\":\"<p> A list of all suppressed alerts. </p>\",\
+          \"location\":\"querystring\",\
+          \"locationName\":\"listSuppressedAlerts\"\
+        },\
         \"nextToken\":{\
           \"shape\":\"NextToken\",\
           \"documentation\":\"<p>The token for the next set of results.</p>\",\
@@ -10091,6 +13132,7 @@
         }\
       }\
     },\
+    \"LogGroupName\":{\"type\":\"string\"},\
     \"LogLevel\":{\
       \"type\":\"string\",\
       \"enum\":[\
@@ -10157,6 +13199,17 @@
       },\
       \"documentation\":\"<p>Describes the logging options payload.</p>\"\
     },\
+    \"MachineLearningDetectionConfig\":{\
+      \"type\":\"structure\",\
+      \"required\":[\"confidenceLevel\"],\
+      \"members\":{\
+        \"confidenceLevel\":{\
+          \"shape\":\"ConfidenceLevel\",\
+          \"documentation\":\"<p> The sensitivity of anomalous behavior evaluation. Can be <code>Low</code>, <code>Medium</code>, or <code>High</code>. </p>\"\
+        }\
+      },\
+      \"documentation\":\"<p> The configuration of an ML Detect Security Profile. </p>\"\
+    },\
     \"MalformedPolicyException\":{\
       \"type\":\"structure\",\
       \"members\":{\
@@ -10171,10 +13224,12 @@
     },\
     \"Marker\":{\
       \"type\":\"string\",\
+      \"max\":1024,\
       \"pattern\":\"[A-Za-z0-9+/]+={0,2}\"\
     },\
     \"MaxJobExecutionsPerMin\":{\
       \"type\":\"integer\",\
+      \"max\":1000,\
       \"min\":1\
     },\
     \"MaxResults\":{\
@@ -10182,6 +13237,7 @@
       \"max\":250,\
       \"min\":1\
     },\
+    \"Maximum\":{\"type\":\"double\"},\
     \"MaximumPerMinute\":{\
       \"type\":\"integer\",\
       \"max\":1000,\
@@ -10202,6 +13258,46 @@
       \"type\":\"string\",\
       \"max\":128\
     },\
+    \"MetricDimension\":{\
+      \"type\":\"structure\",\
+      \"required\":[\"dimensionName\"],\
+      \"members\":{\
+        \"dimensionName\":{\
+          \"shape\":\"DimensionName\",\
+          \"documentation\":\"<p>A unique identifier for the dimension.</p>\"\
+        },\
+        \"operator\":{\
+          \"shape\":\"DimensionValueOperator\",\
+          \"documentation\":\"<p>Defines how the <code>dimensionValues</code> of a dimension are interpreted. For example, for dimension type TOPIC_FILTER, the <code>IN</code> operator, a message will be counted only if its topic matches one of the topic filters. With <code>NOT_IN</code> operator, a message will be counted only if it doesn't match any of the topic filters. The operator is optional: if it's not provided (is <code>null</code>), it will be interpreted as <code>IN</code>.</p>\"\
+        }\
+      },\
+      \"documentation\":\"<p>The dimension of a metric.</p>\"\
+    },\
+    \"MetricName\":{\
+      \"type\":\"string\",\
+      \"max\":128,\
+      \"min\":1,\
+      \"pattern\":\"[a-zA-Z0-9:_-]+\"\
+    },\
+    \"MetricNames\":{\
+      \"type\":\"list\",\
+      \"member\":{\"shape\":\"MetricName\"}\
+    },\
+    \"MetricToRetain\":{\
+      \"type\":\"structure\",\
+      \"required\":[\"metric\"],\
+      \"members\":{\
+        \"metric\":{\
+          \"shape\":\"BehaviorMetric\",\
+          \"documentation\":\"<p>What is measured by the behavior.</p>\"\
+        },\
+        \"metricDimension\":{\
+          \"shape\":\"MetricDimension\",\
+          \"documentation\":\"<p>The dimension of a metric. This can't be used with custom metrics.</p>\"\
+        }\
+      },\
+      \"documentation\":\"<p>The metric you want to retain. Dimensions are optional.</p>\"\
+    },\
     \"MetricValue\":{\
       \"type\":\"structure\",\
       \"members\":{\
@@ -10216,10 +13312,23 @@
         \"ports\":{\
           \"shape\":\"Ports\",\
           \"documentation\":\"<p>If the <code>comparisonOperator</code> calls for a set of ports, use this to specify that set to be compared with the <code>metric</code>.</p>\"\
+        },\
+        \"number\":{\
+          \"shape\":\"Number\",\
+          \"documentation\":\"<p> The numeral value of a metric. </p>\"\
+        },\
+        \"numbers\":{\
+          \"shape\":\"NumberList\",\
+          \"documentation\":\"<p> The numeral values of a metric. </p>\"\
+        },\
+        \"strings\":{\
+          \"shape\":\"StringList\",\
+          \"documentation\":\"<p> The string values of a metric. </p>\"\
         }\
       },\
       \"documentation\":\"<p>The value to be compared with the <code>metric</code>.</p>\"\
     },\
+    \"Minimum\":{\"type\":\"double\"},\
     \"MinimumNumberOfExecutedThings\":{\
       \"type\":\"integer\",\
       \"min\":1\
@@ -10315,7 +13424,7 @@
         },\
         \"publishFindingToSnsParams\":{\
           \"shape\":\"PublishFindingToSnsParams\",\
-          \"documentation\":\"<p>Parameters to define a mitigation action that publishes findings to Amazon SNS. You can implement your own custom actions in response to the Amazon SNS messages.</p>\"\
+          \"documentation\":\"<p>Parameters to define a mitigation action that publishes findings to Amazon Simple Notification Service (Amazon SNS. You can implement your own custom actions in response to the Amazon SNS messages.</p>\"\
         }\
       },\
       \"documentation\":\"<p>The set of parameters for this mitigation action. You can specify only one type of parameter (in other words, you can apply only one action for each defined mitigation action).</p>\"\
@@ -10330,6 +13439,59 @@
         \"ENABLE_IOT_LOGGING\",\
         \"PUBLISH_FINDING_TO_SNS\"\
       ]\
+    },\
+    \"MitigationActionsTaskId\":{\
+      \"type\":\"string\",\
+      \"max\":128,\
+      \"min\":1,\
+      \"pattern\":\"[a-zA-Z0-9_-]+\"\
+    },\
+    \"ModelStatus\":{\
+      \"type\":\"string\",\
+      \"enum\":[\
+        \"PENDING_BUILD\",\
+        \"ACTIVE\",\
+        \"EXPIRED\"\
+      ]\
+    },\
+    \"MqttClientId\":{\
+      \"type\":\"string\",\
+      \"max\":65535,\
+      \"min\":1\
+    },\
+    \"MqttContext\":{\
+      \"type\":\"structure\",\
+      \"members\":{\
+        \"username\":{\
+          \"shape\":\"MqttUsername\",\
+          \"documentation\":\"<p>The value of the <code>username</code> key in an MQTT authorization request.</p>\"\
+        },\
+        \"password\":{\
+          \"shape\":\"MqttPassword\",\
+          \"documentation\":\"<p>The value of the <code>password</code> key in an MQTT authorization request.</p>\"\
+        },\
+        \"clientId\":{\
+          \"shape\":\"MqttClientId\",\
+          \"documentation\":\"<p>The value of the <code>clientId</code> key in an MQTT authorization request.</p>\"\
+        }\
+      },\
+      \"documentation\":\"<p>Specifies the MQTT context to use for the test authorizer request</p>\"\
+    },\
+    \"MqttPassword\":{\
+      \"type\":\"blob\",\
+      \"max\":65535,\
+      \"min\":1\
+    },\
+    \"MqttUsername\":{\
+      \"type\":\"string\",\
+      \"max\":65535,\
+      \"min\":1\
+    },\
+    \"NamespaceId\":{\
+      \"type\":\"string\",\
+      \"max\":64,\
+      \"min\":1,\
+      \"pattern\":\"[a-zA-Z0-9_-]+\"\
     },\
     \"NextToken\":{\"type\":\"string\"},\
     \"NonCompliantChecksCount\":{\"type\":\"integer\"},\
@@ -10364,6 +13526,12 @@
       \"error\":{\"httpStatusCode\":404},\
       \"exception\":true\
     },\
+    \"NullableBoolean\":{\"type\":\"boolean\"},\
+    \"Number\":{\"type\":\"double\"},\
+    \"NumberList\":{\
+      \"type\":\"list\",\
+      \"member\":{\"shape\":\"Number\"}\
+    },\
     \"NumberOfThings\":{\
       \"type\":\"integer\",\
       \"min\":1\
@@ -10381,6 +13549,10 @@
         \"fileName\":{\
           \"shape\":\"FileName\",\
           \"documentation\":\"<p>The name of the file.</p>\"\
+        },\
+        \"fileType\":{\
+          \"shape\":\"FileType\",\
+          \"documentation\":\"<p>An integer value you can include in the job document to allow your devices to identify the type of file received from the cloud.</p>\"\
         },\
         \"fileVersion\":{\
           \"shape\":\"OTAUpdateFileVersion\",\
@@ -10441,9 +13613,17 @@
           \"shape\":\"Targets\",\
           \"documentation\":\"<p>The targets of the OTA update.</p>\"\
         },\
+        \"protocols\":{\
+          \"shape\":\"Protocols\",\
+          \"documentation\":\"<p>The protocol used to transfer the OTA update image. Valid values are [HTTP], [MQTT], [HTTP, MQTT]. When both HTTP and MQTT are specified, the target device can choose the protocol.</p>\"\
+        },\
         \"awsJobExecutionsRolloutConfig\":{\
           \"shape\":\"AwsJobExecutionsRolloutConfig\",\
           \"documentation\":\"<p>Configuration for the rollout of OTA updates.</p>\"\
+        },\
+        \"awsJobPresignedUrlConfig\":{\
+          \"shape\":\"AwsJobPresignedUrlConfig\",\
+          \"documentation\":\"<p>Configuration information for pre-signed URLs. Valid when <code>protocols</code> contains HTTP.</p>\"\
         },\
         \"targetSelection\":{\
           \"shape\":\"TargetSelection\",\
@@ -10556,10 +13736,44 @@
     },\
     \"PartitionKey\":{\"type\":\"string\"},\
     \"PayloadField\":{\"type\":\"string\"},\
+    \"PayloadVersion\":{\
+      \"type\":\"string\",\
+      \"max\":32,\
+      \"min\":10,\
+      \"pattern\":\"^[0-9-]+$\"\
+    },\
+    \"Percent\":{\
+      \"type\":\"double\",\
+      \"max\":100,\
+      \"min\":0\
+    },\
+    \"PercentList\":{\
+      \"type\":\"list\",\
+      \"member\":{\"shape\":\"Percent\"}\
+    },\
+    \"PercentPair\":{\
+      \"type\":\"structure\",\
+      \"members\":{\
+        \"percent\":{\
+          \"shape\":\"Percent\",\
+          \"documentation\":\"<p>The percentile.</p>\"\
+        },\
+        \"value\":{\
+          \"shape\":\"PercentValue\",\
+          \"documentation\":\"<p>The value of the percentile.</p>\"\
+        }\
+      },\
+      \"documentation\":\"<p>Describes the percentile and percentile value.</p>\"\
+    },\
+    \"PercentValue\":{\"type\":\"double\"},\
     \"Percentage\":{\
       \"type\":\"integer\",\
       \"max\":100,\
       \"min\":0\
+    },\
+    \"Percentiles\":{\
+      \"type\":\"list\",\
+      \"member\":{\"shape\":\"PercentPair\"}\
     },\
     \"Platform\":{\"type\":\"string\"},\
     \"Policies\":{\
@@ -10669,6 +13883,7 @@
       },\
       \"documentation\":\"<p>Configuration for pre-signed S3 URLs.</p>\"\
     },\
+    \"PrimitiveBoolean\":{\"type\":\"boolean\"},\
     \"Principal\":{\"type\":\"string\"},\
     \"PrincipalArn\":{\"type\":\"string\"},\
     \"PrincipalId\":{\
@@ -10691,6 +13906,90 @@
       \"type\":\"list\",\
       \"member\":{\"shape\":\"ProcessingTargetName\"}\
     },\
+    \"Protocol\":{\
+      \"type\":\"string\",\
+      \"enum\":[\
+        \"MQTT\",\
+        \"HTTP\"\
+      ]\
+    },\
+    \"Protocols\":{\
+      \"type\":\"list\",\
+      \"member\":{\"shape\":\"Protocol\"},\
+      \"max\":2,\
+      \"min\":1\
+    },\
+    \"ProvisioningHook\":{\
+      \"type\":\"structure\",\
+      \"required\":[\"targetArn\"],\
+      \"members\":{\
+        \"payloadVersion\":{\
+          \"shape\":\"PayloadVersion\",\
+          \"documentation\":\"<p>The payload that was sent to the target function.</p> <p> <i>Note:</i> Only Lambda functions are currently supported.</p>\"\
+        },\
+        \"targetArn\":{\
+          \"shape\":\"TargetArn\",\
+          \"documentation\":\"<p>The ARN of the target function.</p> <p> <i>Note:</i> Only Lambda functions are currently supported.</p>\"\
+        }\
+      },\
+      \"documentation\":\"<p>Structure that contains <code>payloadVersion</code> and <code>targetArn</code>.</p>\"\
+    },\
+    \"ProvisioningTemplateListing\":{\
+      \"type\":\"list\",\
+      \"member\":{\"shape\":\"ProvisioningTemplateSummary\"}\
+    },\
+    \"ProvisioningTemplateSummary\":{\
+      \"type\":\"structure\",\
+      \"members\":{\
+        \"templateArn\":{\
+          \"shape\":\"TemplateArn\",\
+          \"documentation\":\"<p>The ARN of the fleet provisioning template.</p>\"\
+        },\
+        \"templateName\":{\
+          \"shape\":\"TemplateName\",\
+          \"documentation\":\"<p>The name of the fleet provisioning template.</p>\"\
+        },\
+        \"description\":{\
+          \"shape\":\"TemplateDescription\",\
+          \"documentation\":\"<p>The description of the fleet provisioning template.</p>\"\
+        },\
+        \"creationDate\":{\
+          \"shape\":\"DateType\",\
+          \"documentation\":\"<p>The date when the fleet provisioning template summary was created.</p>\"\
+        },\
+        \"lastModifiedDate\":{\
+          \"shape\":\"DateType\",\
+          \"documentation\":\"<p>The date when the fleet provisioning template summary was last modified.</p>\"\
+        },\
+        \"enabled\":{\
+          \"shape\":\"Enabled\",\
+          \"documentation\":\"<p>True if the fleet provision template is enabled, otherwise false.</p>\"\
+        }\
+      },\
+      \"documentation\":\"<p>A summary of information about a fleet provisioning template.</p>\"\
+    },\
+    \"ProvisioningTemplateVersionListing\":{\
+      \"type\":\"list\",\
+      \"member\":{\"shape\":\"ProvisioningTemplateVersionSummary\"}\
+    },\
+    \"ProvisioningTemplateVersionSummary\":{\
+      \"type\":\"structure\",\
+      \"members\":{\
+        \"versionId\":{\
+          \"shape\":\"TemplateVersionId\",\
+          \"documentation\":\"<p>The ID of the fleet privisioning template version.</p>\"\
+        },\
+        \"creationDate\":{\
+          \"shape\":\"DateType\",\
+          \"documentation\":\"<p>The date when the fleet provisioning template version was created</p>\"\
+        },\
+        \"isDefaultVersion\":{\
+          \"shape\":\"IsDefaultVersion\",\
+          \"documentation\":\"<p>True if the fleet provisioning template version is the default version, otherwise false.</p>\"\
+        }\
+      },\
+      \"documentation\":\"<p>A summary of information about a fleet provision template version.</p>\"\
+    },\
     \"PublicKey\":{\
       \"type\":\"string\",\
       \"min\":1\
@@ -10710,6 +14009,38 @@
         }\
       },\
       \"documentation\":\"<p>Parameters to define a mitigation action that publishes findings to Amazon SNS. You can implement your own custom actions in response to the Amazon SNS messages.</p>\"\
+    },\
+    \"PutAssetPropertyValueEntry\":{\
+      \"type\":\"structure\",\
+      \"required\":[\"propertyValues\"],\
+      \"members\":{\
+        \"entryId\":{\
+          \"shape\":\"AssetPropertyEntryId\",\
+          \"documentation\":\"<p>Optional. A unique identifier for this entry that you can define to better track which message caused an error in case of failure. Accepts substitution templates. Defaults to a new UUID.</p>\"\
+        },\
+        \"assetId\":{\
+          \"shape\":\"AssetId\",\
+          \"documentation\":\"<p>The ID of the AWS IoT SiteWise asset. You must specify either a <code>propertyAlias</code> or both an <code>aliasId</code> and a <code>propertyId</code>. Accepts substitution templates.</p>\"\
+        },\
+        \"propertyId\":{\
+          \"shape\":\"AssetPropertyId\",\
+          \"documentation\":\"<p>The ID of the asset's property. You must specify either a <code>propertyAlias</code> or both an <code>aliasId</code> and a <code>propertyId</code>. Accepts substitution templates.</p>\"\
+        },\
+        \"propertyAlias\":{\
+          \"shape\":\"AssetPropertyAlias\",\
+          \"documentation\":\"<p>The name of the property alias associated with your asset property. You must specify either a <code>propertyAlias</code> or both an <code>aliasId</code> and a <code>propertyId</code>. Accepts substitution templates.</p>\"\
+        },\
+        \"propertyValues\":{\
+          \"shape\":\"AssetPropertyValueList\",\
+          \"documentation\":\"<p>A list of property values to insert that each contain timestamp, quality, and value (TQV) information.</p>\"\
+        }\
+      },\
+      \"documentation\":\"<p>An asset property value entry containing the following information.</p>\"\
+    },\
+    \"PutAssetPropertyValueEntryList\":{\
+      \"type\":\"list\",\
+      \"member\":{\"shape\":\"PutAssetPropertyValueEntry\"},\
+      \"min\":1\
     },\
     \"PutItemInput\":{\
       \"type\":\"structure\",\
@@ -10800,6 +14131,10 @@
         \"registrationConfig\":{\
           \"shape\":\"RegistrationConfig\",\
           \"documentation\":\"<p>Information about the registration configuration.</p>\"\
+        },\
+        \"tags\":{\
+          \"shape\":\"TagList\",\
+          \"documentation\":\"<p>Metadata which can be used to manage the CA certificate.</p> <note> <p>For URI Request parameters use format: ...key1=value1&amp;key2=value2...</p> <p>For the CLI command-line parameter use format: &amp;&amp;tags \\\"key1=value1&amp;key2=value2...\\\"</p> <p>For the cli-input-json file use format: \\\"tags\\\": \\\"key1=value1&amp;key2=value2...\\\"</p> </note>\"\
         }\
       },\
       \"documentation\":\"<p>The input to the RegisterCACertificate operation.</p>\"\
@@ -10858,17 +14193,44 @@
       },\
       \"documentation\":\"<p>The output from the RegisterCertificate operation.</p>\"\
     },\
+    \"RegisterCertificateWithoutCARequest\":{\
+      \"type\":\"structure\",\
+      \"required\":[\"certificatePem\"],\
+      \"members\":{\
+        \"certificatePem\":{\
+          \"shape\":\"CertificatePem\",\
+          \"documentation\":\"<p>The certificate data, in PEM format.</p>\"\
+        },\
+        \"status\":{\
+          \"shape\":\"CertificateStatus\",\
+          \"documentation\":\"<p>The status of the register certificate request.</p>\"\
+        }\
+      }\
+    },\
+    \"RegisterCertificateWithoutCAResponse\":{\
+      \"type\":\"structure\",\
+      \"members\":{\
+        \"certificateArn\":{\
+          \"shape\":\"CertificateArn\",\
+          \"documentation\":\"<p>The Amazon Resource Name (ARN) of the registered certificate.</p>\"\
+        },\
+        \"certificateId\":{\
+          \"shape\":\"CertificateId\",\
+          \"documentation\":\"<p>The ID of the registered certificate. (The last part of the certificate ARN contains the certificate ID.</p>\"\
+        }\
+      }\
+    },\
     \"RegisterThingRequest\":{\
       \"type\":\"structure\",\
       \"required\":[\"templateBody\"],\
       \"members\":{\
         \"templateBody\":{\
           \"shape\":\"TemplateBody\",\
-          \"documentation\":\"<p>The provisioning template. See <a href=\\\"https://docs.aws.amazon.com/iot/latest/developerguide/programmatic-provisioning.html\\\">Programmatic Provisioning</a> for more information.</p>\"\
+          \"documentation\":\"<p>The provisioning template. See <a href=\\\"https://docs.aws.amazon.com/iot/latest/developerguide/provision-w-cert.html\\\">Provisioning Devices That Have Device Certificates</a> for more information.</p>\"\
         },\
         \"parameters\":{\
           \"shape\":\"Parameters\",\
-          \"documentation\":\"<p>The parameters for provisioning a thing. See <a href=\\\"https://docs.aws.amazon.com/iot/latest/developerguide/programmatic-provisioning.html\\\">Programmatic Provisioning</a> for more information.</p>\"\
+          \"documentation\":\"<p>The parameters for provisioning a thing. See <a href=\\\"https://docs.aws.amazon.com/iot/latest/developerguide/provision-template.html\\\">Provisioning Templates</a> for more information.</p>\"\
         }\
       }\
     },\
@@ -10877,7 +14239,7 @@
       \"members\":{\
         \"certificatePem\":{\
           \"shape\":\"CertificatePem\",\
-          \"documentation\":\"<p>.</p>\"\
+          \"documentation\":\"<p>The certificate data, in PEM format.</p>\"\
         },\
         \"resourceArns\":{\
           \"shape\":\"ResourceArns\",\
@@ -10974,7 +14336,9 @@
       \"type\":\"list\",\
       \"member\":{\"shape\":\"RelatedResource\"}\
     },\
+    \"RemoveAuthorizerConfig\":{\"type\":\"boolean\"},\
     \"RemoveAutoRegistration\":{\"type\":\"boolean\"},\
+    \"RemoveHook\":{\"type\":\"boolean\"},\
     \"RemoveThingFromBillingGroupRequest\":{\
       \"type\":\"structure\",\
       \"members\":{\
@@ -11085,12 +14449,21 @@
         },\
         \"qos\":{\
           \"shape\":\"Qos\",\
-          \"documentation\":\"<p>The Quality of Service (QoS) level to use when republishing messages.</p>\"\
+          \"documentation\":\"<p>The Quality of Service (QoS) level to use when republishing messages. The default value is 0.</p>\"\
         }\
       },\
       \"documentation\":\"<p>Describes an action to republish to another topic.</p>\"\
     },\
-    \"Resource\":{\"type\":\"string\"},\
+    \"ReservedDomainConfigurationName\":{\
+      \"type\":\"string\",\
+      \"max\":128,\
+      \"min\":1,\
+      \"pattern\":\"[\\\\w.:-]+\"\
+    },\
+    \"Resource\":{\
+      \"type\":\"string\",\
+      \"max\":2048\
+    },\
     \"ResourceAlreadyExistsException\":{\
       \"type\":\"structure\",\
       \"members\":{\
@@ -11143,6 +14516,14 @@
         \"account\":{\
           \"shape\":\"AwsAccountId\",\
           \"documentation\":\"<p>The account with which the resource is associated.</p>\"\
+        },\
+        \"iamRoleArn\":{\
+          \"shape\":\"RoleArn\",\
+          \"documentation\":\"<p>The ARN of the IAM role that has overly permissive actions.</p>\"\
+        },\
+        \"roleAliasArn\":{\
+          \"shape\":\"RoleAliasArn\",\
+          \"documentation\":\"<p>The ARN of the role alias that has overly permissive actions.</p>\"\
         }\
       },\
       \"documentation\":\"<p>Information that identifies the noncompliant resource.</p>\"\
@@ -11180,7 +14561,9 @@
         \"IOT_POLICY\",\
         \"COGNITO_IDENTITY_POOL\",\
         \"CLIENT_ID\",\
-        \"ACCOUNT_SETTINGS\"\
+        \"ACCOUNT_SETTINGS\",\
+        \"ROLE_ALIAS\",\
+        \"IAM_ROLE\"\
       ]\
     },\
     \"Resources\":{\
@@ -11193,7 +14576,11 @@
       \"min\":1,\
       \"pattern\":\"[\\\\w=,@-]+\"\
     },\
-    \"RoleAliasArn\":{\"type\":\"string\"},\
+    \"RoleAliasArn\":{\
+      \"type\":\"string\",\
+      \"max\":2048,\
+      \"min\":1\
+    },\
     \"RoleAliasDescription\":{\
       \"type\":\"structure\",\
       \"members\":{\
@@ -11267,7 +14654,7 @@
         },\
         \"key\":{\
           \"shape\":\"Key\",\
-          \"documentation\":\"<p>The object key.</p>\"\
+          \"documentation\":\"<p>The object key. For more information, see <a href=\\\"https://docs.aws.amazon.com/AmazonS3/latest/dev/list_amazons3.html\\\">Actions, resources, and condition keys for Amazon S3</a>.</p>\"\
         },\
         \"cannedAcl\":{\
           \"shape\":\"CannedAccessControlList\",\
@@ -11404,7 +14791,7 @@
         },\
         \"nextToken\":{\
           \"shape\":\"NextToken\",\
-          \"documentation\":\"<p>The token used to get the next set of results, or null if there are no additional results.</p>\"\
+          \"documentation\":\"<p>The token used to get the next set of results, or <code>null</code> if there are no additional results.</p>\"\
         },\
         \"maxResults\":{\
           \"shape\":\"QueryMaxResults\",\
@@ -11421,7 +14808,7 @@
       \"members\":{\
         \"nextToken\":{\
           \"shape\":\"NextToken\",\
-          \"documentation\":\"<p>The token used to get the next set of results, or null if there are no additional results.</p>\"\
+          \"documentation\":\"<p>The token used to get the next set of results, or <code>null</code> if there are no additional results.</p>\"\
         },\
         \"things\":{\
           \"shape\":\"ThingDocumentList\",\
@@ -11438,6 +14825,11 @@
       \"member\":{\"shape\":\"AttributeName\"}\
     },\
     \"Seconds\":{\"type\":\"integer\"},\
+    \"SecurityGroupId\":{\"type\":\"string\"},\
+    \"SecurityGroupList\":{\
+      \"type\":\"list\",\
+      \"member\":{\"shape\":\"SecurityGroupId\"}\
+    },\
     \"SecurityProfileArn\":{\"type\":\"string\"},\
     \"SecurityProfileDescription\":{\
       \"type\":\"string\",\
@@ -11453,7 +14845,7 @@
       \"members\":{\
         \"name\":{\
           \"shape\":\"SecurityProfileName\",\
-          \"documentation\":\"<p>The name you have given to the security profile.</p>\"\
+          \"documentation\":\"<p>The name you've given to the security profile.</p>\"\
         },\
         \"arn\":{\
           \"shape\":\"SecurityProfileArn\",\
@@ -11505,6 +14897,56 @@
     \"SecurityProfileTargets\":{\
       \"type\":\"list\",\
       \"member\":{\"shape\":\"SecurityProfileTarget\"}\
+    },\
+    \"ServerCertificateArns\":{\
+      \"type\":\"list\",\
+      \"member\":{\"shape\":\"AcmCertificateArn\"},\
+      \"max\":1,\
+      \"min\":0\
+    },\
+    \"ServerCertificateStatus\":{\
+      \"type\":\"string\",\
+      \"enum\":[\
+        \"INVALID\",\
+        \"VALID\"\
+      ]\
+    },\
+    \"ServerCertificateStatusDetail\":{\"type\":\"string\"},\
+    \"ServerCertificateSummary\":{\
+      \"type\":\"structure\",\
+      \"members\":{\
+        \"serverCertificateArn\":{\
+          \"shape\":\"AcmCertificateArn\",\
+          \"documentation\":\"<p>The ARN of the server certificate.</p>\"\
+        },\
+        \"serverCertificateStatus\":{\
+          \"shape\":\"ServerCertificateStatus\",\
+          \"documentation\":\"<p>The status of the server certificate.</p>\"\
+        },\
+        \"serverCertificateStatusDetail\":{\
+          \"shape\":\"ServerCertificateStatusDetail\",\
+          \"documentation\":\"<p>Details that explain the status of the server certificate.</p>\"\
+        }\
+      },\
+      \"documentation\":\"<p>An object that contains information about a server certificate.</p>\"\
+    },\
+    \"ServerCertificates\":{\
+      \"type\":\"list\",\
+      \"member\":{\"shape\":\"ServerCertificateSummary\"}\
+    },\
+    \"ServerName\":{\
+      \"type\":\"string\",\
+      \"max\":253,\
+      \"min\":1\
+    },\
+    \"ServiceName\":{\"type\":\"string\"},\
+    \"ServiceType\":{\
+      \"type\":\"string\",\
+      \"enum\":[\
+        \"DATA\",\
+        \"CREDENTIAL_PROVIDER\",\
+        \"JOBS\"\
+      ]\
     },\
     \"ServiceUnavailableException\":{\
       \"type\":\"structure\",\
@@ -11613,6 +15055,29 @@
         }\
       }\
     },\
+    \"SigV4Authorization\":{\
+      \"type\":\"structure\",\
+      \"required\":[\
+        \"signingRegion\",\
+        \"serviceName\",\
+        \"roleArn\"\
+      ],\
+      \"members\":{\
+        \"signingRegion\":{\
+          \"shape\":\"SigningRegion\",\
+          \"documentation\":\"<p>The signing region.</p>\"\
+        },\
+        \"serviceName\":{\
+          \"shape\":\"ServiceName\",\
+          \"documentation\":\"<p>The service name to use while signing with Sig V4.</p>\"\
+        },\
+        \"roleArn\":{\
+          \"shape\":\"AwsArn\",\
+          \"documentation\":\"<p>The ARN of the signing role.</p>\"\
+        }\
+      },\
+      \"documentation\":\"<p>For more information, see <a href=\\\"https://docs.aws.amazon.com/general/latest/gr/signature-version-4.html\\\">Signature Version 4 signing process</a>.</p>\"\
+    },\
     \"Signature\":{\"type\":\"blob\"},\
     \"SignatureAlgorithm\":{\"type\":\"string\"},\
     \"SigningJobId\":{\"type\":\"string\"},\
@@ -11635,6 +15100,7 @@
       },\
       \"documentation\":\"<p>Describes the code-signing profile.</p>\"\
     },\
+    \"SigningRegion\":{\"type\":\"string\"},\
     \"SkippedFindingsCount\":{\"type\":\"long\"},\
     \"SkyfallMaxResults\":{\
       \"type\":\"integer\",\
@@ -11711,14 +15177,14 @@
       ],\
       \"members\":{\
         \"taskId\":{\
-          \"shape\":\"AuditMitigationActionsTaskId\",\
+          \"shape\":\"MitigationActionsTaskId\",\
           \"documentation\":\"<p>A unique identifier for the task. You can use this identifier to check the status of the task or to cancel it.</p>\",\
           \"location\":\"uri\",\
           \"locationName\":\"taskId\"\
         },\
         \"target\":{\
           \"shape\":\"AuditMitigationActionsTaskTarget\",\
-          \"documentation\":\"<p>Specifies the audit findings to which the mitigation actions are applied. You can apply them to a type of audit check, to all findings from an audit, or to a speecific set of findings.</p>\"\
+          \"documentation\":\"<p>Specifies the audit findings to which the mitigation actions are applied. You can apply them to a type of audit check, to all findings from an audit, or to a specific set of findings.</p>\"\
         },\
         \"auditCheckToActionsMapping\":{\
           \"shape\":\"AuditCheckToActionsMapping\",\
@@ -11735,8 +15201,59 @@
       \"type\":\"structure\",\
       \"members\":{\
         \"taskId\":{\
-          \"shape\":\"AuditMitigationActionsTaskId\",\
+          \"shape\":\"MitigationActionsTaskId\",\
           \"documentation\":\"<p>The unique identifier for the audit mitigation task. This matches the <code>taskId</code> that you specified in the request.</p>\"\
+        }\
+      }\
+    },\
+    \"StartDetectMitigationActionsTaskRequest\":{\
+      \"type\":\"structure\",\
+      \"required\":[\
+        \"taskId\",\
+        \"target\",\
+        \"actions\",\
+        \"clientRequestToken\"\
+      ],\
+      \"members\":{\
+        \"taskId\":{\
+          \"shape\":\"MitigationActionsTaskId\",\
+          \"documentation\":\"<p> The unique identifier of the task. </p>\",\
+          \"location\":\"uri\",\
+          \"locationName\":\"taskId\"\
+        },\
+        \"target\":{\
+          \"shape\":\"DetectMitigationActionsTaskTarget\",\
+          \"documentation\":\"<p> Specifies the ML Detect findings to which the mitigation actions are applied. </p>\"\
+        },\
+        \"actions\":{\
+          \"shape\":\"DetectMitigationActionsToExecuteList\",\
+          \"documentation\":\"<p> The actions to be performed when a device has unexpected behavior. </p>\"\
+        },\
+        \"violationEventOccurrenceRange\":{\
+          \"shape\":\"ViolationEventOccurrenceRange\",\
+          \"documentation\":\"<p> Specifies the time period of which violation events occurred between. </p>\"\
+        },\
+        \"includeOnlyActiveViolations\":{\
+          \"shape\":\"NullableBoolean\",\
+          \"documentation\":\"<p> Specifies to list only active violations. </p>\"\
+        },\
+        \"includeSuppressedAlerts\":{\
+          \"shape\":\"NullableBoolean\",\
+          \"documentation\":\"<p> Specifies to include suppressed alerts. </p>\"\
+        },\
+        \"clientRequestToken\":{\
+          \"shape\":\"ClientRequestToken\",\
+          \"documentation\":\"<p> Each mitigation action task must have a unique client request token. If you try to create a new task with the same token as a task that already exists, an exception occurs. If you omit this value, AWS SDKs will automatically generate a unique client request. </p>\",\
+          \"idempotencyToken\":true\
+        }\
+      }\
+    },\
+    \"StartDetectMitigationActionsTaskResponse\":{\
+      \"type\":\"structure\",\
+      \"members\":{\
+        \"taskId\":{\
+          \"shape\":\"MitigationActionsTaskId\",\
+          \"documentation\":\"<p> The unique identifier of the task. </p>\"\
         }\
       }\
     },\
@@ -11821,10 +15338,10 @@
       \"members\":{\
         \"statistic\":{\
           \"shape\":\"EvaluationStatistic\",\
-          \"documentation\":\"<p>The percentile which resolves to a threshold value by which compliance with a behavior is determined. Metrics are collected over the specified period (<code>durationSeconds</code>) from all reporting devices in your account and statistical ranks are calculated. Then, the measurements from a device are collected over the same period. If the accumulated measurements from the device fall above or below (<code>comparisonOperator</code>) the value associated with the percentile specified, then the device is considered to be in compliance with the behavior, otherwise a violation occurs.</p>\"\
+          \"documentation\":\"<p>The percentile that resolves to a threshold value by which compliance with a behavior is determined. Metrics are collected over the specified period (<code>durationSeconds</code>) from all reporting devices in your account and statistical ranks are calculated. Then, the measurements from a device are collected over the same period. If the accumulated measurements from the device fall above or below (<code>comparisonOperator</code>) the value associated with the percentile specified, then the device is considered to be in compliance with the behavior, otherwise a violation occurs.</p>\"\
         }\
       },\
-      \"documentation\":\"<p>A statistical ranking (percentile) which indicates a threshold value by which a behavior is determined to be in compliance or in violation of the behavior.</p>\"\
+      \"documentation\":\"<p>A statistical ranking (percentile) that indicates a threshold value by which a behavior is determined to be in compliance or in violation of the behavior.</p>\"\
     },\
     \"Statistics\":{\
       \"type\":\"structure\",\
@@ -11832,6 +15349,41 @@
         \"count\":{\
           \"shape\":\"Count\",\
           \"documentation\":\"<p>The count of things that match the query.</p>\"\
+        },\
+        \"average\":{\
+          \"shape\":\"Average\",\
+          \"documentation\":\"<p>The average of the aggregated field values.</p>\",\
+          \"box\":true\
+        },\
+        \"sum\":{\
+          \"shape\":\"Sum\",\
+          \"documentation\":\"<p>The sum of the aggregated field values.</p>\",\
+          \"box\":true\
+        },\
+        \"minimum\":{\
+          \"shape\":\"Minimum\",\
+          \"documentation\":\"<p>The minimum aggregated field value.</p>\",\
+          \"box\":true\
+        },\
+        \"maximum\":{\
+          \"shape\":\"Maximum\",\
+          \"documentation\":\"<p>The maximum aggregated field value.</p>\",\
+          \"box\":true\
+        },\
+        \"sumOfSquares\":{\
+          \"shape\":\"SumOfSquares\",\
+          \"documentation\":\"<p>The sum of the squares of the aggregated field values.</p>\",\
+          \"box\":true\
+        },\
+        \"variance\":{\
+          \"shape\":\"Variance\",\
+          \"documentation\":\"<p>The variance of the aggregated field values.</p>\",\
+          \"box\":true\
+        },\
+        \"stdDeviation\":{\
+          \"shape\":\"StdDeviation\",\
+          \"documentation\":\"<p>The standard deviation of the aggregated field values.</p>\",\
+          \"box\":true\
         }\
       },\
       \"documentation\":\"<p>A map of key-value pairs for all supported statistics. Currently, only count is supported.</p>\"\
@@ -11846,6 +15398,7 @@
         \"Cancelling\"\
       ]\
     },\
+    \"StdDeviation\":{\"type\":\"double\"},\
     \"StepFunctionsAction\":{\
       \"type\":\"structure\",\
       \"required\":[\
@@ -12002,16 +15555,31 @@
       \"member\":{\"shape\":\"StreamSummary\"}\
     },\
     \"String\":{\"type\":\"string\"},\
+    \"StringList\":{\
+      \"type\":\"list\",\
+      \"member\":{\"shape\":\"stringValue\"}\
+    },\
     \"StringMap\":{\
       \"type\":\"map\",\
       \"key\":{\"shape\":\"String\"},\
       \"value\":{\"shape\":\"String\"}\
     },\
+    \"SubnetId\":{\"type\":\"string\"},\
+    \"SubnetIdList\":{\
+      \"type\":\"list\",\
+      \"member\":{\"shape\":\"SubnetId\"}\
+    },\
     \"SucceededFindingsCount\":{\"type\":\"long\"},\
     \"SucceededThings\":{\"type\":\"integer\"},\
+    \"Sum\":{\"type\":\"double\"},\
+    \"SumOfSquares\":{\"type\":\"double\"},\
+    \"SuppressAlerts\":{\"type\":\"boolean\"},\
+    \"SuppressIndefinitely\":{\"type\":\"boolean\"},\
+    \"SuppressedNonCompliantResourcesCount\":{\"type\":\"long\"},\
     \"TableName\":{\"type\":\"string\"},\
     \"Tag\":{\
       \"type\":\"structure\",\
+      \"required\":[\"Key\"],\
       \"members\":{\
         \"Key\":{\
           \"shape\":\"TagKey\",\
@@ -12024,7 +15592,12 @@
       },\
       \"documentation\":\"<p>A set of key/value pairs that are used to manage the resource.</p>\"\
     },\
-    \"TagKey\":{\"type\":\"string\"},\
+    \"TagKey\":{\
+      \"type\":\"string\",\
+      \"max\":128,\
+      \"min\":1,\
+      \"pattern\":\"^([\\\\p{L}\\\\p{Z}\\\\p{N}_.:/=+\\\\-@]*)$\"\
+    },\
     \"TagKeyList\":{\
       \"type\":\"list\",\
       \"member\":{\"shape\":\"TagKey\"}\
@@ -12055,9 +15628,16 @@
       \"members\":{\
       }\
     },\
-    \"TagValue\":{\"type\":\"string\"},\
+    \"TagValue\":{\
+      \"type\":\"string\",\
+      \"max\":256,\
+      \"min\":1\
+    },\
     \"Target\":{\"type\":\"string\"},\
-    \"TargetArn\":{\"type\":\"string\"},\
+    \"TargetArn\":{\
+      \"type\":\"string\",\
+      \"max\":2048\
+    },\
     \"TargetAuditCheckNames\":{\
       \"type\":\"list\",\
       \"member\":{\"shape\":\"AuditCheckName\"}\
@@ -12069,6 +15649,12 @@
         \"SNAPSHOT\"\
       ]\
     },\
+    \"TargetViolationIdsForDetectMitigationActions\":{\
+      \"type\":\"list\",\
+      \"member\":{\"shape\":\"ViolationId\"},\
+      \"max\":25,\
+      \"min\":1\
+    },\
     \"Targets\":{\
       \"type\":\"list\",\
       \"member\":{\"shape\":\"Target\"},\
@@ -12079,7 +15665,7 @@
       \"members\":{\
         \"message\":{\"shape\":\"errorMessage\"}\
       },\
-      \"documentation\":\"<p>This exception occurs if you attempt to start a task with the same task-id as an existing task but with a different clientRequestToken.</p>\",\
+      \"documentation\":\"<p> This exception occurs if you attempt to start a task with the same task-id as an existing task but with a different clientRequestToken. </p>\",\
       \"error\":{\"httpStatusCode\":400},\
       \"exception\":true\
     },\
@@ -12151,14 +15737,28 @@
       },\
       \"documentation\":\"<p>Provides summary counts of how many tasks for findings are in a particular state. This information is included in the response from DescribeAuditMitigationActionsTask.</p>\"\
     },\
+    \"TemplateArn\":{\"type\":\"string\"},\
     \"TemplateBody\":{\"type\":\"string\"},\
+    \"TemplateDescription\":{\
+      \"type\":\"string\",\
+      \"max\":500,\
+      \"min\":0,\
+      \"pattern\":\"[^\\\\p{C}]*\"\
+    },\
+    \"TemplateName\":{\
+      \"type\":\"string\",\
+      \"max\":36,\
+      \"min\":1,\
+      \"pattern\":\"^[0-9A-Za-z_-]+$\"\
+    },\
+    \"TemplateVersionId\":{\"type\":\"integer\"},\
     \"TestAuthorizationRequest\":{\
       \"type\":\"structure\",\
       \"required\":[\"authInfos\"],\
       \"members\":{\
         \"principal\":{\
           \"shape\":\"Principal\",\
-          \"documentation\":\"<p>The principal.</p>\"\
+          \"documentation\":\"<p>The principal. Valid principals are CertificateArn (arn:aws:iot:<i>region</i>:<i>accountId</i>:cert/<i>certificateId</i>), thingGroupArn (arn:aws:iot:<i>region</i>:<i>accountId</i>:thinggroup/<i>groupName</i>) and CognitoId (<i>region</i>:<i>id</i>).</p>\"\
         },\
         \"cognitoIdentityPoolId\":{\
           \"shape\":\"CognitoIdentityPoolId\",\
@@ -12195,11 +15795,7 @@
     },\
     \"TestInvokeAuthorizerRequest\":{\
       \"type\":\"structure\",\
-      \"required\":[\
-        \"authorizerName\",\
-        \"token\",\
-        \"tokenSignature\"\
-      ],\
+      \"required\":[\"authorizerName\"],\
       \"members\":{\
         \"authorizerName\":{\
           \"shape\":\"AuthorizerName\",\
@@ -12213,7 +15809,19 @@
         },\
         \"tokenSignature\":{\
           \"shape\":\"TokenSignature\",\
-          \"documentation\":\"<p>The signature made with the token and your custom authentication service's private key.</p>\"\
+          \"documentation\":\"<p>The signature made with the token and your custom authentication service's private key. This value must be Base-64-encoded.</p>\"\
+        },\
+        \"httpContext\":{\
+          \"shape\":\"HttpContext\",\
+          \"documentation\":\"<p>Specifies a test HTTP authorization request.</p>\"\
+        },\
+        \"mqttContext\":{\
+          \"shape\":\"MqttContext\",\
+          \"documentation\":\"<p>Specifies a test MQTT authorization request.</p>\"\
+        },\
+        \"tlsContext\":{\
+          \"shape\":\"TlsContext\",\
+          \"documentation\":\"<p>Specifies a test TLS authorization request.</p>\"\
         }\
       }\
     },\
@@ -12381,6 +15989,14 @@
         \"thingGroupIndexingMode\":{\
           \"shape\":\"ThingGroupIndexingMode\",\
           \"documentation\":\"<p>Thing group indexing mode.</p>\"\
+        },\
+        \"managedFields\":{\
+          \"shape\":\"Fields\",\
+          \"documentation\":\"<p>Contains fields that are indexed and whose types are already known by the Fleet Indexing service.</p>\"\
+        },\
+        \"customFields\":{\
+          \"shape\":\"Fields\",\
+          \"documentation\":\"<p>A list of thing group fields to index. This list cannot contain any managed fields. Use the GetIndexingConfiguration API to get a list of managed fields.</p> <p>Contains custom field names and their data type.</p>\"\
         }\
       },\
       \"documentation\":\"<p>Thing group indexing configuration.</p>\"\
@@ -12460,6 +16076,14 @@
         \"thingConnectivityIndexingMode\":{\
           \"shape\":\"ThingConnectivityIndexingMode\",\
           \"documentation\":\"<p>Thing connectivity indexing mode. Valid values are: </p> <ul> <li> <p>STATUS â Your thing index contains connectivity status. To enable thing connectivity indexing, thingIndexMode must not be set to OFF.</p> </li> <li> <p>OFF - Thing connectivity status indexing is disabled.</p> </li> </ul>\"\
+        },\
+        \"managedFields\":{\
+          \"shape\":\"Fields\",\
+          \"documentation\":\"<p>Contains fields that are indexed and whose types are already known by the Fleet Indexing service.</p>\"\
+        },\
+        \"customFields\":{\
+          \"shape\":\"Fields\",\
+          \"documentation\":\"<p>Contains custom field names and their data type.</p>\"\
         }\
       },\
       \"documentation\":\"<p>The thing indexing configuration. For more information, see <a href=\\\"https://docs.aws.amazon.com/iot/latest/developerguide/managing-index.html\\\">Managing Thing Indexing</a>.</p>\"\
@@ -12562,7 +16186,7 @@
         }\
       },\
       \"documentation\":\"<p>The rate exceeds the limit.</p>\",\
-      \"error\":{\"httpStatusCode\":429},\
+      \"error\":{\"httpStatusCode\":400},\
       \"exception\":true\
     },\
     \"TimedOutThings\":{\"type\":\"integer\"},\
@@ -12577,6 +16201,101 @@
       \"documentation\":\"<p>Specifies the amount of time each device has to finish its execution of the job. A timer is started when the job execution status is set to <code>IN_PROGRESS</code>. If the job execution status is not set to another terminal state before the timer expires, it will be automatically set to <code>TIMED_OUT</code>.</p>\"\
     },\
     \"Timestamp\":{\"type\":\"timestamp\"},\
+    \"TimestreamAction\":{\
+      \"type\":\"structure\",\
+      \"required\":[\
+        \"roleArn\",\
+        \"databaseName\",\
+        \"tableName\",\
+        \"dimensions\"\
+      ],\
+      \"members\":{\
+        \"roleArn\":{\
+          \"shape\":\"AwsArn\",\
+          \"documentation\":\"<p>The ARN of the role that grants permission to write to the Amazon Timestream database table.</p>\"\
+        },\
+        \"databaseName\":{\
+          \"shape\":\"TimestreamDatabaseName\",\
+          \"documentation\":\"<p>The name of an Amazon Timestream database.</p>\"\
+        },\
+        \"tableName\":{\
+          \"shape\":\"TimestreamTableName\",\
+          \"documentation\":\"<p>The name of the database table into which to write the measure records.</p>\"\
+        },\
+        \"dimensions\":{\
+          \"shape\":\"TimestreamDimensionList\",\
+          \"documentation\":\"<p>Metadata attributes of the time series that are written in each measure record.</p>\"\
+        },\
+        \"timestamp\":{\
+          \"shape\":\"TimestreamTimestamp\",\
+          \"documentation\":\"<p>Specifies an application-defined value to replace the default value assigned to the Timestream record's timestamp in the <code>time</code> column.</p> <p>You can use this property to specify the value and the precision of the Timestream record's timestamp. You can specify a value from the message payload or a value computed by a substitution template.</p> <p>If omitted, the topic rule action assigns the timestamp, in milliseconds, at the time it processed the rule. </p>\"\
+        }\
+      },\
+      \"documentation\":\"<p>The Timestream rule action writes attributes (measures) from an MQTT message into an Amazon Timestream table. For more information, see the <a href=\\\"https://docs.aws.amazon.com/iot/latest/developerguide/timestream-rule-action.html\\\">Timestream</a> topic rule action documentation.</p>\"\
+    },\
+    \"TimestreamDatabaseName\":{\"type\":\"string\"},\
+    \"TimestreamDimension\":{\
+      \"type\":\"structure\",\
+      \"required\":[\
+        \"name\",\
+        \"value\"\
+      ],\
+      \"members\":{\
+        \"name\":{\
+          \"shape\":\"TimestreamDimensionName\",\
+          \"documentation\":\"<p>The metadata dimension name. This is the name of the column in the Amazon Timestream database table record.</p> <p>Dimensions cannot be named: <code>measure_name</code>, <code>measure_value</code>, or <code>time</code>. These names are reserved. Dimension names cannot start with <code>ts_</code> or <code>measure_value</code> and they cannot contain the colon (<code>:</code>) character.</p>\"\
+        },\
+        \"value\":{\
+          \"shape\":\"TimestreamDimensionValue\",\
+          \"documentation\":\"<p>The value to write in this column of the database record.</p>\"\
+        }\
+      },\
+      \"documentation\":\"<p>Metadata attributes of the time series that are written in each measure record.</p>\"\
+    },\
+    \"TimestreamDimensionList\":{\
+      \"type\":\"list\",\
+      \"member\":{\"shape\":\"TimestreamDimension\"},\
+      \"max\":128,\
+      \"min\":1\
+    },\
+    \"TimestreamDimensionName\":{\"type\":\"string\"},\
+    \"TimestreamDimensionValue\":{\"type\":\"string\"},\
+    \"TimestreamTableName\":{\"type\":\"string\"},\
+    \"TimestreamTimestamp\":{\
+      \"type\":\"structure\",\
+      \"required\":[\
+        \"value\",\
+        \"unit\"\
+      ],\
+      \"members\":{\
+        \"value\":{\
+          \"shape\":\"TimestreamTimestampValue\",\
+          \"documentation\":\"<p>An expression that returns a long epoch time value.</p>\"\
+        },\
+        \"unit\":{\
+          \"shape\":\"TimestreamTimestampUnit\",\
+          \"documentation\":\"<p>The precision of the timestamp value that results from the expression described in <code>value</code>.</p> <p>Valid values: <code>SECONDS</code> | <code>MILLISECONDS</code> | <code>MICROSECONDS</code> | <code>NANOSECONDS</code>. The default is <code>MILLISECONDS</code>.</p>\"\
+        }\
+      },\
+      \"documentation\":\"<p>Describes how to interpret an application-defined timestamp value from an MQTT message payload and the precision of that value.</p>\"\
+    },\
+    \"TimestreamTimestampUnit\":{\"type\":\"string\"},\
+    \"TimestreamTimestampValue\":{\"type\":\"string\"},\
+    \"TinyMaxResults\":{\
+      \"type\":\"integer\",\
+      \"max\":10,\
+      \"min\":1\
+    },\
+    \"TlsContext\":{\
+      \"type\":\"structure\",\
+      \"members\":{\
+        \"serverName\":{\
+          \"shape\":\"ServerName\",\
+          \"documentation\":\"<p>The value of the <code>serverName</code> key in a TLS authorization request.</p>\"\
+        }\
+      },\
+      \"documentation\":\"<p>Specifies the TLS context to use for the test authorizer request.</p>\"\
+    },\
     \"Token\":{\
       \"type\":\"string\",\
       \"max\":6144,\
@@ -12634,6 +16353,107 @@
       },\
       \"documentation\":\"<p>Describes a rule.</p>\"\
     },\
+    \"TopicRuleDestination\":{\
+      \"type\":\"structure\",\
+      \"members\":{\
+        \"arn\":{\
+          \"shape\":\"AwsArn\",\
+          \"documentation\":\"<p>The topic rule destination URL.</p>\"\
+        },\
+        \"status\":{\
+          \"shape\":\"TopicRuleDestinationStatus\",\
+          \"documentation\":\"<p>The status of the topic rule destination. Valid values are:</p> <dl> <dt>IN_PROGRESS</dt> <dd> <p>A topic rule destination was created but has not been confirmed. You can set <code>status</code> to <code>IN_PROGRESS</code> by calling <code>UpdateTopicRuleDestination</code>. Calling <code>UpdateTopicRuleDestination</code> causes a new confirmation challenge to be sent to your confirmation endpoint.</p> </dd> <dt>ENABLED</dt> <dd> <p>Confirmation was completed, and traffic to this destination is allowed. You can set <code>status</code> to <code>DISABLED</code> by calling <code>UpdateTopicRuleDestination</code>.</p> </dd> <dt>DISABLED</dt> <dd> <p>Confirmation was completed, and traffic to this destination is not allowed. You can set <code>status</code> to <code>ENABLED</code> by calling <code>UpdateTopicRuleDestination</code>.</p> </dd> <dt>ERROR</dt> <dd> <p>Confirmation could not be completed, for example if the confirmation timed out. You can call <code>GetTopicRuleDestination</code> for details about the error. You can set <code>status</code> to <code>IN_PROGRESS</code> by calling <code>UpdateTopicRuleDestination</code>. Calling <code>UpdateTopicRuleDestination</code> causes a new confirmation challenge to be sent to your confirmation endpoint.</p> </dd> </dl>\"\
+        },\
+        \"createdAt\":{\
+          \"shape\":\"CreatedAtDate\",\
+          \"documentation\":\"<p>The date and time when the topic rule destination was created.</p>\"\
+        },\
+        \"lastUpdatedAt\":{\
+          \"shape\":\"LastUpdatedAtDate\",\
+          \"documentation\":\"<p>The date and time when the topic rule destination was last updated.</p>\"\
+        },\
+        \"statusReason\":{\
+          \"shape\":\"String\",\
+          \"documentation\":\"<p>Additional details or reason why the topic rule destination is in the current status.</p>\"\
+        },\
+        \"httpUrlProperties\":{\
+          \"shape\":\"HttpUrlDestinationProperties\",\
+          \"documentation\":\"<p>Properties of the HTTP URL.</p>\"\
+        },\
+        \"vpcProperties\":{\
+          \"shape\":\"VpcDestinationProperties\",\
+          \"documentation\":\"<p>Properties of the virtual private cloud (VPC) connection.</p>\"\
+        }\
+      },\
+      \"documentation\":\"<p>A topic rule destination.</p>\"\
+    },\
+    \"TopicRuleDestinationConfiguration\":{\
+      \"type\":\"structure\",\
+      \"members\":{\
+        \"httpUrlConfiguration\":{\
+          \"shape\":\"HttpUrlDestinationConfiguration\",\
+          \"documentation\":\"<p>Configuration of the HTTP URL.</p>\"\
+        },\
+        \"vpcConfiguration\":{\
+          \"shape\":\"VpcDestinationConfiguration\",\
+          \"documentation\":\"<p>Configuration of the virtual private cloud (VPC) connection.</p>\"\
+        }\
+      },\
+      \"documentation\":\"<p>Configuration of the topic rule destination.</p>\"\
+    },\
+    \"TopicRuleDestinationMaxResults\":{\
+      \"type\":\"integer\",\
+      \"max\":1000,\
+      \"min\":1\
+    },\
+    \"TopicRuleDestinationStatus\":{\
+      \"type\":\"string\",\
+      \"enum\":[\
+        \"ENABLED\",\
+        \"IN_PROGRESS\",\
+        \"DISABLED\",\
+        \"ERROR\",\
+        \"DELETING\"\
+      ]\
+    },\
+    \"TopicRuleDestinationSummaries\":{\
+      \"type\":\"list\",\
+      \"member\":{\"shape\":\"TopicRuleDestinationSummary\"}\
+    },\
+    \"TopicRuleDestinationSummary\":{\
+      \"type\":\"structure\",\
+      \"members\":{\
+        \"arn\":{\
+          \"shape\":\"AwsArn\",\
+          \"documentation\":\"<p>The topic rule destination ARN.</p>\"\
+        },\
+        \"status\":{\
+          \"shape\":\"TopicRuleDestinationStatus\",\
+          \"documentation\":\"<p>The status of the topic rule destination. Valid values are:</p> <dl> <dt>IN_PROGRESS</dt> <dd> <p>A topic rule destination was created but has not been confirmed. You can set <code>status</code> to <code>IN_PROGRESS</code> by calling <code>UpdateTopicRuleDestination</code>. Calling <code>UpdateTopicRuleDestination</code> causes a new confirmation challenge to be sent to your confirmation endpoint.</p> </dd> <dt>ENABLED</dt> <dd> <p>Confirmation was completed, and traffic to this destination is allowed. You can set <code>status</code> to <code>DISABLED</code> by calling <code>UpdateTopicRuleDestination</code>.</p> </dd> <dt>DISABLED</dt> <dd> <p>Confirmation was completed, and traffic to this destination is not allowed. You can set <code>status</code> to <code>ENABLED</code> by calling <code>UpdateTopicRuleDestination</code>.</p> </dd> <dt>ERROR</dt> <dd> <p>Confirmation could not be completed, for example if the confirmation timed out. You can call <code>GetTopicRuleDestination</code> for details about the error. You can set <code>status</code> to <code>IN_PROGRESS</code> by calling <code>UpdateTopicRuleDestination</code>. Calling <code>UpdateTopicRuleDestination</code> causes a new confirmation challenge to be sent to your confirmation endpoint.</p> </dd> </dl>\"\
+        },\
+        \"createdAt\":{\
+          \"shape\":\"CreatedAtDate\",\
+          \"documentation\":\"<p>The date and time when the topic rule destination was created.</p>\"\
+        },\
+        \"lastUpdatedAt\":{\
+          \"shape\":\"LastUpdatedAtDate\",\
+          \"documentation\":\"<p>The date and time when the topic rule destination was last updated.</p>\"\
+        },\
+        \"statusReason\":{\
+          \"shape\":\"String\",\
+          \"documentation\":\"<p>The reason the topic rule destination is in the current status.</p>\"\
+        },\
+        \"httpUrlSummary\":{\
+          \"shape\":\"HttpUrlDestinationSummary\",\
+          \"documentation\":\"<p>Information about the HTTP URL.</p>\"\
+        },\
+        \"vpcDestinationSummary\":{\
+          \"shape\":\"VpcDestinationSummary\",\
+          \"documentation\":\"<p>Information about the virtual private cloud (VPC) connection.</p>\"\
+        }\
+      },\
+      \"documentation\":\"<p>Information about the topic rule destination.</p>\"\
+    },\
     \"TopicRuleList\":{\
       \"type\":\"list\",\
       \"member\":{\"shape\":\"TopicRuleListItem\"}\
@@ -12664,6 +16484,11 @@
       },\
       \"documentation\":\"<p>Describes a rule.</p>\"\
     },\
+    \"TopicRuleMaxResults\":{\
+      \"type\":\"integer\",\
+      \"max\":10000,\
+      \"min\":1\
+    },\
     \"TopicRulePayload\":{\
       \"type\":\"structure\",\
       \"required\":[\
@@ -12673,7 +16498,7 @@
       \"members\":{\
         \"sql\":{\
           \"shape\":\"SQL\",\
-          \"documentation\":\"<p>The SQL statement used to query the topic. For more information, see <a href=\\\"https://docs.aws.amazon.com/iot/latest/developerguide/iot-rules.html#aws-iot-sql-reference\\\">AWS IoT SQL Reference</a> in the <i>AWS IoT Developer Guide</i>.</p>\"\
+          \"documentation\":\"<p>The SQL statement used to query the topic. For more information, see <a href=\\\"https://docs.aws.amazon.com/iot/latest/developerguide/iot-sql-reference.html\\\">AWS IoT SQL Reference</a> in the <i>AWS IoT Developer Guide</i>.</p>\"\
         },\
         \"description\":{\
           \"shape\":\"Description\",\
@@ -12831,7 +16656,7 @@
       \"members\":{\
         \"roleArn\":{\
           \"shape\":\"RoleArn\",\
-          \"documentation\":\"<p>The ARN of the role that grants permission to AWS IoT to access information about your devices, policies, certificates and other items as required when performing an audit.</p>\"\
+          \"documentation\":\"<p>The Amazon Resource Name (ARN) of the role that grants permission to AWS IoT to access information about your devices, policies, certificates, and other items as required when performing an audit.</p>\"\
         },\
         \"auditNotificationTargetConfigurations\":{\
           \"shape\":\"AuditNotificationTargetConfigurations\",\
@@ -12839,11 +16664,39 @@
         },\
         \"auditCheckConfigurations\":{\
           \"shape\":\"AuditCheckConfigurations\",\
-          \"documentation\":\"<p>Specifies which audit checks are enabled and disabled for this account. Use <code>DescribeAccountAuditConfiguration</code> to see the list of all checks, including those that are currently enabled.</p> <p>Some data collection might start immediately when certain checks are enabled. When a check is disabled, any data collected so far in relation to the check is deleted.</p> <p>You cannot disable a check if it is used by any scheduled audit. You must first delete the check from the scheduled audit or delete the scheduled audit itself.</p> <p>On the first call to <code>UpdateAccountAuditConfiguration</code>, this parameter is required and must specify at least one enabled check.</p>\"\
+          \"documentation\":\"<p>Specifies which audit checks are enabled and disabled for this account. Use <code>DescribeAccountAuditConfiguration</code> to see the list of all checks, including those that are currently enabled.</p> <p>Some data collection might start immediately when certain checks are enabled. When a check is disabled, any data collected so far in relation to the check is deleted.</p> <p>You cannot disable a check if it's used by any scheduled audit. You must first delete the check from the scheduled audit or delete the scheduled audit itself.</p> <p>On the first call to <code>UpdateAccountAuditConfiguration</code>, this parameter is required and must specify at least one enabled check.</p>\"\
         }\
       }\
     },\
     \"UpdateAccountAuditConfigurationResponse\":{\
+      \"type\":\"structure\",\
+      \"members\":{\
+      }\
+    },\
+    \"UpdateAuditSuppressionRequest\":{\
+      \"type\":\"structure\",\
+      \"required\":[\
+        \"checkName\",\
+        \"resourceIdentifier\"\
+      ],\
+      \"members\":{\
+        \"checkName\":{\"shape\":\"AuditCheckName\"},\
+        \"resourceIdentifier\":{\"shape\":\"ResourceIdentifier\"},\
+        \"expirationDate\":{\
+          \"shape\":\"Timestamp\",\
+          \"documentation\":\"<p> The expiration date (epoch timestamp in seconds) that you want the suppression to adhere to. </p>\"\
+        },\
+        \"suppressIndefinitely\":{\
+          \"shape\":\"SuppressIndefinitely\",\
+          \"documentation\":\"<p> Indicates whether a suppression should exist indefinitely or not. </p>\"\
+        },\
+        \"description\":{\
+          \"shape\":\"AuditDescription\",\
+          \"documentation\":\"<p> The description of the audit suppression. </p>\"\
+        }\
+      }\
+    },\
+    \"UpdateAuditSuppressionResponse\":{\
       \"type\":\"structure\",\
       \"members\":{\
       }\
@@ -12927,7 +16780,7 @@
       \"members\":{\
         \"action\":{\
           \"shape\":\"CACertificateUpdateAction\",\
-          \"documentation\":\"<p>The action that you want to apply to the CA cerrtificate. The only supported value is <code>DEACTIVATE</code>.</p>\"\
+          \"documentation\":\"<p>The action that you want to apply to the CA certificate. The only supported value is <code>DEACTIVATE</code>.</p>\"\
         }\
       },\
       \"documentation\":\"<p>Parameters to define a mitigation action that changes the state of the CA certificate to inactive.</p>\"\
@@ -12980,12 +16833,60 @@
         },\
         \"newStatus\":{\
           \"shape\":\"CertificateStatus\",\
-          \"documentation\":\"<p>The new status.</p> <p> <b>Note:</b> Setting the status to PENDING_TRANSFER will result in an exception being thrown. PENDING_TRANSFER is a status used internally by AWS IoT. It is not intended for developer use.</p> <p> <b>Note:</b> The status value REGISTER_INACTIVE is deprecated and should not be used.</p>\",\
+          \"documentation\":\"<p>The new status.</p> <p> <b>Note:</b> Setting the status to PENDING_TRANSFER or PENDING_ACTIVATION will result in an exception being thrown. PENDING_TRANSFER and PENDING_ACTIVATION are statuses used internally by AWS IoT. They are not intended for developer use.</p> <p> <b>Note:</b> The status value REGISTER_INACTIVE is deprecated and should not be used.</p>\",\
           \"location\":\"querystring\",\
           \"locationName\":\"newStatus\"\
         }\
       },\
       \"documentation\":\"<p>The input for the UpdateCertificate operation.</p>\"\
+    },\
+    \"UpdateCustomMetricRequest\":{\
+      \"type\":\"structure\",\
+      \"required\":[\
+        \"metricName\",\
+        \"displayName\"\
+      ],\
+      \"members\":{\
+        \"metricName\":{\
+          \"shape\":\"MetricName\",\
+          \"documentation\":\"<p> The name of the custom metric. Cannot be updated. </p>\",\
+          \"location\":\"uri\",\
+          \"locationName\":\"metricName\"\
+        },\
+        \"displayName\":{\
+          \"shape\":\"CustomMetricDisplayName\",\
+          \"documentation\":\"<p> Field represents a friendly name in the console for the custom metric, it doesn't have to be unique. Don't use this name as the metric identifier in the device metric report. Can be updated. </p>\"\
+        }\
+      }\
+    },\
+    \"UpdateCustomMetricResponse\":{\
+      \"type\":\"structure\",\
+      \"members\":{\
+        \"metricName\":{\
+          \"shape\":\"MetricName\",\
+          \"documentation\":\"<p> The name of the custom metric. </p>\"\
+        },\
+        \"metricArn\":{\
+          \"shape\":\"CustomMetricArn\",\
+          \"documentation\":\"<p> The Amazon Resource Number (ARN) of the custom metric. </p>\"\
+        },\
+        \"metricType\":{\
+          \"shape\":\"CustomMetricType\",\
+          \"documentation\":\"<p> The type of the custom metric. Types include <code>string-list</code>, <code>ip-address-list</code>, <code>number-list</code>, and <code>number</code>. </p>\"\
+        },\
+        \"displayName\":{\
+          \"shape\":\"CustomMetricDisplayName\",\
+          \"documentation\":\"<p> A friendly name in the console for the custom metric </p>\"\
+        },\
+        \"creationDate\":{\
+          \"shape\":\"Timestamp\",\
+          \"documentation\":\"<p> The creation date of the custom metric in milliseconds since epoch. </p>\"\
+        },\
+        \"lastModifiedDate\":{\
+          \"shape\":\"Timestamp\",\
+          \"documentation\":\"<p> The time the custom metric was last modified in milliseconds since epoch. </p>\"\
+        }\
+      }\
     },\
     \"UpdateDeviceCertificateParams\":{\
       \"type\":\"structure\",\
@@ -12993,10 +16894,95 @@
       \"members\":{\
         \"action\":{\
           \"shape\":\"DeviceCertificateUpdateAction\",\
-          \"documentation\":\"<p>The action that you want to apply to the device cerrtificate. The only supported value is <code>DEACTIVATE</code>.</p>\"\
+          \"documentation\":\"<p>The action that you want to apply to the device certificate. The only supported value is <code>DEACTIVATE</code>.</p>\"\
         }\
       },\
       \"documentation\":\"<p>Parameters to define a mitigation action that changes the state of the device certificate to inactive.</p>\"\
+    },\
+    \"UpdateDimensionRequest\":{\
+      \"type\":\"structure\",\
+      \"required\":[\
+        \"name\",\
+        \"stringValues\"\
+      ],\
+      \"members\":{\
+        \"name\":{\
+          \"shape\":\"DimensionName\",\
+          \"documentation\":\"<p>A unique identifier for the dimension. Choose something that describes the type and value to make it easy to remember what it does.</p>\",\
+          \"location\":\"uri\",\
+          \"locationName\":\"name\"\
+        },\
+        \"stringValues\":{\
+          \"shape\":\"DimensionStringValues\",\
+          \"documentation\":\"<p>Specifies the value or list of values for the dimension. For <code>TOPIC_FILTER</code> dimensions, this is a pattern used to match the MQTT topic (for example, \\\"admin/#\\\").</p>\"\
+        }\
+      }\
+    },\
+    \"UpdateDimensionResponse\":{\
+      \"type\":\"structure\",\
+      \"members\":{\
+        \"name\":{\
+          \"shape\":\"DimensionName\",\
+          \"documentation\":\"<p>A unique identifier for the dimension.</p>\"\
+        },\
+        \"arn\":{\
+          \"shape\":\"DimensionArn\",\
+          \"documentation\":\"<p>The Amazon Resource Name (ARN)of the created dimension.</p>\"\
+        },\
+        \"type\":{\
+          \"shape\":\"DimensionType\",\
+          \"documentation\":\"<p>The type of the dimension.</p>\"\
+        },\
+        \"stringValues\":{\
+          \"shape\":\"DimensionStringValues\",\
+          \"documentation\":\"<p>The value or list of values used to scope the dimension. For example, for topic filters, this is the pattern used to match the MQTT topic name.</p>\"\
+        },\
+        \"creationDate\":{\
+          \"shape\":\"Timestamp\",\
+          \"documentation\":\"<p>The date and time, in milliseconds since epoch, when the dimension was initially created.</p>\"\
+        },\
+        \"lastModifiedDate\":{\
+          \"shape\":\"Timestamp\",\
+          \"documentation\":\"<p>The date and time, in milliseconds since epoch, when the dimension was most recently updated.</p>\"\
+        }\
+      }\
+    },\
+    \"UpdateDomainConfigurationRequest\":{\
+      \"type\":\"structure\",\
+      \"required\":[\"domainConfigurationName\"],\
+      \"members\":{\
+        \"domainConfigurationName\":{\
+          \"shape\":\"ReservedDomainConfigurationName\",\
+          \"documentation\":\"<p>The name of the domain configuration to be updated.</p>\",\
+          \"location\":\"uri\",\
+          \"locationName\":\"domainConfigurationName\"\
+        },\
+        \"authorizerConfig\":{\
+          \"shape\":\"AuthorizerConfig\",\
+          \"documentation\":\"<p>An object that specifies the authorization service for a domain.</p>\"\
+        },\
+        \"domainConfigurationStatus\":{\
+          \"shape\":\"DomainConfigurationStatus\",\
+          \"documentation\":\"<p>The status to which the domain configuration should be updated.</p>\"\
+        },\
+        \"removeAuthorizerConfig\":{\
+          \"shape\":\"RemoveAuthorizerConfig\",\
+          \"documentation\":\"<p>Removes the authorization configuration from a domain.</p>\"\
+        }\
+      }\
+    },\
+    \"UpdateDomainConfigurationResponse\":{\
+      \"type\":\"structure\",\
+      \"members\":{\
+        \"domainConfigurationName\":{\
+          \"shape\":\"ReservedDomainConfigurationName\",\
+          \"documentation\":\"<p>The name of the domain configuration that was updated.</p>\"\
+        },\
+        \"domainConfigurationArn\":{\
+          \"shape\":\"DomainConfigurationArn\",\
+          \"documentation\":\"<p>The ARN of the domain configuration that was updated.</p>\"\
+        }\
+      }\
     },\
     \"UpdateDynamicThingGroupRequest\":{\
       \"type\":\"structure\",\
@@ -13103,6 +17089,12 @@
         \"timeoutConfig\":{\
           \"shape\":\"TimeoutConfig\",\
           \"documentation\":\"<p>Specifies the amount of time each device has to finish its execution of the job. The timer is started when the job execution status is set to <code>IN_PROGRESS</code>. If the job execution status is not set to another terminal state before the time expires, it will be automatically set to <code>TIMED_OUT</code>. </p>\"\
+        },\
+        \"namespaceId\":{\
+          \"shape\":\"NamespaceId\",\
+          \"documentation\":\"<p>The namespace used to indicate that a job is a customer-managed job.</p> <p>When you specify a value for this parameter, AWS IoT Core sends jobs notifications to MQTT topics that contain the value in the following format.</p> <p> <code>$aws/things/<i>THING_NAME</i>/jobs/<i>JOB_ID</i>/notify-namespace-<i>NAMESPACE_ID</i>/</code> </p> <note> <p>The <code>namespaceId</code> feature is in public preview.</p> </note>\",\
+          \"location\":\"querystring\",\
+          \"locationName\":\"namespaceId\"\
         }\
       }\
     },\
@@ -13112,7 +17104,7 @@
       \"members\":{\
         \"actionName\":{\
           \"shape\":\"MitigationActionName\",\
-          \"documentation\":\"<p>The friendly name for the mitigation action. You can't change the name by using <code>UpdateMitigationAction</code>. Instead, you must delete and re-create the mitigation action with the new name.</p>\",\
+          \"documentation\":\"<p>The friendly name for the mitigation action. You cannot change the name by using <code>UpdateMitigationAction</code>. Instead, you must delete and recreate the mitigation action with the new name.</p>\",\
           \"location\":\"uri\",\
           \"locationName\":\"actionName\"\
         },\
@@ -13137,6 +17129,47 @@
           \"shape\":\"MitigationActionId\",\
           \"documentation\":\"<p>A unique identifier for the mitigation action.</p>\"\
         }\
+      }\
+    },\
+    \"UpdateProvisioningTemplateRequest\":{\
+      \"type\":\"structure\",\
+      \"required\":[\"templateName\"],\
+      \"members\":{\
+        \"templateName\":{\
+          \"shape\":\"TemplateName\",\
+          \"documentation\":\"<p>The name of the fleet provisioning template.</p>\",\
+          \"location\":\"uri\",\
+          \"locationName\":\"templateName\"\
+        },\
+        \"description\":{\
+          \"shape\":\"TemplateDescription\",\
+          \"documentation\":\"<p>The description of the fleet provisioning template.</p>\"\
+        },\
+        \"enabled\":{\
+          \"shape\":\"Enabled\",\
+          \"documentation\":\"<p>True to enable the fleet provisioning template, otherwise false.</p>\"\
+        },\
+        \"defaultVersionId\":{\
+          \"shape\":\"TemplateVersionId\",\
+          \"documentation\":\"<p>The ID of the default provisioning template version.</p>\"\
+        },\
+        \"provisioningRoleArn\":{\
+          \"shape\":\"RoleArn\",\
+          \"documentation\":\"<p>The ARN of the role associated with the provisioning template. This IoT role grants permission to provision a device.</p>\"\
+        },\
+        \"preProvisioningHook\":{\
+          \"shape\":\"ProvisioningHook\",\
+          \"documentation\":\"<p>Updates the pre-provisioning hook template.</p>\"\
+        },\
+        \"removePreProvisioningHook\":{\
+          \"shape\":\"RemoveHook\",\
+          \"documentation\":\"<p>Removes pre-provisioning hook template.</p>\"\
+        }\
+      }\
+    },\
+    \"UpdateProvisioningTemplateResponse\":{\
+      \"type\":\"structure\",\
+      \"members\":{\
       }\
     },\
     \"UpdateRoleAliasRequest\":{\
@@ -13178,15 +17211,15 @@
       \"members\":{\
         \"frequency\":{\
           \"shape\":\"AuditFrequency\",\
-          \"documentation\":\"<p>How often the scheduled audit takes place. Can be one of \\\"DAILY\\\", \\\"WEEKLY\\\", \\\"BIWEEKLY\\\", or \\\"MONTHLY\\\". The start time of each audit is determined by the system.</p>\"\
+          \"documentation\":\"<p>How often the scheduled audit takes place, either <code>DAILY</code>, <code>WEEKLY</code>, <code>BIWEEKLY</code>, or <code>MONTHLY</code>. The start time of each audit is determined by the system.</p>\"\
         },\
         \"dayOfMonth\":{\
           \"shape\":\"DayOfMonth\",\
-          \"documentation\":\"<p>The day of the month on which the scheduled audit takes place. Can be \\\"1\\\" through \\\"31\\\" or \\\"LAST\\\". This field is required if the \\\"frequency\\\" parameter is set to \\\"MONTHLY\\\". If days 29-31 are specified, and the month does not have that many days, the audit takes place on the \\\"LAST\\\" day of the month.</p>\"\
+          \"documentation\":\"<p>The day of the month on which the scheduled audit takes place. This can be <code>1</code> through <code>31</code> or <code>LAST</code>. This field is required if the <code>frequency</code> parameter is set to <code>MONTHLY</code>. If days 29-31 are specified, and the month does not have that many days, the audit takes place on the \\\"LAST\\\" day of the month.</p>\"\
         },\
         \"dayOfWeek\":{\
           \"shape\":\"DayOfWeek\",\
-          \"documentation\":\"<p>The day of the week on which the scheduled audit takes place. Can be one of \\\"SUN\\\", \\\"MON\\\", \\\"TUE\\\", \\\"WED\\\", \\\"THU\\\", \\\"FRI\\\", or \\\"SAT\\\". This field is required if the \\\"frequency\\\" parameter is set to \\\"WEEKLY\\\" or \\\"BIWEEKLY\\\".</p>\"\
+          \"documentation\":\"<p>The day of the week on which the scheduled audit takes place. This can be one of <code>SUN</code>, <code>MON</code>, <code>TUE</code>, <code>WED</code>, <code>THU</code>, <code>FRI</code>, or <code>SAT</code>. This field is required if the \\\"frequency\\\" parameter is set to <code>WEEKLY</code> or <code>BIWEEKLY</code>.</p>\"\
         },\
         \"targetCheckNames\":{\
           \"shape\":\"TargetAuditCheckNames\",\
@@ -13233,7 +17266,13 @@
         },\
         \"additionalMetricsToRetain\":{\
           \"shape\":\"AdditionalMetricsToRetainList\",\
-          \"documentation\":\"<p>A list of metrics whose data is retained (stored). By default, data is retained for any metric used in the profile's <code>behaviors</code>, but it is also retained for any metric specified here.</p>\"\
+          \"documentation\":\"<p> <i>Please use <a>UpdateSecurityProfileRequest$additionalMetricsToRetainV2</a> instead.</i> </p> <p>A list of metrics whose data is retained (stored). By default, data is retained for any metric used in the profile's <code>behaviors</code>, but it is also retained for any metric specified here. Can be used with custom metrics; cannot be used with dimensions.</p>\",\
+          \"deprecated\":true,\
+          \"deprecatedMessage\":\"Use additionalMetricsToRetainV2.\"\
+        },\
+        \"additionalMetricsToRetainV2\":{\
+          \"shape\":\"AdditionalMetricsToRetainV2List\",\
+          \"documentation\":\"<p>A list of metrics whose data is retained (stored). By default, data is retained for any metric used in the profile's behaviors, but it is also retained for any metric specified here. Can be used with custom metrics; cannot be used with dimensions.</p>\"\
         },\
         \"deleteBehaviors\":{\
           \"shape\":\"DeleteBehaviors\",\
@@ -13280,7 +17319,13 @@
         },\
         \"additionalMetricsToRetain\":{\
           \"shape\":\"AdditionalMetricsToRetainList\",\
-          \"documentation\":\"<p>A list of metrics whose data is retained (stored). By default, data is retained for any metric used in the security profile's <code>behaviors</code>, but it is also retained for any metric specified here.</p>\"\
+          \"documentation\":\"<p> <i>Please use <a>UpdateSecurityProfileResponse$additionalMetricsToRetainV2</a> instead.</i> </p> <p>A list of metrics whose data is retained (stored). By default, data is retained for any metric used in the security profile's <code>behaviors</code>, but it is also retained for any metric specified here.</p>\",\
+          \"deprecated\":true,\
+          \"deprecatedMessage\":\"Use additionalMetricsToRetainV2.\"\
+        },\
+        \"additionalMetricsToRetainV2\":{\
+          \"shape\":\"AdditionalMetricsToRetainV2List\",\
+          \"documentation\":\"<p>A list of metrics whose data is retained (stored). By default, data is retained for any metric used in the profile's behaviors, but it is also retained for any metric specified here. Can be used with custom metrics; cannot be used with dimensions.</p>\"\
         },\
         \"version\":{\
           \"shape\":\"Version\",\
@@ -13405,7 +17450,7 @@
       \"members\":{\
         \"thingName\":{\
           \"shape\":\"ThingName\",\
-          \"documentation\":\"<p>The name of the thing to update.</p>\",\
+          \"documentation\":\"<p>The name of the thing to update.</p> <p>You can't change a thing's name. To change a thing's name, you must create a new thing, give it the new name, and then delete the old thing.</p>\",\
           \"location\":\"uri\",\
           \"locationName\":\"thingName\"\
         },\
@@ -13433,6 +17478,32 @@
       \"members\":{\
       },\
       \"documentation\":\"<p>The output from the UpdateThing operation.</p>\"\
+    },\
+    \"UpdateTopicRuleDestinationRequest\":{\
+      \"type\":\"structure\",\
+      \"required\":[\
+        \"arn\",\
+        \"status\"\
+      ],\
+      \"members\":{\
+        \"arn\":{\
+          \"shape\":\"AwsArn\",\
+          \"documentation\":\"<p>The ARN of the topic rule destination.</p>\"\
+        },\
+        \"status\":{\
+          \"shape\":\"TopicRuleDestinationStatus\",\
+          \"documentation\":\"<p>The status of the topic rule destination. Valid values are:</p> <dl> <dt>IN_PROGRESS</dt> <dd> <p>A topic rule destination was created but has not been confirmed. You can set <code>status</code> to <code>IN_PROGRESS</code> by calling <code>UpdateTopicRuleDestination</code>. Calling <code>UpdateTopicRuleDestination</code> causes a new confirmation challenge to be sent to your confirmation endpoint.</p> </dd> <dt>ENABLED</dt> <dd> <p>Confirmation was completed, and traffic to this destination is allowed. You can set <code>status</code> to <code>DISABLED</code> by calling <code>UpdateTopicRuleDestination</code>.</p> </dd> <dt>DISABLED</dt> <dd> <p>Confirmation was completed, and traffic to this destination is not allowed. You can set <code>status</code> to <code>ENABLED</code> by calling <code>UpdateTopicRuleDestination</code>.</p> </dd> <dt>ERROR</dt> <dd> <p>Confirmation could not be completed, for example if the confirmation timed out. You can call <code>GetTopicRuleDestination</code> for details about the error. You can set <code>status</code> to <code>IN_PROGRESS</code> by calling <code>UpdateTopicRuleDestination</code>. Calling <code>UpdateTopicRuleDestination</code> causes a new confirmation challenge to be sent to your confirmation endpoint.</p> </dd> </dl>\"\
+        }\
+      }\
+    },\
+    \"UpdateTopicRuleDestinationResponse\":{\
+      \"type\":\"structure\",\
+      \"members\":{\
+      }\
+    },\
+    \"Url\":{\
+      \"type\":\"string\",\
+      \"max\":2000\
     },\
     \"UseBase64\":{\"type\":\"boolean\"},\
     \"Valid\":{\"type\":\"boolean\"},\
@@ -13474,6 +17545,7 @@
       \"member\":{\"shape\":\"ValidationError\"}\
     },\
     \"Value\":{\"type\":\"string\"},\
+    \"Variance\":{\"type\":\"double\"},\
     \"Version\":{\"type\":\"long\"},\
     \"VersionConflictException\":{\
       \"type\":\"structure\",\
@@ -13517,11 +17589,15 @@
         },\
         \"behavior\":{\
           \"shape\":\"Behavior\",\
-          \"documentation\":\"<p>The behavior which was violated.</p>\"\
+          \"documentation\":\"<p>The behavior that was violated.</p>\"\
         },\
         \"metricValue\":{\
           \"shape\":\"MetricValue\",\
           \"documentation\":\"<p>The value of the metric (the measurement).</p>\"\
+        },\
+        \"violationEventAdditionalInfo\":{\
+          \"shape\":\"ViolationEventAdditionalInfo\",\
+          \"documentation\":\"<p> The details of a violation event. </p>\"\
         },\
         \"violationEventType\":{\
           \"shape\":\"ViolationEventType\",\
@@ -13533,6 +17609,34 @@
         }\
       },\
       \"documentation\":\"<p>Information about a Device Defender security profile behavior violation.</p>\"\
+    },\
+    \"ViolationEventAdditionalInfo\":{\
+      \"type\":\"structure\",\
+      \"members\":{\
+        \"confidenceLevel\":{\
+          \"shape\":\"ConfidenceLevel\",\
+          \"documentation\":\"<p> The sensitivity of anomalous behavior evaluation. Can be <code>Low</code>, <code>Medium</code>, or <code>High</code>. </p>\"\
+        }\
+      },\
+      \"documentation\":\"<p> The details of a violation event. </p>\"\
+    },\
+    \"ViolationEventOccurrenceRange\":{\
+      \"type\":\"structure\",\
+      \"required\":[\
+        \"startTime\",\
+        \"endTime\"\
+      ],\
+      \"members\":{\
+        \"startTime\":{\
+          \"shape\":\"Timestamp\",\
+          \"documentation\":\"<p> The start date and time of a time period in which violation events occurred. </p>\"\
+        },\
+        \"endTime\":{\
+          \"shape\":\"Timestamp\",\
+          \"documentation\":\"<p> The end date and time of a time period in which violation events occurred. </p>\"\
+        }\
+      },\
+      \"documentation\":\"<p> Specifies the time period of which violation events occurred between. </p>\"\
     },\
     \"ViolationEventType\":{\
       \"type\":\"string\",\
@@ -13552,12 +17656,85 @@
       \"min\":1,\
       \"pattern\":\"[a-zA-Z0-9\\\\-]+\"\
     },\
+    \"VpcDestinationConfiguration\":{\
+      \"type\":\"structure\",\
+      \"required\":[\
+        \"subnetIds\",\
+        \"vpcId\",\
+        \"roleArn\"\
+      ],\
+      \"members\":{\
+        \"subnetIds\":{\
+          \"shape\":\"SubnetIdList\",\
+          \"documentation\":\"<p>The subnet IDs of the VPC destination.</p>\"\
+        },\
+        \"securityGroups\":{\
+          \"shape\":\"SecurityGroupList\",\
+          \"documentation\":\"<p>The security groups of the VPC destination.</p>\"\
+        },\
+        \"vpcId\":{\
+          \"shape\":\"VpcId\",\
+          \"documentation\":\"<p>The ID of the VPC.</p>\"\
+        },\
+        \"roleArn\":{\
+          \"shape\":\"AwsArn\",\
+          \"documentation\":\"<p>The ARN of a role that has permission to create and attach to elastic network interfaces (ENIs).</p>\"\
+        }\
+      },\
+      \"documentation\":\"<p>The configuration information for a virtual private cloud (VPC) destination.</p>\"\
+    },\
+    \"VpcDestinationProperties\":{\
+      \"type\":\"structure\",\
+      \"members\":{\
+        \"subnetIds\":{\
+          \"shape\":\"SubnetIdList\",\
+          \"documentation\":\"<p>The subnet IDs of the VPC destination.</p>\"\
+        },\
+        \"securityGroups\":{\
+          \"shape\":\"SecurityGroupList\",\
+          \"documentation\":\"<p>The security groups of the VPC destination.</p>\"\
+        },\
+        \"vpcId\":{\
+          \"shape\":\"VpcId\",\
+          \"documentation\":\"<p>The ID of the VPC.</p>\"\
+        },\
+        \"roleArn\":{\
+          \"shape\":\"AwsArn\",\
+          \"documentation\":\"<p>The ARN of a role that has permission to create and attach to elastic network interfaces (ENIs).</p>\"\
+        }\
+      },\
+      \"documentation\":\"<p>The properties of a virtual private cloud (VPC) destination.</p>\"\
+    },\
+    \"VpcDestinationSummary\":{\
+      \"type\":\"structure\",\
+      \"members\":{\
+        \"subnetIds\":{\
+          \"shape\":\"SubnetIdList\",\
+          \"documentation\":\"<p>The subnet IDs of the VPC destination.</p>\"\
+        },\
+        \"securityGroups\":{\
+          \"shape\":\"SecurityGroupList\",\
+          \"documentation\":\"<p>The security groups of the VPC destination.</p>\"\
+        },\
+        \"vpcId\":{\
+          \"shape\":\"VpcId\",\
+          \"documentation\":\"<p>The ID of the VPC.</p>\"\
+        },\
+        \"roleArn\":{\
+          \"shape\":\"AwsArn\",\
+          \"documentation\":\"<p>The ARN of a role that has permission to create and attach to elastic network interfaces (ENIs).</p>\"\
+        }\
+      },\
+      \"documentation\":\"<p>The summary of a virtual private cloud (VPC) destination.</p>\"\
+    },\
+    \"VpcId\":{\"type\":\"string\"},\
     \"WaitingForDataCollectionChecksCount\":{\"type\":\"integer\"},\
     \"errorMessage\":{\"type\":\"string\"},\
     \"resourceArn\":{\"type\":\"string\"},\
-    \"resourceId\":{\"type\":\"string\"}\
+    \"resourceId\":{\"type\":\"string\"},\
+    \"stringValue\":{\"type\":\"string\"}\
   },\
-  \"documentation\":\"<fullname>AWS IoT</fullname> <p>AWS IoT provides secure, bi-directional communication between Internet-connected devices (such as sensors, actuators, embedded devices, or smart appliances) and the AWS cloud. You can discover your custom IoT-Data endpoint to communicate with, configure rules for data processing and integration with other services, organize resources associated with each device (Registry), configure logging, and create and manage policies and credentials to authenticate devices.</p> <p>For more information about how AWS IoT works, see the <a href=\\\"https://docs.aws.amazon.com/iot/latest/developerguide/aws-iot-how-it-works.html\\\">Developer Guide</a>.</p> <p>For information about how to use the credentials provider for AWS IoT, see <a href=\\\"https://docs.aws.amazon.com/iot/latest/developerguide/authorizing-direct-aws.html\\\">Authorizing Direct Calls to AWS Services</a>.</p>\"\
+  \"documentation\":\"<fullname>AWS IoT</fullname> <p>AWS IoT provides secure, bi-directional communication between Internet-connected devices (such as sensors, actuators, embedded devices, or smart appliances) and the AWS cloud. You can discover your custom IoT-Data endpoint to communicate with, configure rules for data processing and integration with other services, organize resources associated with each device (Registry), configure logging, and create and manage policies and credentials to authenticate devices.</p> <p>The service endpoints that expose this API are listed in <a href=\\\"https://docs.aws.amazon.com/general/latest/gr/iot-core.html\\\">AWS IoT Core Endpoints and Quotas</a>. You must use the endpoint for the region that has the resources you want to access.</p> <p>The service name used by <a href=\\\"https://docs.aws.amazon.com/general/latest/gr/signature-version-4.html\\\">AWS Signature Version 4</a> to sign the request is: <i>execute-api</i>.</p> <p>For more information about how AWS IoT works, see the <a href=\\\"https://docs.aws.amazon.com/iot/latest/developerguide/aws-iot-how-it-works.html\\\">Developer Guide</a>.</p> <p>For information about how to use the credentials provider for AWS IoT, see <a href=\\\"https://docs.aws.amazon.com/iot/latest/developerguide/authorizing-direct-aws.html\\\">Authorizing Direct Calls to AWS Services</a>.</p>\"\
 }\
 ";
 }

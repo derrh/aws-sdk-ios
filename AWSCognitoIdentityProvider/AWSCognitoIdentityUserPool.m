@@ -92,16 +92,7 @@ static NSString *const AWSPinpointContextKeychainUniqueIdKey = @"com.amazonaws.A
 + (void)registerCognitoIdentityUserPoolWithConfiguration:(AWSServiceConfiguration *)configuration
                                    userPoolConfiguration:(AWSCognitoIdentityUserPoolConfiguration *)userPoolConfiguration
                                                   forKey:(NSString *)key {
-    static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^{
-        _serviceClients = [AWSSynchronizedMutableDictionary new];
-    });
-    AWSCognitoIdentityUserPool *identityProvider = [[AWSCognitoIdentityUserPool alloc] initWithConfiguration:configuration
-                                                                                       userPoolConfiguration:userPoolConfiguration
-                                                                                                  forService:NULL
-                                                                                              forAccessGroup:NULL];
-    [_serviceClients setObject:identityProvider
-                        forKey:key];
+    [self registerCognitoIdentityUserPoolWithConfiguration:configuration userPoolConfiguration:userPoolConfiguration forKey:key forService:NULL forAccessGroup:NULL]
 }
 
 + (void)registerCognitoIdentityUserPoolWithConfiguration:(AWSServiceConfiguration *)configuration

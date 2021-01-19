@@ -71,7 +71,6 @@ static NSString *const AWSPinpointContextKeychainUniqueIdKey = @"com.amazonaws.A
                                                                userPoolConfiguration:configuration
                                                                           forService:NULL
                                                                       forAccessGroup:NULL];
-                                
     });
     
     return _defaultUserPool;
@@ -191,7 +190,11 @@ static NSString *const AWSPinpointContextKeychainUniqueIdKey = @"com.amazonaws.A
             _keychain = [AWSUICKeyChainStore keyChainStoreWithService:service accessGroup:group];
         }
         
-        
+        if (service == NULL){
+            _keychain = [AWSUICKeyChainStore keyChainStoreWithService:[NSString stringWithFormat:@"%@.%@", [NSBundle mainBundle].bundleIdentifier, [AWSCognitoIdentityUserPool class]]];
+        }else{
+            _keychain = [AWSUICKeyChainStore keyChainStoreWithService:service accessGroup:group];
+        }
         //If Pinpoint is setup, get the endpoint or create one.
         if (userPoolConfiguration.pinpointAppId) {
         
